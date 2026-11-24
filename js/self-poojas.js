@@ -110,6 +110,63 @@
     panchamritham: ['pot', 'பஞ்சாமிர்தம்', 'Panchamritham']
   };
 
+
+  // ---------- how to get each item ready: [Tamil, English] ----------
+  var PREP = {
+    lamp: ['கழுவித் துடைத்து, சந்தனம் குங்குமம் இடவும்.', 'Wash, wipe dry and mark with sandal and kumkum.'],
+    agal: ['புது அகல்களை முதல் நாள் நீரில் ஊறவைத்துக் காயவிடவும்.', 'Soak new clay lamps in water the day before and dry them.'],
+    oil: ['விளக்கின் முக்கால் பங்கு நிரப்பவும்.', 'Fill the lamp about three-quarters.'],
+    wicks: ['பஞ்சைத் திரியாகத் திரித்து, எண்ணெயில் நனைத்து வைக்கவும்.', 'Twist cotton into wicks and dip them in oil.'],
+    kumkum: ['சிறு கிண்ணத்தில் வைக்கவும்.', 'Keep in a small bowl.'],
+    turmeric: ['பூஜைக்கு எனத் தனியாகச் சிறு கிண்ணத்தில் வைக்கவும்.', 'Keep a separate small bowl for the pooja.'],
+    sandal: ['சந்தனக் கட்டையை உரைத்து அல்லது பொடியைக் குழைத்து வைக்கவும்.', 'Grind sandalwood or mix the powder with water.'],
+    vibhuti: ['சிறு தட்டில் வைக்கவும்.', 'Keep on a small plate.'],
+    flowers: ['அன்று காலை வாங்கி, ஈரத் துணியில் சுற்றி வைக்கவும்; முகர்ந்த அல்லது கீழே விழுந்த பூ வேண்டாம்.', 'Buy that morning and wrap in a damp cloth; do not use smelled or fallen flowers.'],
+    lotus: ['தண்டுடன் நீர்க் கிண்ணத்தில் வைக்கவும்.', 'Keep with the stem in a bowl of water.'],
+    garland: ['புதிய மாலை; பூஜைக்கு முன் எடுத்து வைக்கவும்.', 'A fresh garland, kept ready before the pooja.'],
+    tulsi: ['கழுவி, தட்டில் வைக்கவும். (விநாயகருக்குத் துளசி வேண்டாம்.)', 'Wash and keep on a plate. (Not for Ganesha.)'],
+    durva: ['கழுவி, 21 புல்லாகக் கட்டி வைக்கவும்.', 'Wash and tie into bunches of 21 blades.'],
+    bilva: ['மூன்று இதழ் இலைகளைக் கழுவி வைக்கவும்.', 'Wash three-petal leaves and keep ready.'],
+    betel: ['2 வெற்றிலை, பாக்கு, வாழைப்பழத்துடன் தாம்பூலத் தட்டாக வைக்கவும்.', 'Arrange 2 betel leaves, areca nut and a banana on a plate.'],
+    fruits: ['நன்கு பழுத்த, கெடாத பழங்களைக் கழுவித் துடைக்கவும்.', 'Choose ripe, unspoiled fruit; wash and wipe dry.'],
+    banana: ['2 அல்லது 4 பழங்கள்; கழுவி வைக்கவும்.', '2 or 4 bananas; wash and keep.'],
+    coconut: ['குடுமியுடன் நல்ல தேங்காய்; கழுவி மஞ்சள் தடவவும்.', 'A good coconut with its tuft; wash and apply turmeric.'],
+    tender: ['அபிஷேகத்திற்குப் பாத்திரத்தில் எடுத்து வைக்கவும்.', 'Pour into a vessel for abhishekam.'],
+    kalasam: ['செம்பில் நீர் நிரப்பி, மாவிலை வைத்து, மேல் தேங்காய் வைக்கவும்; மஞ்சள் குங்குமம் இடவும்.', 'Fill a pot with water, set mango leaves and a coconut on top; mark with turmeric and kumkum.'],
+    mango: ['5 அல்லது 7 இலைகள், காம்புடன்.', '5 or 7 leaves with stalks.'],
+    rice: ['தட்டில் பரப்பி வைக்கவும்.', 'Spread on a plate.'],
+    camphor: ['ஆரத்தித் தட்டில் வைக்கவும்.', 'Keep on the aarti plate.'],
+    incense: ['ஸ்டாண்டுடன் எடுத்து வைக்கவும்.', 'Keep with a stand.'],
+    matches: ['கை எட்டும் இடத்தில் வைக்கவும்.', 'Keep within reach.'],
+    milk: ['அபிஷேகத்திற்குச் சுத்தமான பால்.', 'Clean milk for abhishekam.'],
+    curd: ['புளிக்காத புதிய தயிர்.', 'Fresh, non-sour curd.'],
+    honey: ['சிறு கிண்ணத்தில் வைக்கவும்.', 'Keep in a small bowl.'],
+    sweets: ['வீட்டிலேயே செய்தது சிறப்பு; இல்லையெனில் வாங்கிய இனிப்பு.', 'Home-made is best; otherwise bought sweets are fine.'],
+    modak: ['அரிசி மாவில் தேங்காய்-வெல்லப் பூரணம் வைத்து ஆவியில் வேகவைக்கவும்.', 'Fill rice dough with coconut-jaggery and steam.'],
+    sundal: ['முதல் நாள் இரவு கடலையை ஊறவைத்து, வேகவைத்துத் தாளிக்கவும்.', 'Soak the chickpeas overnight, boil and temper.'],
+    sweetpongal: ['பச்சரிசி, பாசிப்பருப்பு, வெல்லம், நெய் சேர்த்துச் செய்யவும்.', 'Cook rice, moong dal, jaggery and ghee.'],
+    pongalpot: ['புதுப் பானைக்கு மஞ்சள் கொத்து கட்டிக் கோலமிடவும்.', 'Tie a turmeric plant on the new pot and draw a kolam.'],
+    jaggery: ['தண்ணீரில் கரைத்து வடிகட்டவும்.', 'Dissolve in water and strain.'],
+    dal: ['லேசாக வறுத்து வேகவைக்கவும்.', 'Dry-roast lightly and boil.'],
+    cane: ['முழுக் கரும்பைச் சுத்தம் செய்து வைக்கவும்.', 'Clean the whole sugarcane.'],
+    turmericplant: ['பானையின் கழுத்தில் கட்டவும்.', 'Tie around the neck of the pot.'],
+    thread: ['மஞ்சள் தடவிய நூலில் பூ வைத்துத் தயாராக வைக்கவும்.', 'Turmeric-dyed thread with a flower, kept ready.'],
+    bangles: ['தாம்பூலத்துடன் தனியாக வைக்கவும்.', 'Keep aside with the thaamboolam.'],
+    blouse: ['புதிய துணி; தாம்பூலத்துடன் வைக்கவும்.', 'New cloth, kept with the thaamboolam.'],
+    cloth: ['புதுத் துணியில் மஞ்சள் தொட்டு வைக்கவும்.', 'Touch a new cloth with turmeric.'],
+    picture: ['படத்தைத் துடைத்து, சந்தனம் குங்குமம் இட்டு, பூ சாத்தவும்.', 'Wipe the picture, apply sandal and kumkum, and add a flower.'],
+    vinayagar: ['இயற்கைக் களிமண் சிலை; பலகையில் வாழை இலை வைத்து அமர்த்தவும்.', 'Natural clay idol; seat it on a banana leaf over a plank.'],
+    vel: ['வேல் அல்லது படத்தைத் துடைத்து வைக்கவும்.', 'Wipe the vel or picture clean.'],
+    sivalingam: ['லிங்கம் / படத்தைச் சுத்தம் செய்து, தட்டில் வைக்கவும்.', 'Clean the lingam or picture and set it on a plate.'],
+    bell: ['கழுவித் துடைத்து வைக்கவும்.', 'Wash and wipe dry.'],
+    kolam: ['பூஜை இடத்தில் அரிசி மாவுக் கோலம் இடவும்.', 'Draw a rice-flour kolam at the pooja place.'],
+    bananaleaf: ['நுனி இலையைக் கழுவித் துடைக்கவும்.', 'Wash and wipe the tip leaf.'],
+    books: ['சுத்தம் செய்து பலகையில் வைக்கவும்; அன்று படிக்க வேண்டாம்.', 'Clean and place on a plank; do not study that day.'],
+    neem: ['பச்சடிக்கு வேப்பம்பூவை ஆய்ந்து வைக்கவும்.', 'Pick and clean neem flowers for the pachadi.'],
+    rawmango: ['பச்சடிக்குச் சிறு துண்டுகளாக நறுக்கவும்.', 'Chop into small pieces for the pachadi.'],
+    panchamritham: ['வாழைப்பழம், வெல்லம், நெய், தேன், உலர் திராட்சை கலக்கவும்.', 'Mix banana, jaggery, ghee, honey and raisins.']
+  };
+
   // ---------- mantra library (Tamil script). me = [Tamil meaning, English meaning] ----------
   var MANTRA = {
     ganesha_dhyana: { t: ['விநாயகர் துதி', 'Ganesha prayer'], v: ['சுக்லாம்பரதரம் விஷ்ணும் சசிவர்ணம் சதுர்புஜம் |', 'ப்ரசன்னவதனம் த்யாயேத் ஸர்வவிக்னோபசாந்தயே ||'],
@@ -471,7 +528,7 @@
     return {
       time: d.time,
       when: WHEN[slug] || null,
-      samagri: d.sam.map(function (k) { var it = ITEM[k]; return { icon: it[0], ta: it[1], en: it[2] }; }),
+      samagri: d.sam.map(function (k) { var it = ITEM[k], pr = PREP[k]; return { key: k, icon: it[0], ta: it[1], en: it[2], prep: pr || null }; }),
       steps: steps,
       mantras: list.map(function (x) {
         var m = MANTRA[x[0]];

@@ -207,7 +207,10 @@
         '<span class="badge">' + esc((o.created_at || '').slice(0, 10)) + '</span></div>' +
       (o.delivery_address ? '<p>📍 <strong>' + bi('முகவரி', 'Address') + ':</strong> ' + esc(o.delivery_address) + '</p>' : '') +
       (o.needed_by ? '<p>📅 <strong>' + bi('தேவைப்படும் தேதி', 'Needed by') + ':</strong> ' + esc(o.needed_by) + '</p>' : '') +
-      (o.notes ? '<p>📝 ' + esc(o.notes) + '</p>' : '') +
+      (o.items && o.items.length ? '<ul class="ad-items">' + o.items.map(function (i) {
+        return '<li>' + bi(esc(i.ta), esc(i.en)) + ' — <strong>' + bi(esc(i.qty + ' ' + i.unit_ta), esc(i.qty + ' ' + i.unit_en)) + '</strong></li>';
+      }).join('') + '</ul>' : '') +
+      (o.notes ? '<p>📝 <strong>' + bi('வாடிக்கையாளர் கருத்து', 'Customer comments') + ':</strong> ' + esc(o.notes) + '</p>' : '') +
       contact + actions + '</article>';
   }
 
