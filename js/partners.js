@@ -25,6 +25,9 @@
     none: ['பொருந்தும் வாத்தியார் / சமையல்காரர் இல்லை.', 'No priests or cooks match these filters.'],
     waiting: ['வாத்தியார் / சமையல்காரர் ஏற்ற பின் தொலைபேசி எண் காட்டப்படும்.', 'The phone number appears after the partner accepts.'],
     call: ['நேரடியாக அழைத்துத் தட்சணையை முடிவு செய்யவும்.', 'Call to agree the dakshina directly.'],
+    time_bad: ['நிகழ்ச்சி நேரத்தைத் தேர்ந்தெடுக்கவும்.', 'Choose the event time.'],
+    address_bad: ['நிகழ்ச்சி நடக்கும் இடத்தின் முகவரியை முழுமையாக (குறைந்தது 10 எழுத்துகள்) உள்ளிடவும்.', 'Enter the full address of the venue (at least 10 characters).'],
+    notes_bad: ['குறிப்பு 300 எழுத்துகளுக்குள் இருக்க வேண்டும்.', 'Notes must be within 300 characters.'],
     no_bookings: ['இன்னும் முன்பதிவுகள் இல்லை.', 'No bookings yet.']
   };
 
@@ -102,10 +105,16 @@
         '<form id="booking-form" data-partner="' + esc(p.id) + '" novalidate>' +
           '<label class="field"><span class="ta">நிகழ்ச்சி தேதி</span><span class="en">Event date</span>' +
             '<input name="event_date" type="date" min="' + SUB.today() + '" required></label>' +
+          '<label class="field"><span class="ta">நிகழ்ச்சி நேரம்</span><span class="en">Event time</span>' +
+            '<input name="event_time" type="time" value="07:00" required></label>' +
           '<label class="field"><span class="ta">பூஜை / நிகழ்ச்சி</span><span class="en">Pooja / event</span>' +
             '<select name="pooja_slug" required><option value="">—</option>' + opts + '</select></label>' +
           '<label class="field"><span class="ta">PIN குறியீடு (6 இலக்கம்)</span><span class="en">PIN code (6 digits)</span>' +
             '<input name="pin" type="text" inputmode="numeric" maxlength="6" value="' + esc(p.pin_code) + '" required></label>' +
+          '<label class="field"><span class="ta">நிகழ்ச்சி நடக்கும் இடத்தின் முகவரி</span><span class="en">Venue address</span>' +
+            '<textarea name="venue" rows="3" maxlength="300" required></textarea></label>' +
+          '<label class="field"><span class="ta">குறிப்பு (விருப்பம்)</span><span class="en">Notes (optional)</span>' +
+            '<textarea name="notes" rows="2" maxlength="300"></textarea></label>' +
           (p.role === 'priest'
             ? '<label class="check-row"><input type="checkbox" name="cook_addon"> ' +
               bi('சமையல்காரரும் தேவை (கூடுதல்)', 'Also need a cook (add-on)') + '</label>'
@@ -122,13 +131,20 @@
     var date = String(d.get('event_date') || '');
     var pin = String(d.get('pin') || '').trim();
     var slug = String(d.get('pooja_slug') || '');
+    var time = String(d.get('event_time') || '');
+    var venue = String(d.get('venue') || '').trim();
+    var notes = String(d.get('notes') || '').trim();
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || date < SUB.today()) return setMsg(out, 'date_bad', true);
+    if (!/^[0-2]\d:[0-5]\d$/.test(time)) return setMsg(out, 'time_bad', true);
+    if (venue.length < 10) return setMsg(out, 'address_bad', true);
+    if (notes.length > 300) return setMsg(out, 'notes_bad', true);
     if (!/^\d{6}$/.test(pin)) return setMsg(out, 'pin_bad', true);
     if (!slug) return setMsg(out, 'pooja_bad', true);
 
     return DB.rpc('sa_create_booking', {
       p_token: DB.token(), p_partner: pid, p_pooja_slug: slug, p_event_date: date,
-      p_pin: pin, p_cook_addon: d.get('cook_addon') === 'on'
+      p_pin: pin, p_cook_addon: d.get('cook_addon') === 'on',
+      p_time: time, p_venue: venue, p_notes: notes
     }).then(function (r) {
       if (!r.ok) return setMsg(out, r.error, true);
       form.reset();
@@ -158,7 +174,8 @@
               '<span class="badge">' + bi(st[0], st[1]) + '</span>' +
               (b.cook_addon ? '<span class="badge">' + bi('சமையல்காரர் கூடுதல்', 'Cook add-on') + '</span>' : '') +
             '</div>' +
-            '<p>' + esc(b.event_date) + ' · ' + esc(b.pooja_en || '') + '</p>' +
+            '<p>' + esc(b.event_date) + (b.event_time ? ' · ' + esc(b.event_time) : '') + ' · ' + esc(b.pooja_en || '') + '</p>' +
+            (b.venue_address ? '<p class="soon">📍 ' + esc(b.venue_address) + '</p>' : '') +
             contact +
             '</article>';
         }).join('');

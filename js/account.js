@@ -22,6 +22,16 @@
     reset_invalid_code: ['குறியீடு தவறு அல்லது பொருந்தவில்லை.', 'The code is incorrect or does not match.'],
     reset_expired: ['குறியீட்டின் காலம் முடிந்தது. புதிய குறியீடு கோரவும்.', 'The code has expired. Request a new one.'],
     reset_too_many: ['அதிக முயற்சிகள். புதிய குறியீடு கோரவும்.', 'Too many attempts. Request a new code.'],
+    pin_weak: ['இந்த PIN எளிதில் ஊகிக்கக் கூடியது (எ.கா. 1234, 0000). வேறு PIN தேர்ந்தெடுக்கவும்.', 'That PIN is too easy to guess (like 1234 or 0000). Choose another.'],
+    consent_needed: ['தொடர, தனியுரிமை அறிவிப்பை ஏற்கும் பெட்டியில் டிக் செய்யவும்.', 'Please tick the box to accept the privacy notice.'],
+    busy: ['இப்போது பதிவு செய்ய முடியவில்லை. சிறிது நேரம் கழித்து முயற்சிக்கவும்.', 'Registration is busy right now. Please try again a little later.'],
+    admin_pin_6: ['நிர்வாகி PIN 6 இலக்கமாக இருக்க வேண்டும்.', 'An admin PIN must be 6 digits.'],
+    login_first: ['முதலில் உள்நுழையவும்.', 'Please log in first.'],
+    admin_cannot: ['நிர்வாகி கணக்கை இங்கே நீக்க முடியாது.', 'An admin account cannot be deleted here.'],
+    pin_changed: ['PIN மாற்றப்பட்டது.', 'PIN changed.'],
+    offers_on: ['ஆஃபர் செய்திகள் இயக்கப்பட்டன.', 'Offer messages turned on.'],
+    offers_off: ['ஆஃபர் செய்திகள் நிறுத்தப்பட்டன.', 'Offer messages turned off.'],
+    deleted: ['உங்கள் கணக்கு நீக்கப்பட்டது.', 'Your account has been deleted.'],
     storage: ['சேமிப்பு கிடைக்கவில்லை. உலாவி அமைப்புகளைச் சரிபார்க்கவும்.', 'Storage is unavailable. Check your browser settings.']
   };
 
@@ -55,7 +65,12 @@
     return A.currentUser().then(function (u) {
       $('account-in').hidden = !u;
       $('account-out').hidden = !!u;
-      if (u) $('account-name').textContent = u.name;
+      if (u) {
+        $('account-name').textContent = u.name;
+        $('marketing-toggle').checked = !!u.marketing_ok;
+        $('marketing-row').hidden = u.role !== 'customer';
+        $('delete-box').hidden = u.role === 'admin';
+      }
       $('partner-link').hidden = !(u && (u.role === 'priest' || u.role === 'cook'));
       $('admin-link').hidden = !(u && u.role === 'admin');
     });
@@ -91,7 +106,8 @@
     var f = this, out = f.querySelector('.form-msg'), d = new FormData(f);
     A.register({
       name: d.get('name'), mobile: d.get('mobile'), email: d.get('email'),
-      role: d.get('role'), pin: d.get('pin'), pin2: d.get('pin2')
+      role: d.get('role'), pin: d.get('pin'), pin2: d.get('pin2'),
+      consent: d.get('consent') === 'on', marketing: d.get('marketing') === 'on', hp: d.get('website')
     }).then(function (r) {
       if (!r.ok) return show(out, r.error, true);
       f.reset();
@@ -122,6 +138,39 @@
       setView('login');
       show($('login-form').querySelector('.form-msg'), 'ok_reset', false);
     }).catch(function (err) { fail(out, err); });
+  });
+
+  // ----- logged-in tools: change PIN, offer messages, delete account -----
+  $('change-pin-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = this, out = f.querySelector('.form-msg'), d = new FormData(f);
+    A.changePin(d.get('old'), d.get('pin'), d.get('pin2')).then(function (r) {
+      if (!r.ok) return show(out, r.error, true);
+      f.reset();
+      show(out, 'pin_changed', false);
+    }).catch(function () { fail(out); });
+  });
+
+  $('marketing-toggle').addEventListener('change', function () {
+    var box = this, out = $('marketing-msg');
+    A.setMarketing(box.checked).then(function (r) {
+      if (!r.ok) { box.checked = !box.checked; return show(out, r.error, true); }
+      show(out, box.checked ? 'offers_on' : 'offers_off', false);
+    }).catch(function () { box.checked = !box.checked; fail(out); });
+  });
+
+  $('delete-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = this, out = f.querySelector('.form-msg'), d = new FormData(f);
+    var sure = document.documentElement.getAttribute('data-lang') === 'en'
+      ? 'Delete your account permanently? This cannot be undone.'
+      : 'உங்கள் கணக்கை நிரந்தரமாக நீக்கவா? இதைத் திரும்பப் பெற முடியாது.';
+    if (!window.confirm(sure)) return;
+    A.deleteAccount(d.get('pin')).then(function (r) {
+      if (!r.ok) return show(out, r.error, true);
+      f.reset();
+      return refresh().then(function () { show($('login-form').querySelector('.form-msg'), 'deleted', false); });
+    }).catch(function () { fail(out); });
   });
 
   $('logout-btn').addEventListener('click', function () {

@@ -17,8 +17,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/admin.css?v=3">
 </head>
 <body>
 
@@ -370,6 +370,39 @@
           <p id="partner-link" hidden><a class="btn btn-outline" href="#partner"><span class="ta">கூட்டாளர் போர்ட்டல்</span><span class="en">Partner Portal</span></a></p>
           <p id="admin-link" hidden><a class="btn btn-outline" href="#admin"><span class="ta">நிர்வாகப் பக்கம்</span><span class="en">Admin Dashboard</span></a></p>
           <button type="button" class="btn btn-outline" id="logout-btn"><span class="ta">வெளியேறு</span><span class="en">Log out</span></button>
+
+          <div class="acct-tools">
+            <details class="acct-box">
+              <summary><span class="ta">PIN-ஐ மாற்று</span><span class="en">Change my PIN</span></summary>
+              <form id="change-pin-form" novalidate>
+                <label class="field"><span class="ta">இப்போதைய PIN</span><span class="en">Current PIN</span>
+                  <input name="old" type="password" inputmode="numeric" autocomplete="current-password" maxlength="6" required></label>
+                <label class="field"><span class="ta">புதிய PIN (4 அல்லது 6 இலக்கம்; நிர்வாகிக்கு 6)</span><span class="en">New PIN (4 or 6 digits; admins need 6)</span>
+                  <input name="pin" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
+                <label class="field"><span class="ta">புதிய PIN-ஐ மீண்டும் உள்ளிடவும்</span><span class="en">Confirm new PIN</span>
+                  <input name="pin2" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
+                <button type="submit" class="btn"><span class="ta">PIN-ஐ மாற்று</span><span class="en">Change PIN</span></button>
+                <p class="form-msg" role="status" aria-live="polite"></p>
+              </form>
+            </details>
+
+            <div id="marketing-row" class="acct-box" hidden>
+              <label class="check-row"><input type="checkbox" id="marketing-toggle">
+                <span><span class="ta">சிறப்பு பூஜை தொகுப்புகள் / ஆஃபர்கள் பற்றி WhatsApp-இல் தகவல் பெற விரும்புகிறேன்.</span><span class="en">Send me offers and pooja packages on WhatsApp.</span></span></label>
+              <p class="form-msg" id="marketing-msg" role="status" aria-live="polite"></p>
+            </div>
+
+            <details class="acct-box" id="delete-box">
+              <summary><span class="ta">என் கணக்கை நீக்கு</span><span class="en">Delete my account</span></summary>
+              <p class="soon"><span class="ta">உங்கள் பெயர், எண், மின்னஞ்சல் நீக்கப்படும். இதைத் திரும்பப் பெற முடியாது.</span><span class="en">Your name, number and email are erased. This cannot be undone.</span></p>
+              <form id="delete-form" novalidate>
+                <label class="field"><span class="ta">உறுதிப்படுத்த உங்கள் PIN</span><span class="en">Your PIN to confirm</span>
+                  <input name="pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="6" required></label>
+                <button type="submit" class="btn btn-outline"><span class="ta">நிரந்தரமாக நீக்கு</span><span class="en">Delete permanently</span></button>
+                <p class="form-msg" role="status" aria-live="polite"></p>
+              </form>
+            </details>
+          </div>
         </div>
 
         <div id="account-out">
@@ -405,6 +438,11 @@
               <input name="pin" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
             <label class="field"><span class="ta">PIN-ஐ மீண்டும் உள்ளிடவும்</span><span class="en">Confirm PIN</span>
               <input name="pin2" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
+            <label class="check-row"><input type="checkbox" name="consent" required>
+              <span><span class="ta">என் விவரங்களைப் பயன்படுத்த <a href="#privacy">தனியுரிமை அறிவிப்பை</a> ஏற்கிறேன்.</span><span class="en">I accept the <a href="#privacy">Privacy Notice</a> for using my details.</span></span></label>
+            <label class="check-row"><input type="checkbox" name="marketing">
+              <span><span class="ta">(விருப்பம்) சிறப்பு பூஜை தொகுப்புகள் / ஆஃபர்கள் பற்றி WhatsApp-இல் தகவல் பெற விரும்புகிறேன் (வாடிக்கையாளர்களுக்கு மட்டும்).</span><span class="en">(Optional) Send me offers and pooja packages on WhatsApp (customers only).</span></span></label>
+            <div class="hp-field" aria-hidden="true"><label>Website <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
             <button type="submit" class="btn"><span class="ta">பதிவு செய்</span><span class="en">Register</span></button>
             <p class="form-msg" role="status" aria-live="polite"></p>
           </form>
@@ -436,6 +474,40 @@
       </div>
     </section>
 
+    <!-- PRIVACY NOTICE -->
+    <section class="page" data-page="privacy" hidden>
+      <div class="card">
+        <h1><span class="ta">தனியுரிமை அறிவிப்பு</span><span class="en">Privacy Notice</span></h1>
+
+        <h2><span class="ta">நாங்கள் சேகரிக்கும் விவரங்கள்</span><span class="en">What we collect</span></h2>
+        <ul>
+          <li><span class="ta">பெயர், மொபைல் எண், மின்னஞ்சல்; PIN (குறியாக்கம் செய்யப்பட்டு மட்டுமே சேமிக்கப்படும் - எங்களால் பார்க்க முடியாது).</span><span class="en">Name, mobile number, email; your PIN (stored only in scrambled form, we cannot read it).</span></li>
+          <li><span class="ta">ஆர்டர் / முன்பதிவு செய்யும்போது முகவரி, தேதி, நேரம், குறிப்புகள்.</span><span class="en">When you order or book: address, date, time and notes.</span></li>
+        </ul>
+
+        <h2><span class="ta">ஏன் பயன்படுத்துகிறோம்</span><span class="en">Why we use it</span></h2>
+        <ul>
+          <li><span class="ta">உங்களை வாத்தியார், சமையல்காரர், பூஜை சாமான் கடைகளுடன் இணைக்க.</span><span class="en">To connect you with priests, cooks and pooja stores.</span></li>
+          <li><span class="ta">PIN மறந்தால் மின்னஞ்சல் மூலம் மீட்க.</span><span class="en">To reset your PIN by email if you forget it.</span></li>
+          <li><span class="ta">ஆர்டர் / முன்பதிவு நிலை பற்றி WhatsApp செய்திகள் அனுப்ப (4 வகை மட்டும்).</span><span class="en">To send WhatsApp updates about your order or booking (4 kinds only).</span></li>
+        </ul>
+
+        <h2><span class="ta">யாருக்குத் தெரியும்</span><span class="en">Who can see it</span></h2>
+        <ul>
+          <li><span class="ta">வாத்தியார் / சமையல்காரர் ஏற்ற பின்தான் அவர் எண் உங்களுக்குக் காட்டப்படும்; கடை எண்ணும் ஆர்டர் உறுதியான பின்தான்.</span><span class="en">A priest or cook's number is shown to you only after they accept, and a store's number only after your order is confirmed.</span></li>
+          <li><span class="ta">உங்கள் விவரங்களை நாங்கள் விற்பதில்லை.</span><span class="en">We do not sell your details.</span></li>
+        </ul>
+
+        <h2><span class="ta">ஆஃபர் செய்திகள்</span><span class="en">Offer messages</span></h2>
+        <p><span class="ta">நீங்கள் விரும்பினால் மட்டுமே சிறப்புத் தொகுப்பு / ஆஃபர் செய்திகள் அனுப்பப்படும். உங்கள் கணக்குப் பக்கத்தில் எப்போது வேண்டுமானாலும் நிறுத்தலாம்.</span><span class="en">Offer and package messages are sent only if you choose to receive them. You can stop them any time on your account page.</span></p>
+
+        <h2><span class="ta">உங்கள் உரிமைகள்</span><span class="en">Your choices</span></h2>
+        <p><span class="ta">உள்நுழைந்து "என் கணக்கை நீக்கு" மூலம் உங்கள் பெயர், எண், மின்னஞ்சலை அழிக்கலாம்.</span><span class="en">Log in and use "Delete my account" to erase your name, number and email.</span></p>
+
+        <div data-setting="text_privacy"></div>
+      </div>
+    </section>
+
     <!-- ADMIN DASHBOARD (admin role only; rendered by js/admin.js) -->
     <section class="page" data-page="admin" hidden>
       <div class="card" id="admin-box"></div>
@@ -449,6 +521,7 @@
         <a href="#about"><span class="ta">எங்களைப் பற்றி</span><span class="en">About Us</span></a>
         <a href="#faq"><span class="ta">கேள்விகள்</span><span class="en">FAQ</span></a>
         <a href="#disclaimers"><span class="ta">பொறுப்புத் துறப்பு</span><span class="en">Disclaimers</span></a>
+        <a href="#privacy"><span class="ta">தனியுரிமை</span><span class="en">Privacy</span></a>
       </p>
       <div data-setting="text_footer"></div>
       <div class="footer-static">
@@ -466,19 +539,20 @@
     <a href="#login" data-nav="login"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span class="ta">கணக்கு</span><span class="en">Account</span></a>
   </nav>
 
-  <script src="js/config.js" defer></script>
-  <script src="js/db.js" defer></script>
-  <script src="js/settings.js" defer></script>
-  <script src="js/auth.js" defer></script>
-  <script src="js/account.js" defer></script>
-  <script src="js/poojas-data.js" defer></script>
-  <script src="js/pooja.js" defer></script>
-  <script src="js/partners-data.js" defer></script>
-  <script src="js/subscription.js" defer></script>
-  <script src="js/whatsapp.js" defer></script>
-  <script src="js/partners.js" defer></script>
-  <script src="js/partner-portal.js" defer></script>
-  <script src="js/admin.js" defer></script>
-  <script src="js/app.js" defer></script>
+  <script src="js/config.js?v=3" defer></script>
+  <script src="js/db.js?v=3" defer></script>
+  <script src="js/settings.js?v=3" defer></script>
+  <script src="js/auth.js?v=3" defer></script>
+  <script src="js/account.js?v=3" defer></script>
+  <script src="js/poojas-data.js?v=3" defer></script>
+  <script src="js/self-poojas.js?v=3" defer></script>
+  <script src="js/pooja.js?v=3" defer></script>
+  <script src="js/partners-data.js?v=3" defer></script>
+  <script src="js/subscription.js?v=3" defer></script>
+  <script src="js/whatsapp.js?v=3" defer></script>
+  <script src="js/partners.js?v=3" defer></script>
+  <script src="js/partner-portal.js?v=3" defer></script>
+  <script src="js/admin.js?v=3" defer></script>
+  <script src="js/app.js?v=3" defer></script>
 </body>
 </html>

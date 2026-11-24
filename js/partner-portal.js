@@ -94,6 +94,19 @@
       '</div>';
   }
 
+  // Payment details live only in the Partner Portal (subscription privacy rule).
+  function payCard(r) {
+    var st = r.state && r.state.status;
+    if (st !== 'due' && st !== 'hidden') return '';
+    var pay = r.pay || {};
+    var day = SASettings.int('sub_grace_day');
+    return '<div class="pay-box"><strong>' + bi('கட்டணம் செலுத்தும் முறை', 'How to pay your fee') + '</strong>' +
+      '<p>' + bi('மாதம் ' + day + '-ஆம் தேதிக்குள் செலுத்தவும்; இல்லையெனில் சுயவிவரம் தேடலில் மறைக்கப்படும்.', 'Please pay by day ' + day + ' of the month, or your profile is hidden from search.') + '</p>' +
+      (pay.upi_id ? '<p>UPI ID: <strong>' + esc(pay.upi_id) + '</strong>' + (pay.upi_name ? ' (' + esc(pay.upi_name) + ')' : '') + '</p>'
+        : '<p>' + bi('UPI விவரங்களை நிர்வாகத்திடம் கேட்கவும்.', 'Ask the admin for the UPI details.') + '</p>') +
+      '<p class="soon">' + bi('செலுத்திய பின் நிர்வாகம் பதிவு செய்தவுடன் மீண்டும் காட்டப்படும்.', 'Once you pay, the admin records it and your profile returns.') + '</p></div>';
+  }
+
   function bookingRow(b) {
     var st = PD.STATUS[b.status];
     var actions = '';
@@ -108,7 +121,10 @@
       '<strong>' + esc(b.customer_name) + '</strong>' +
       '<div class="badges"><span class="badge">' + bi(st[0], st[1]) + '</span>' +
         (b.cook_addon ? '<span class="badge">' + bi('சமையல்காரர் கூடுதல்', 'Cook add-on') + '</span>' : '') + '</div>' +
-      '<p>' + esc(b.event_date) + ' · ' + esc(b.pooja_en || '') + ' · PIN ' + esc(b.pin_code) + '</p>' +
+      '<p>' + esc(b.event_date) + (b.event_time ? ' · ' + esc(b.event_time) : '') + ' · ' + esc(b.pooja_en || '') + ' · PIN ' + esc(b.pin_code) + '</p>' +
+      (b.venue_address ? '<p>📍 <strong>' + bi('இடம்', 'Venue') + ':</strong> ' + esc(b.venue_address) + '</p>'
+        : (b.status === 'requested' ? '<p class="soon">' + bi('இடத்தின் முகவரி ஏற்ற பின் காட்டப்படும்.', 'The venue address shows after you accept.') + '</p>' : '')) +
+      (b.notes ? '<p>📝 ' + esc(b.notes) + '</p>' : '') +
       (actions ? '<div class="action-row">' + actions + '</div>' : '') +
       '</article>';
   }
@@ -143,7 +159,7 @@
         ctx = { role: p.role, profile: p, state: r.state, subscription: r.subscription };
         box.innerHTML = '<h1>' + bi(esc(p.name_ta || p.name_en), esc(p.name_en || p.name_ta)) + '</h1>' +
           '<h2>' + bi('சுயவிவரம்', 'Profile') + '</h2>' + profileForm(p.role, p) +
-          (SASettings.bool('subscriptions_enabled') ? subscriptionCard(p.role, r.state, r.subscription) : '') +
+          (SASettings.bool('subscriptions_enabled') ? subscriptionCard(p.role, r.state, r.subscription) + payCard(r) : '') +
           '<h2>' + bi('முன்பதிவு கோரிக்கைகள்', 'Booking requests') + '</h2>' +
           '<p class="soon">' + bi(MSG.accept_note[0], MSG.accept_note[1]) + '</p>' +
           (r.bookings.length ? '<div class="pooja-grid">' + r.bookings.map(bookingRow).join('') + '</div>'

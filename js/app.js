@@ -3,7 +3,7 @@
   'use strict';
 
   var LANG_KEY = 'subham-asthu-lang';
-  var PAGES = ['home', 'poojas', 'pooja', 'bookings', 'partner', 'about', 'faq', 'disclaimers', 'login', 'admin'];
+  var PAGES = ['home', 'poojas', 'pooja', 'bookings', 'partner', 'about', 'faq', 'disclaimers', 'privacy', 'login', 'admin'];
   var root = document.documentElement;
 
   function readStored(key) {
@@ -50,6 +50,13 @@
   });
 
   window.addEventListener('hashchange', showPage);
+
+  // Installable app: a small service worker caches the pages so the app opens fast, even on a weak network.
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () { /* optional */ });
+    });
+  }
 
   setLang(readStored(LANG_KEY) || 'ta');
   showPage();

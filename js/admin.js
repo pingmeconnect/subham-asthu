@@ -24,11 +24,19 @@
     paid: ['கட்டணம் பதிவு செய்யப்பட்டது.', 'Fee recorded as paid.'],
     test_sent: ['சோதனைச் செய்திகள் வரிசையில் சேர்க்கப்பட்டன.', 'Test messages added to the queue.'],
     not_admin: ['நிர்வாகப் பக்கத்தைப் பார்க்க நிர்வாகி கணக்கில் உள்நுழையவும்.', 'Log in with an admin account to open this page.'],
+    offer_saved: ['செய்தி சேமிக்கப்பட்டது.', 'Message saved.'],
+    offer_need: ['முதலில் தலைப்பு மற்றும் செய்தியை எழுதவும்.', 'Write a title and a message first.'],
+    offer_deleted: ['செய்தி நீக்கப்பட்டது.', 'Message deleted.'],
+    copied: ['நகலெடுக்கப்பட்டது.', 'Copied.'],
+    fees_queued: ['கட்டண நினைவூட்டல் மின்னஞ்சல்கள் அனுப்பப்படுகின்றன.', 'Fee reminder emails are being sent.'],
+    upi_saved: ['UPI விவரங்கள் சேமிக்கப்பட்டன.', 'UPI details saved.'],
     fail: ['சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.', 'Could not save. Please try again.']
   };
 
   var last = null;                 // last loaded dashboard data
   var pinFilter = { order: '', booking: '' };
+  var offer = { id: null, title: '', ta: '', en: '', image: '', lang: 'ta', off: {}, sent: {}, q: '' };
+  var custQ = '', adminUser = null;
   var tab = 'home'; // home | orders | bookings | people | stores | poojas | messages | settings
   var orderFilter = 'waiting_for_confirmation';
   var bookingFilter = 'soon';
@@ -37,12 +45,14 @@
   // [key, icon, Tamil, English]
   var SECTIONS = [
     ['home', '🏠', 'முகப்பு', 'Home'],
-    ['orders', '📦', 'ஆர்டர்கள்', 'Orders'],
-    ['bookings', '📅', 'முன்பதிவுகள்', 'Bookings'],
-    ['people', '🙏', 'வாத்தியார் & சமையல்', 'Priests & Cooks'],
-    ['stores', '🏪', 'கடைகள்', 'Stores'],
-    ['poojas', '🪔', 'பூஜைகள்', 'Poojas'],
-    ['messages', '💬', 'WhatsApp செய்திகள்', 'WhatsApp messages'],
+    ['orders', '📦', 'பூஜை சாமான் ஆர்டர்கள்', 'Samagri orders'],
+    ['bookings', '📅', 'வாத்தியார் / சமையல் முன்பதிவுகள்', 'Priest & cook bookings'],
+    ['people', '🙏', 'வாத்தியார்கள் & சமையல்காரர்கள்', 'Priests & Cooks'],
+    ['stores', '🏪', 'சாமான் கடைகள்', 'Pooja stores'],
+    ['poojas', '🪔', 'பூஜை பட்டியல்', 'Pooja list'],
+    ['customers', '👥', 'வாடிக்கையாளர்கள்', 'Customers'],
+    ['offers', '🎁', 'ஆஃபர் / தொகுப்பு செய்தி அனுப்பு', 'Send offer / combo message'],
+    ['messages', '💬', 'தானியங்கி செய்திகள் (4 வகை)', 'Automatic messages (4 kinds)'],
     ['settings', '⚙', 'அமைப்புகள்', 'Settings']
   ];
 
@@ -132,7 +142,8 @@
         tile(d.counts.customers, 'வாடிக்கையாளர்கள்', 'Customers') +
         tile(d.counts.priests, 'வாத்தியார்கள்', 'Priests') +
         tile(d.counts.cooks, 'சமையல்காரர்கள்', 'Cooks') +
-        tile(d.counts.stores, 'கடைகள்', 'Blind Tie-up Stores') +
+        tile(d.counts.stores, 'கடைகள்', 'Pooja stores') +
+        tile(d.counts.optin || 0, 'ஆஃபர் பெற விரும்புவோர்', 'Want offers') +
       '</div>';
   }
 
@@ -191,6 +202,9 @@
         '<span class="badge' + (o.status === 'waiting_for_confirmation' ? ' ad-wait' : '') + '">' + bi(st[0], st[1]) + '</span></div>' +
       '<div class="badges"><span class="badge">PIN ' + esc(o.pin_code || '—') + '</span>' +
         '<span class="badge">' + esc((o.created_at || '').slice(0, 10)) + '</span></div>' +
+      (o.delivery_address ? '<p>📍 <strong>' + bi('முகவரி', 'Address') + ':</strong> ' + esc(o.delivery_address) + '</p>' : '') +
+      (o.needed_by ? '<p>📅 <strong>' + bi('தேவைப்படும் தேதி', 'Needed by') + ':</strong> ' + esc(o.needed_by) + '</p>' : '') +
+      (o.notes ? '<p>📝 ' + esc(o.notes) + '</p>' : '') +
       contact + actions + '</article>';
   }
 
@@ -238,7 +252,9 @@
             '<div class="badges"><span class="badge">' + bi(PD.ROLE[b.service_type][0], PD.ROLE[b.service_type][1]) + '</span>' +
               '<span class="badge">PIN ' + esc(b.pin_code || '—') + '</span>' +
               '<span class="badge">' + esc(b.event_date) + '</span></div>' +
-            '<p>' + nameBi({ name_ta: b.pooja_ta, name_en: b.pooja_en }) + '</p></article>';
+            '<p>' + nameBi({ name_ta: b.pooja_ta, name_en: b.pooja_en }) + (b.event_time ? ' · 🕐 ' + esc(b.event_time) : '') + '</p>' +
+            (b.venue_address ? '<p>📍 ' + esc(b.venue_address) + '</p>' : '') +
+            (b.notes ? '<p>📝 ' + esc(b.notes) + '</p>' : '') + '</article>';
         }).join('')
       : '<p class="ad-empty">' + bi('இந்தப் பட்டியலில் முன்பதிவுகள் இல்லை.', 'No bookings in this list.') + '</p>';
   }
@@ -253,6 +269,8 @@
         ['all', 'எல்லோரும்', 'All', all.length]
       ]) +
       '<p class="soon">' + bi('புதிய கூட்டாளர்கள் அங்கீகரிக்கப்படும் வரை தேடலில் காட்டப்பட மாட்டார்கள்.', 'New partners stay out of search until approved.') + '</p>' +
+      '<div class="action-row"><button type="button" class="btn btn-outline" data-act="fee-reminders">✉ ' +
+        bi('கட்டணம் நிலுவை உள்ளவர்களுக்கு மின்னஞ்சல் அனுப்பு', 'Email everyone whose fee is due') + '</button></div>' +
       '<div id="people-list"></div>';
   }
 
@@ -328,8 +346,16 @@
         '<span class="en">' + esc(WA.preview(k, 'en')) + '</span></pre></article>';
     }).join('');
     var log = d.wa.map(function (m) {
-      return '<tr><td>' + esc((m.created_at || '').slice(0, 16).replace('T', ' ')) + '</td>' +
-        '<td>' + esc(m.template) + '</td><td>' + esc(m.to_addr) + '</td><td>' + esc(m.status) + '</td></tr>';
+      var sent = m.status === 'sent';
+      var send = function (lang, label) {
+        return '<a class="btn' + (lang === 'ta' ? '' : ' btn-outline') + ' ad-small" target="_blank" rel="noopener" data-act="wa-open" data-id="' + esc(m.id) + '" href="' +
+          esc(waLink(m.to_addr, lang === 'ta' ? m.text_ta : m.text_en)) + '">' + label + '</a>';
+      };
+      return '<article class="ad-card"><div class="ad-card-top"><strong>' + esc(m.template) + '</strong>' +
+        '<span class="badge' + (sent ? '' : ' ad-wait') + '">' + (sent ? bi('அனுப்பப்பட்டது', 'Sent') : bi('அனுப்ப வேண்டும்', 'To send')) + '</span></div>' +
+        '<p>+91 ' + esc(m.to_addr) + ' · ' + esc((m.created_at || '').slice(0, 16).replace('T', ' ')) + '</p>' +
+        '<pre class="wa-text">' + esc(m.text_ta || m.text_en || '') + '</pre>' +
+        '<div class="ad-btns">' + send('ta', 'WhatsApp - தமிழ்') + send('en', 'WhatsApp - English') + '</div></article>';
     }).join('');
     return '<h1>' + bi('WhatsApp செய்திகள்', 'WhatsApp messages') + '</h1>' +
       '<p>' + bi('ஒவ்வொரு செய்தியும் "சுபம் அஸ்து:" என்ற முன்னொட்டுடன் தொடங்கும். நான்கு தூண்டுதல்கள் மட்டுமே உள்ளன.', 'Every message starts with "சுபம் அஸ்து:". There are exactly four triggers.') + '</p>' +
@@ -338,11 +364,158 @@
         '<button type="button" class="btn btn-outline" data-act="test-messages">' + bi('சோதனைச் செய்திகளை அனுப்பு (எனக்கு)', 'Queue test messages (to me)') + '</button>' +
         '<button type="button" class="btn btn-outline" data-act="run-reminders">' + bi('நாளைய நினைவூட்டல்கள்', "Queue tomorrow's reminders") + '</button>' +
       '</div>' +
-      '<h3>' + bi('சமீபத்திய வரிசை', 'Recent queue') + '</h3>' +
-      (log ? '<div class="table-scroll"><table class="admin-table"><thead><tr><th>' + bi('நேரம்', 'Time') + '</th><th>' + bi('வகை', 'Trigger') + '</th><th>' + bi('பெறுநர்', 'To') + '</th><th>' + bi('நிலை', 'Status') + '</th></tr></thead><tbody>' + log + '</tbody></table></div>'
-        : '<p>' + bi('இன்னும் செய்திகள் இல்லை.', 'No messages queued yet.') + '</p>');
+      '<h3>' + bi('அனுப்ப வேண்டிய செய்திகள்', 'Messages to send') + '</h3>' +
+      '<p class="soon">' + bi('கீழே உள்ள பச்சை பொத்தானை அழுத்தினால் WhatsApp திறக்கும்; செய்தி தயாராக எழுதப்பட்டிருக்கும். "Send" மட்டும் அழுத்தவும்.', 'Tap a button below: WhatsApp opens with the message already written. Just press Send.') + '</p>' +
+      (log || '<p>' + bi('இன்னும் செய்திகள் இல்லை.', 'No messages yet.') + '</p>');
   }
 
+
+
+  // ---------- WhatsApp link helper (free: opens the admin's own WhatsApp with the text ready) ----------
+  function waLink(mobile, text) {
+    var n = String(mobile || '').replace(/\D/g, '');
+    if (n.length === 10) n = '91' + n;
+    return 'https://wa.me/' + n + '?text=' + encodeURIComponent(text || '');
+  }
+
+  // ---------- Customers ----------
+  function customersSection(d) {
+    var optin = d.customers.filter(function (c) { return c.marketing_ok; }).length;
+    return '<h1>' + bi('வாடிக்கையாளர்கள்', 'Customers') + '</h1>' +
+      '<p class="soon">' + bi('"ஆஃபர்" பெட்டி டிக் செய்யப்பட்டவர்களுக்கு மட்டுமே ஆஃபர் செய்திகள் அனுப்பப்படும். யாராவது "STOP" என்றால் இங்கே நிறுத்தவும்.', 'Offer messages go only to customers with the offers box ticked. If someone replies STOP, switch them off here.') + '</p>' +
+      '<div class="stat-grid"><div class="stat"><strong>' + d.customers.length + '</strong><span>' + bi('மொத்தம்', 'Total') + '</span></div>' +
+      '<div class="stat"><strong>' + optin + '</strong><span>' + bi('ஆஃபர் பெறுவோர்', 'Want offers') + '</span></div></div>' +
+      '<label class="field"><span class="ta">பெயர் / எண் தேடு</span><span class="en">Search name or number</span><input id="cust-q" type="text" value="' + esc(custQ) + '"></label>' +
+      '<div id="cust-list"></div>';
+  }
+
+  function renderCustomers(d) {
+    var q = custQ.toLowerCase();
+    var rows = d.customers.filter(function (c) {
+      return !q || (c.name || '').toLowerCase().indexOf(q) >= 0 || String(c.mobile || '').indexOf(q) >= 0;
+    }).slice(0, 200);
+    $('cust-list').innerHTML = rows.length ? rows.map(function (c) {
+      return '<article class="ad-card ad-row"><div><strong>' + esc(c.name) + '</strong><br>' + phoneLine(c.mobile) + '</div>' +
+        '<label class="check-row"><input type="checkbox" data-act="cust-optin" data-id="' + esc(c.id) + '"' + (c.marketing_ok ? ' checked' : '') + '> ' +
+        bi('ஆஃபர் அனுப்பலாம்', 'Send offers') + '</label></article>';
+    }).join('') : '<p class="ad-empty">' + bi('வாடிக்கையாளர்கள் இல்லை.', 'No customers found.') + '</p>';
+  }
+
+  // ---------- Offers / combo messages ----------
+  function footerText(lang) {
+    var r = SASettings.rows().filter(function (x) { return x.key === 'offer_footer'; })[0];
+    var v = r && r.value;
+    return (v && typeof v === 'object' ? v[lang] : v) || '';
+  }
+
+  function offerMessage() {
+    var body = (offer.lang === 'ta' ? offer.ta : offer.en) || offer.ta || offer.en || '';
+    var foot = footerText(offer.lang);
+    return 'சுபம் அஸ்து:\n' + body.trim() +
+      (offer.image ? '\n\n' + offer.image.trim() : '') + (foot ? '\n\n' + foot : '');
+  }
+
+  function offersSection(d) {
+    var saved = d.campaigns.map(function (c) {
+      return '<article class="ad-card ad-row"><div><strong>' + esc(c.title) + '</strong></div><div class="ad-btns">' +
+        '<button type="button" class="btn btn-outline ad-small" data-act="offer-load" data-id="' + esc(c.id) + '">' + bi('திற', 'Open') + '</button>' +
+        '<button type="button" class="btn btn-outline ad-small" data-act="offer-del" data-id="' + esc(c.id) + '">' + bi('நீக்கு', 'Delete') + '</button></div></article>';
+    }).join('');
+    return '<h1>' + bi('ஆஃபர் / தொகுப்பு செய்தி', 'Offer / combo message') + '</h1>' +
+      '<ol class="ad-steps"><li>' + bi('செய்தியை எழுதவும் (தமிழ் / English).', 'Write the message (Tamil / English).') + '</li>' +
+      '<li>' + bi('விருப்பமானால் படத்தின் இணைப்பைச் சேர்க்கவும்.', 'Optionally add a picture link.') + '</li>' +
+      '<li>' + bi('வேண்டாதவர்களை டிக் நீக்கவும்.', 'Untick anyone you do not want to send to.') + '</li>' +
+      '<li>' + bi('ஒவ்வொருவர் பெயருக்கும் அருகில் "அனுப்பு" அழுத்தவும்.', 'Press "Send" next to each name.') + '</li></ol>' +
+      '<div class="ad-card"><label class="field"><span class="ta">தலைப்பு (உங்களுக்கு மட்டும்)</span><span class="en">Title (only you see this)</span>' +
+        '<input id="off-title" type="text" maxlength="80" value="' + esc(offer.title) + '"></label>' +
+      '<label class="field"><span class="ta">தமிழ் செய்தி</span><span class="en">Tamil message</span><textarea id="off-ta" rows="5" maxlength="1500">' + esc(offer.ta) + '</textarea></label>' +
+      '<label class="field"><span class="ta">English செய்தி</span><span class="en">English message</span><textarea id="off-en" rows="5" maxlength="1500">' + esc(offer.en) + '</textarea></label>' +
+      '<label class="field"><span class="ta">படத்தின் இணைப்பு (https://...) - விருப்பம்</span><span class="en">Picture link (https://...) - optional</span><input id="off-image" type="url" value="' + esc(offer.image) + '"></label>' +
+      '<p class="soon">' + bi('குறிப்பு: WhatsApp இணைப்பில் படத்தை நேரடியாக இணைக்க முடியாது. படத்தின் இணைப்பு செய்தியில் சேரும்; அல்லது அனுப்பிய பின் படத்தை நீங்களே இணைக்கலாம்.', 'Note: WhatsApp links cannot attach a picture themselves. The picture link is added to the text, or you can attach the picture by hand before pressing Send.') + '</p>' +
+      '<div id="off-img-prev"></div>' +
+      '<div class="ad-btns"><button type="button" class="btn" data-act="offer-save">💾 ' + bi('சேமி', 'Save message') + '</button>' +
+      '<button type="button" class="btn btn-outline" data-act="offer-new">+ ' + bi('புதிய செய்தி', 'New message') + '</button>' +
+      '<button type="button" class="btn btn-outline" data-act="offer-copy">' + bi('நகலெடு', 'Copy text') + '</button></div></div>' +
+      (saved ? '<h3>' + bi('சேமித்த செய்திகள்', 'Saved messages') + '</h3>' + saved : '') +
+      '<h2>' + bi('யாருக்கு அனுப்புவது', 'Who to send to') + '</h2>' +
+      '<div class="ad-chips"><button type="button" class="ad-chip' + (offer.lang === 'ta' ? ' is-on' : '') + '" data-act="offer-lang" data-value="ta">தமிழில் அனுப்பு</button>' +
+      '<button type="button" class="ad-chip' + (offer.lang === 'en' ? ' is-on' : '') + '" data-act="offer-lang" data-value="en">Send in English</button></div>' +
+      '<pre class="wa-text" id="off-preview"></pre>' +
+      '<div id="off-recipients"></div>';
+  }
+
+  function offerRecipients(d) {
+    var list = d.customers.filter(function (c) { return c.marketing_ok; });
+    var on = list.filter(function (c) { return !offer.off[c.id]; });
+    var msg = offerMessage();
+    $('off-preview').textContent = msg;
+    var prev = $('off-img-prev');
+    prev.innerHTML = /^https:\/\//.test(offer.image) ? '<img class="ad-img-prev" alt="" src="' + esc(offer.image) + '">' : '';
+    if (!list.length) {
+      $('off-recipients').innerHTML = '<p class="ad-empty">' + bi('இன்னும் யாரும் ஆஃபர் பெற ஒப்புக்கொள்ளவில்லை.', 'No customer has agreed to offers yet.') + '</p>';
+      return;
+    }
+    $('off-recipients').innerHTML =
+      '<p><strong>' + on.length + '</strong> / ' + list.length + ' ' + bi('பேருக்கு அனுப்ப தேர்வு', 'selected to receive') + '</p>' +
+      '<div class="ad-btns"><button type="button" class="btn btn-outline ad-small" data-act="offer-all" data-value="1">' + bi('அனைவரையும் தேர்வு செய்', 'Tick all') + '</button>' +
+      '<button type="button" class="btn btn-outline ad-small" data-act="offer-all" data-value="0">' + bi('அனைவரையும் நீக்கு', 'Untick all') + '</button>' +
+      '<button type="button" class="btn btn-outline ad-small" data-act="offer-csv">⬇ ' + bi('தொடர்பு கோப்பு (WhatsApp Broadcast)', 'Contacts file (WhatsApp Broadcast)') + '</button></div>' +
+      list.map(function (c) {
+        var done = !!offer.sent[c.id];
+        return '<article class="ad-card ad-row"><label class="check-row"><input type="checkbox" data-act="offer-pick" data-id="' + esc(c.id) + '"' + (offer.off[c.id] ? '' : ' checked') + '> <span><strong>' +
+          esc(c.name) + '</strong><br>+91 ' + esc(c.mobile) + '</span></label>' +
+          (offer.off[c.id] ? '' : '<a class="btn ad-small' + (done ? ' btn-outline' : ' ad-ok') + '" target="_blank" rel="noopener" data-act="offer-send" data-id="' + esc(c.id) + '" href="' +
+            esc(waLink(c.mobile, msg)) + '">' + (done ? '✔ ' + bi('அனுப்பப்பட்டது', 'Sent') : bi('அனுப்பு', 'Send')) + '</a>') + '</article>';
+      }).join('');
+  }
+
+  function loadSent() {
+    if (!offer.id) { offer.sent = {}; return Promise.resolve(); }
+    return DB.rpc('sa_admin_offer_sent', { p_token: DB.token(), p_campaign: offer.id }).then(function (r) {
+      offer.sent = {};
+      (r.sent || []).forEach(function (u) { offer.sent[u] = true; });
+    });
+  }
+
+  function saveOffer() {
+    if (!offer.title.trim() || !(offer.ta.trim() || offer.en.trim())) return Promise.resolve(showNotice(NOTICE.offer_need[0], NOTICE.offer_need[1], true));
+    return DB.rpc('sa_admin_save_campaign', { p_token: DB.token(), p_id: offer.id, p_title: offer.title, p_ta: offer.ta, p_en: offer.en, p_image: offer.image })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.error);
+        offer.id = r.id || offer.id;
+        return render();
+      }).then(function () { showNotice(NOTICE.offer_saved[0], NOTICE.offer_saved[1], false); })
+      .catch(function () { showNotice(NOTICE.fail[0], NOTICE.fail[1], true); });
+  }
+
+  function csvDownload() {
+    var list = last.customers.filter(function (c) { return c.marketing_ok && !offer.off[c.id]; });
+    var out = [];
+    for (var i = 0; i < list.length; i += 256) {
+      var part = list.slice(i, i + 256);
+      var rows = ['Name,Phone'].concat(part.map(function (c) { return '"' + String(c.name).replace(/"/g, '""') + '",+91' + c.mobile; }));
+      out.push(rows.join('\n'));
+    }
+    out.forEach(function (txt, i) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob(['﻿' + txt], { type: 'text/csv' }));
+      a.download = 'subham-asthu-contacts-' + (i + 1) + '.csv';
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+  }
+
+  // ---------- Admin security + payment details (inside Settings) ----------
+  function securityCards(d) {
+    var weak = adminUser && adminUser.pin_len !== 6;
+    var u = d.upi || {};
+    return (weak ? '<p class="ad-lock is-warn">⚠ ' + bi('உங்கள் நிர்வாகி PIN 6 இலக்கமாக இல்லை. "வாடிக்கையாளர் கணக்கு" பக்கத்தில் PIN-ஐ மாற்றவும்.', 'Your admin PIN is not 6 digits. Change it from the Account page.') +
+        ' <a href="#login">' + bi('கணக்குப் பக்கம்', 'Account page') + '</a></p>' : '') +
+      '<form id="upi-form" class="ad-card" novalidate><h3>' + bi('கூட்டாளர் கட்டணம் - UPI விவரங்கள்', 'Partner fee - UPI details') + '</h3>' +
+      '<p class="soon">' + bi('இது கூட்டாளர் போர்ட்டலில் மட்டும் காட்டப்படும்.', 'Shown only inside the Partner Portal.') + '</p>' +
+      '<label class="field"><span>UPI ID</span><input name="upi_id" type="text" maxlength="60" value="' + esc(u.upi_id || '') + '"></label>' +
+      '<label class="field"><span class="ta">பெயர்</span><span class="en">Name</span><input name="upi_name" type="text" maxlength="60" value="' + esc(u.upi_name || '') + '"></label>' +
+      '<button type="submit" class="btn">' + bi('சேமி', 'Save') + '</button></form>';
+  }
 
   // ---------- Page shell: sidebar (laptop) / back button (phone) + one section at a time ----------
   function sectionBody(d) {
@@ -352,7 +525,9 @@
     if (tab === 'stores') return vendorsSection(d);
     if (tab === 'poojas') return poojasSection(d);
     if (tab === 'messages') return waSection(d);
-    if (tab === 'settings') return settingsSection();
+    if (tab === 'customers') return customersSection(d);
+    if (tab === 'offers') return offersSection(d);
+    if (tab === 'settings') return securityCards(d) + settingsSection();
     return homeSection(d);
   }
 
@@ -372,6 +547,7 @@
           '<p><a class="btn btn-outline" href="#login">' + bi('உள்நுழை', 'Log in') + '</a></p>';
         return;
       }
+      adminUser = u;
       return loadAll().then(function (d) {
         if (!d.ok) {
           box.innerHTML = '<p>' + bi(NOTICE.not_admin[0], NOTICE.not_admin[1]) + '</p>';
@@ -385,6 +561,8 @@
         if (tab === 'orders') renderOrders(d);
         if (tab === 'bookings') renderBookings(d);
         if (tab === 'people') renderPeople(d);
+        if (tab === 'customers') renderCustomers(d);
+        if (tab === 'offers') return loadSent().then(function () { offerRecipients(d); });
       });
     });
   }
@@ -432,7 +610,9 @@
     subscription: ['சந்தா விதிகள்', 'Subscription rules'],
     security: ['முன்பதிவு & பாதுகாப்பு', 'Booking & security rules'],
     content: ['உள்ளடக்கம் & உரைகள்', 'Content & texts'],
-    whatsapp: ['WhatsApp எச்சரிக்கைகள்', 'WhatsApp alerts']
+    whatsapp: ['WhatsApp எச்சரிக்கைகள்', 'WhatsApp alerts'],
+    payment: ['கட்டணம்', 'Payment'],
+    offers: ['ஆஃபர் செய்தி', 'Offer message']
   };
 
   function settingField(r) {
@@ -557,6 +737,51 @@
     }
     if (act === 'confirm-order') { if (ask(ASK.confirm[0], ASK.confirm[1])) return confirmOrder(id); return; }
     if (act === 'unavailable-order') { if (ask(ASK.unavailable[0], ASK.unavailable[1])) return markUnavailable(id); return; }
+    if (act === 'fee-reminders') {
+      return DB.rpc('sa_admin_queue_fee_reminders', { p_token: DB.token() }).then(function (r) {
+        if (!r.ok) throw new Error(r.error);
+        A.kickEmail();
+        showNotice(NOTICE.fees_queued[0], NOTICE.fees_queued[1], false);
+      }).catch(function () { showNotice(NOTICE.fail[0], NOTICE.fail[1], true); });
+    }
+    if (act === 'wa-open') { DB.rpc('sa_admin_wa_mark_sent', { p_token: DB.token(), p_id: id }); b.textContent = '✔ ' + b.textContent; return; }
+    if (act === 'cust-optin') {
+      return DB.rpc('sa_admin_set_marketing', { p_token: DB.token(), p_user: id, p_on: b.checked }).then(function () {
+        last.customers.forEach(function (c) { if (c.id === id) c.marketing_ok = b.checked; });
+      });
+    }
+    if (act === 'offer-lang') { offer.lang = b.getAttribute('data-value'); return render(); }
+    if (act === 'offer-pick') { if (b.checked) delete offer.off[id]; else offer.off[id] = true; return offerRecipients(last); }
+    if (act === 'offer-all') {
+      offer.off = {};
+      if (b.getAttribute('data-value') === '0') last.customers.forEach(function (c) { offer.off[c.id] = true; });
+      return offerRecipients(last);
+    }
+    if (act === 'offer-send') {
+      offer.sent[id] = true;
+      if (offer.id) DB.rpc('sa_admin_mark_offer_sent', { p_token: DB.token(), p_campaign: offer.id, p_user: id });
+      b.className = 'btn btn-outline ad-small'; b.textContent = '✔ Sent';
+      return;
+    }
+    if (act === 'offer-save') return saveOffer();
+    if (act === 'offer-new') { offer = { id: null, title: '', ta: '', en: '', image: '', lang: offer.lang, off: {}, sent: {}, q: '' }; return render(); }
+    if (act === 'offer-load') {
+      var c = last.campaigns.filter(function (x) { return x.id === id; })[0];
+      if (!c) return;
+      offer = { id: c.id, title: c.title, ta: c.text_ta, en: c.text_en, image: c.image_url || '', lang: offer.lang, off: {}, sent: {}, q: '' };
+      return render();
+    }
+    if (act === 'offer-del') {
+      if (!ask('இந்தச் செய்தியை நீக்கவா?', 'Delete this saved message?')) return;
+      if (offer.id === id) offer = { id: null, title: '', ta: '', en: '', image: '', lang: offer.lang, off: {}, sent: {}, q: '' };
+      return after(DB.rpc('sa_admin_delete_campaign', { p_token: DB.token(), p_id: id }), NOTICE.offer_deleted[0], NOTICE.offer_deleted[1]);
+    }
+    if (act === 'offer-copy') {
+      var txt = offerMessage();
+      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { showNotice(NOTICE.copied[0], NOTICE.copied[1], false); });
+      return;
+    }
+    if (act === 'offer-csv') return csvDownload();
     if (act === 'run-reminders') return runReminders();
     if (act === 'test-messages') return testMessages();
   });
@@ -567,6 +792,12 @@
       saveSettings(e.target);
       return;
     }
+    if (e.target.id === 'upi-form') {
+      e.preventDefault();
+      var fd = new FormData(e.target);
+      return after(DB.rpc('sa_admin_update_settings', { p_token: DB.token(), p_values: { upi_id: String(fd.get('upi_id') || '').trim(), upi_name: String(fd.get('upi_name') || '').trim() } })
+        .then(function (r) { return SASettings.reload().then(function () { return r; }); }), NOTICE.upi_saved[0], NOTICE.upi_saved[1]);
+    }
     if (e.target.id !== 'vendor-form') return;
     e.preventDefault();
     addVendor(e.target);
@@ -574,6 +805,9 @@
 
   box.addEventListener('input', function (e) {
     if (!last) return;
+    var offMap = { 'off-title': 'title', 'off-ta': 'ta', 'off-en': 'en', 'off-image': 'image' };
+    if (offMap[e.target.id]) { offer[offMap[e.target.id]] = e.target.value; return offerRecipients(last); }
+    if (e.target.id === 'cust-q') { custQ = e.target.value; return renderCustomers(last); }
     if (e.target.id === 'order-pin') {
       pinFilter.order = digits(e.target.value);
       e.target.value = pinFilter.order;
