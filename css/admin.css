@@ -91,3 +91,69 @@
   border: 1px solid var(--gold-soft);
   border-radius: 10px;
 }
+
+/* ==========================================================
+   Admin redesign (Step 1): Home cards, section menu, order / booking cards
+   ========================================================== */
+.ad-layout { display: block; }
+.ad-side { display: none; }
+.ad-sub { color: var(--muted); margin: -4px 0 14px; }
+.ad-back { background: none; border: 0; color: var(--maroon); font: inherit; font-weight: 600; min-height: 44px; padding: 8px 0; cursor: pointer; }
+
+.ad-todo-grid { display: grid; gap: 12px; grid-template-columns: 1fr; margin-bottom: 8px; }
+.ad-todo {
+  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; min-height: 76px;
+  padding: 14px 16px; background: #fff; color: var(--ink); font: inherit; cursor: pointer;
+  border: 1.5px solid var(--gold); border-radius: var(--radius); box-shadow: var(--shadow-card);
+}
+.ad-todo.is-hot { border-color: var(--maroon); background: linear-gradient(180deg, #fff, #FFF3E4); }
+.ad-num { min-width: 44px; text-align: center; font-size: 2rem; font-weight: 700; color: var(--maroon); }
+.ad-num.is-zero { color: #9a8a80; }
+.ad-todo-text { flex: 1; }
+.ad-todo-text strong { display: block; }
+.ad-todo-text small { display: block; color: var(--muted); font-size: .92rem; }
+.ad-go { color: var(--gold); font-size: 1.6rem; }
+
+.ad-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 8px; }
+.ad-menu-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 92px;
+  padding: 14px 8px; text-align: center; background: #fff; color: var(--maroon); font: inherit; font-weight: 600; cursor: pointer;
+  border: 1.5px solid var(--gold-soft); border-radius: var(--radius);
+}
+.ad-ic { font-size: 1.7rem; }
+
+.ad-chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 10px; }
+.ad-chip {
+  flex: none; min-height: 44px; padding: 6px 16px; white-space: nowrap; font: inherit; font-weight: 600; cursor: pointer;
+  background: #fff; color: var(--maroon); border: 1.5px solid var(--gold); border-radius: 999px;
+}
+.ad-chip.is-on { background: var(--maroon); color: #fff; }
+
+.ad-card {
+  background: #fff; border: 1.5px solid var(--gold-soft); border-radius: var(--radius);
+  padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow-card);
+}
+.ad-card h3 { margin: 0; font-size: 1.1rem; }
+.ad-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.ad-card .badges { margin-bottom: 8px; }
+.ad-wait { background: #FFF0C9; }
+.ad-lock { color: var(--muted); font-size: .95rem; margin: 8px 0 0; }
+.ad-lock.is-warn { color: #8a3b00; }
+.ad-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.ad-btns .btn { flex: 1 1 auto; min-height: 48px; }
+.btn.ad-ok { background: #2E6B3A; border-color: #2E6B3A; color: #fff; }
+.ad-empty { color: var(--muted); text-align: center; padding: 20px 0; }
+
+@media (min-width: 768px) {
+  .ad-layout { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: start; }
+  .ad-side { display: block; position: sticky; top: 84px; }
+  .ad-side-btn {
+    display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; min-height: 48px; margin-bottom: 4px;
+    padding: 10px 14px; border: 0; border-radius: 10px; background: none; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .ad-side-btn.is-on { background: var(--maroon); color: #fff; }
+  .ad-back { display: none; }
+  .ad-todo-grid { grid-template-columns: repeat(2, 1fr); }
+  .ad-menu { display: none; }
+  .ad-menu-h { display: none; }
+}
