@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ta" data-lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Subham Asthu · சுபம் அஸ்து</title>
+  <meta name="description" content="Subham Asthu connects families in Tamil Nadu with priests, cooks and pooja stores. / சுபம் அஸ்து — தமிழ்நாட்டில் வாத்தியார், சமையல்காரர் மற்றும் பூஜைப் பொருட்கள்.">
+  <link rel="icon" href="img/logo.png" type="image/png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#741C20">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Subham Asthu">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#home" aria-label="Subham Asthu home">
+        <img class="lamp" src="img/logo.png" alt="" width="48" height="48">
+        <span class="brand-name"><span class="ta">சுபம் அஸ்து</span><span class="en">Subham Asthu</span></span>
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <div class="nav-inner">
+          <a href="#home" data-nav="home"><span class="ta">முகப்பு</span><span class="en">Home</span></a>
+          <a href="#poojas" data-nav="poojas"><span class="ta">பூஜைகள்</span><span class="en">Poojas</span></a>
+          <a href="#bookings" data-nav="bookings"><span class="ta">புக்கிங்</span><span class="en">Bookings</span></a>
+          <a href="#about" data-nav="about"><span class="ta">எங்களைப் பற்றி</span><span class="en">About Us</span></a>
+          <a href="#faq" data-nav="faq"><span class="ta">கேள்விகள்</span><span class="en">FAQ</span></a>
+          <a href="#disclaimers" data-nav="disclaimers"><span class="ta">பொறுப்புத் துறப்பு</span><span class="en">Disclaimers</span></a>
+          <a href="#login" data-nav="login"><span class="ta">உள்நுழைவு</span><span class="en">Log in</span></a>
+        </div>
+      </nav>
+      <div class="lang-toggle" role="group" aria-label="மொழி / Language">
+        <button type="button" data-set-lang="ta" aria-pressed="true" class="is-active">தமிழ்</button>
+        <span class="sep" aria-hidden="true">|</span>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- HOME -->
+    <section class="page" data-page="home">
+
+      <!-- 1. Compact hero -->
+      <div class="hero">
+        <div class="hero-text">
+          <h1>
+            <span class="ta">வணக்கம்! சுபம் அஸ்துக்கு வரவேற்கிறோம்</span>
+            <span class="en">Welcome to Subham Asthu</span>
+          </h1>
+          <p class="ta">உங்கள் குடும்ப நிகழ்ச்சிகளுக்கும் பூஜைகளுக்கும் நம்பகமான வாத்தியார்கள், சமையல்காரர்கள் மற்றும் பூஜைப் பொருட்கள் கடைகளுடன் தமிழ்நாட்டில் இணையுங்கள்.</p>
+          <p class="en">Connect with trusted priests, cooks and pooja stores across Tamil Nadu for your family ceremonies and poojas.</p>
+          <div class="hero-cta">
+            <a class="btn btn-gold" href="#poojas"><span class="ta">பூஜைகளைப் பார்க்க</span><span class="en">Explore Poojas</span></a>
+            <a class="btn btn-ghost" href="#bookings"><span class="ta">வாத்தியார் / சமையல்காரர் தேடல்</span><span class="en">Find Priest or Cook</span></a>
+          </div>
+        </div>
+        <img class="hero-seal" src="img/logo.png" alt="" width="150" height="150">
+      </div>
+
+      <!-- 2. Popular pooja categories -->
+      <div class="home-section">
+        <h2 class="section-title"><span class="ta">பிரபலமான பூஜை வகைகள்</span><span class="en">Popular Pooja Categories</span></h2>
+        <div class="cat-grid">
+          <a class="cat-tile" href="#poojas">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1.6 2.4 2.4 3.6 2.4 5a2.4 2.4 0 0 1-4.8 0C9.6 6.6 10.4 5.4 12 3z"/><path d="M4 13h16c0 3.6-3.4 6-8 6s-8-2.4-8-6z"/></svg>
+            <strong><span class="ta">தினசரி &amp; மாதாந்திர பூஜைகள்</span><span class="en">Daily &amp; Monthly Poojas</span></strong>
+            <span class="explore"><span class="ta">பார்க்க →</span><span class="en">Explore →</span></span>
+          </a>
+          <a class="cat-tile" href="#poojas">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>
+            <strong><span class="ta">வருடாந்திரப் பண்டிகைகள் &amp; விரதங்கள்</span><span class="en">Annual Festivals &amp; Vratams</span></strong>
+            <span class="explore"><span class="ta">பார்க்க →</span><span class="en">Explore →</span></span>
+          </a>
+          <a class="cat-tile" href="#poojas">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 3.5 5 6 5 9a5 5 0 0 1-10 0c0-1.8.8-3 2-4 .2 1.2.8 2 1.8 2.4C10.4 7 11 4.6 12 2z"/><path d="M5 21h14"/></svg>
+            <strong><span class="ta">வீட்டு சுப காரியங்கள் &amp; ஹோமங்கள்</span><span class="en">Home Subha Karyams &amp; Homas</span></strong>
+            <span class="explore"><span class="ta">பார்க்க →</span><span class="en">Explore →</span></span>
+          </a>
+          <a class="cat-tile" href="#poojas">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20c-3-2-5-5-5-9 3 0 5 2 5 4 0-2 2-4 5-4 0 4-2 7-5 9z"/><path d="M12 15c-1.5-2-1.5-5 0-8 1.5 3 1.5 6 0 8z"/></svg>
+            <strong><span class="ta">வாழ்வியல் சடங்குகள் &amp; பித்ரு காரியங்கள்</span><span class="en">Life Samskaras &amp; Pitru Karyams</span></strong>
+            <span class="explore"><span class="ta">பார்க்க →</span><span class="en">Explore →</span></span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. Featured / popular pooja services -->
+      <div class="home-section">
+        <h2 class="section-title"><span class="ta">பிரபலமான பூஜை சேவைகள்</span><span class="en">Popular Pooja Services</span></h2>
+        <div class="feature-grid">
+          <a class="feature-card" href="#pooja/pournami-satyanarayana"><strong><span class="ta">பௌர்ணமி சத்யநாராயண பூஜை</span><span class="en">Pournami Satyanarayana Pooja</span></strong></a>
+          <a class="feature-card" href="#pooja/varalakshmi-vratam"><strong><span class="ta">வரலட்சுமி விரதம்</span><span class="en">Varalakshmi Vratam</span></strong></a>
+          <a class="feature-card" href="#pooja/ganapathi-homam"><strong><span class="ta">கணபதி ஹோமம்</span><span class="en">Ganapathi Homam</span></strong></a>
+          <a class="feature-card" href="#pooja/grihapravesam-vastu-shanti"><strong><span class="ta">கிரகப்பிரவேசம் &amp; வாஸ்து சாந்தி</span><span class="en">Grihapravesam &amp; Vastu Shanti</span></strong></a>
+          <a class="feature-card" href="#pooja/upanayanam"><strong><span class="ta">உபநயனம்</span><span class="en">Upanayanam</span></strong></a>
+          <a class="feature-card" href="#pooja/amavasya-tharpanam"><strong><span class="ta">அமாவாசை தர்ப்பணம்</span><span class="en">Amavasya Tharpanam</span></strong></a>
+        </div>
+        <p class="section-more"><a href="#poojas"><span class="ta">45+ பூஜைகளின் முழுப் பட்டியலைப் பார்க்க →</span><span class="en">View the full catalog of 45+ poojas →</span></a></p>
+      </div>
+
+      <!-- 4. How it works -->
+      <div class="home-section">
+        <h2 class="section-title"><span class="ta">சுபம் அஸ்து எப்படிச் செயல்படுகிறது?</span><span class="en">How Subham Asthu Works</span></h2>
+        <ol class="steps">
+          <li>
+            <span class="step-no">1</span>
+            <strong><span class="ta">பூஜை / சேவையைத் தேர்ந்தெடுங்கள்</span><span class="en">Choose Pooja / Service</span></strong>
+            <span class="ta">பட்டியலில் உங்களுக்குத் தேவையான பூஜையைத் தேர்ந்தெடுத்து சாமான் விவரங்களைப் பாருங்கள்.</span>
+            <span class="en">Pick your pooja from the list and view the samagri details.</span>
+          </li>
+          <li>
+            <span class="step-no">2</span>
+            <strong><span class="ta">நேரடி உறுதிப்படுத்தல்</span><span class="en">Direct Confirmation</span></strong>
+            <span class="ta">முன்பதிவை அவர்கள் ஏற்ற பின், வாத்தியார் அல்லது சமையல்காரருடன் தொலைபேசியில் நேரடியாகப் பேசி முடிவு செய்யுங்கள்.</span>
+            <span class="en">Once they accept your booking, settle everything directly with the priest or cook by phone.</span>
+          </li>
+          <li>
+            <span class="step-no">3</span>
+            <strong><span class="ta">அமைதியான கொண்டாட்டம்</span><span class="en">Peaceful Celebration</span></strong>
+            <span class="ta">கவலையின்றி உங்கள் குடும்ப நிகழ்ச்சியை மனநிறைவுடன் கொண்டாடுங்கள்.</span>
+            <span class="en">Celebrate your family occasion with peace of mind.</span>
+          </li>
+        </ol>
+      </div>
+
+      <!-- 5. Find a Purohithar / Samayalkarar -->
+      <div class="callout">
+        <div>
+          <h2><span class="ta">வாத்தியார் / சமையல்காரரைத் தேடுங்கள்</span><span class="en">Find a Purohithar / Samayalkarar</span></h2>
+          <p class="ta">உங்கள் பகுதியில் உள்ள வாத்தியார்களையும் சமையல்காரர்களையும் தேடி, முன்பதிவு கோரிக்கை அனுப்புங்கள்.</p>
+          <p class="en">Search priests and cooks in your area and send a booking request.</p>
+        </div>
+        <a class="btn" href="#bookings"><span class="ta">தேடுங்கள்</span><span class="en">Search Now</span></a>
+      </div>
+
+      <!-- 6. Why choose -->
+      <div class="home-section">
+        <h2 class="section-title"><span class="ta">ஏன் சுபம் அஸ்து?</span><span class="en">Why Choose Subham Asthu?</span></h2>
+        <div class="why-grid">
+          <div class="why-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+            <strong><span class="ta">சரிபார்க்கப்பட்ட கூட்டாளர்கள்</span><span class="en">Verified Partners</span></strong>
+            <span class="ta">உங்கள் பகுதியின் வாத்தியார்களும் சமையல்காரர்களும் பதிவு செய்து இணைகிறார்கள்.</span>
+            <span class="en">Priests and cooks from your own area register and join us.</span>
+          </div>
+          <div class="why-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"/><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
+            <strong><span class="ta">இடைத்தரகு கட்டணம் இல்லை</span><span class="en">Zero Middleman Fee</span></strong>
+            <span class="ta">தட்சணை மற்றும் கட்டணங்களை நீங்களே நேரடியாகப் பேசி முடிவு செய்கிறீர்கள்.</span>
+            <span class="en">You agree dakshina and fees directly. We never mediate pricing.</span>
+          </div>
+          <div class="why-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M9 9h6M9 13h6"/></svg>
+            <strong><span class="ta">நம்பகமான சாமான் வழிகாட்டிகள்</span><span class="en">Authentic Samagri Guides</span></strong>
+            <span class="ta">பாரம்பரிய முறைப்படி தெளிவான பூஜைப் பட்டியல்களும் எளிய படிகளும்.</span>
+            <span class="en">Clear pooja lists and simple steps that follow tradition.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Community trust (principles only; add real family feedback here once collected) -->
+      <div class="home-section">
+        <h2 class="section-title"><span class="ta">சமூக நம்பிக்கை &amp; குடும்ப அனுபவங்கள்</span><span class="en">Community Trust &amp; Family Experiences</span></h2>
+        <div class="trust-grid">
+          <div class="trust-card">
+            <strong><span class="ta">உங்கள் ஊரிலேயே</span><span class="en">Right in Your Town</span></strong>
+            <span class="ta">உங்கள் PIN குறியீட்டுக்கு அருகிலுள்ள வாத்தியார்களையும் சமையல்காரர்களையும் தேடலாம்.</span>
+            <span class="en">Search priests and cooks near your PIN code.</span>
+          </div>
+          <div class="trust-card">
+            <strong><span class="ta">பெரியவர்களுக்கும் எளிது</span><span class="en">Easy for Elders</span></strong>
+            <span class="ta">பெரிய எழுத்துகள், தமிழில் தெளிவான வழிகாட்டுதல், மொபைல் எண் + PIN மட்டுமே.</span>
+            <span class="en">Large text, clear Tamil guidance, and sign-in with just a mobile number and PIN.</span>
+          </div>
+          <div class="trust-card">
+            <strong><span class="ta">உங்கள் தனியுரிமை</span><span class="en">Your Privacy</span></strong>
+            <span class="ta">முன்பதிவை ஏற்ற பின்னரே தொடர்பு எண்கள் பகிரப்படும்.</span>
+            <span class="en">Phone numbers are shared only after a booking is accepted.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Support & direct enquiry (number comes from app_settings via js/settings.js) -->
+      <div class="support">
+        <div>
+          <h2><span class="ta">உதவி &amp; நேரடி விசாரணை</span><span class="en">Support &amp; Direct Enquiry</span></h2>
+          <p class="ta">சந்தேகங்கள் இருந்தால் எங்களை WhatsApp-இல் தொடர்பு கொள்ளுங்கள் அல்லது கேள்விகள் பக்கத்தைப் பாருங்கள்.</p>
+          <p class="en">Have a question? Message us on WhatsApp or read our FAQ.</p>
+        </div>
+        <div class="support-actions">
+          <a id="support-wa" class="btn" href="#" hidden target="_blank" rel="noopener"><span class="ta">WhatsApp ஆதரவு</span><span class="en">WhatsApp Support</span></a>
+          <a class="btn btn-outline" href="#faq"><span class="ta">கேள்விகள்</span><span class="en">FAQ</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- POOJA LIST (public) -->
+    <section class="page" data-page="poojas" hidden>
+      <div class="card">
+        <h1><span class="ta">பூஜைகள்</span><span class="en">Poojas</span></h1>
+        <p class="ta">பூஜைப் பட்டியல் மற்றும் சாமான் விவரங்களை உள்நுழையாமலேயே பார்க்கலாம்.</p>
+        <p class="en">Browse pooja lists and samagri details without logging in.</p>
+        <div id="pooja-list"></div>
+      </div>
+    </section>
+
+    <!-- POOJA DETAIL (public; order requires login) -->
+    <section class="page" data-page="pooja" hidden>
+      <div class="card" id="pooja-detail"></div>
+    </section>
+
+    <!-- BOOKINGS: partner directory (public), booking request (login), My bookings (login) -->
+    <section class="page" data-page="bookings" hidden>
+      <div class="card">
+        <h1><span class="ta">வாத்தியார் &amp; சமையல்காரர்</span><span class="en">Priests &amp; Cooks</span></h1>
+        <p class="ta">உங்கள் பகுதியில் உள்ள வாத்தியார்களையும் சமையல்காரர்களையும் தேடி முன்பதிவு கோரிக்கை அனுப்புங்கள்.</p>
+        <p class="en">Search priests and cooks near you and send a booking request.</p>
+        <div class="filters">
+          <label class="field"><span class="ta">வகை</span><span class="en">Role</span>
+            <select id="f-role">
+              <option value="">அனைத்தும் · All</option>
+              <option value="priest">வாத்தியார் (Priest)</option>
+              <option value="cook">சமையல்காரர் (Cook)</option>
+            </select></label>
+          <label class="field"><span class="ta">மொழி / சம்பிரதாயம்</span><span class="en">Language / Sampradayam</span>
+            <select id="f-lang">
+              <option value="">All</option>
+              <option value="Tamil">தமிழ் · Tamil</option>
+              <option value="Sanskrit">சமஸ்கிருதம் · Sanskrit</option>
+              <option value="Telugu">தெலுங்கு · Telugu</option>
+              <option value="Malayalam">மலையாளம் · Malayalam</option>
+              <option value="English">ஆங்கிலம் · English</option>
+              <option value="Vadagalai">வடகலை · Vadagalai</option>
+              <option value="Thenkalai">தென்கலை · Thenkalai</option>
+              <option value="Smartha">ஸ்மார்த்தம் · Smartha</option>
+            </select></label>
+          <label class="field"><span class="ta">PIN குறியீடு</span><span class="en">PIN code</span>
+            <input id="f-pin" type="text" inputmode="numeric" maxlength="6" placeholder="600126"></label>
+        </div>
+        <div id="partner-list" class="pooja-grid"></div>
+        <p id="partner-empty" class="form-msg" role="status" hidden></p>
+      </div>
+      <div class="card" id="booking-box" hidden></div>
+      <div class="card" id="my-bookings" hidden></div>
+    </section>
+
+    <!-- PARTNER PORTAL (login; subscription rules shown here only) -->
+    <section class="page" data-page="partner" hidden>
+      <div class="card" id="portal-box"></div>
+    </section>
+
+    <!-- ABOUT US -->
+    <section class="page" data-page="about" hidden>
+      <div class="card">
+        <h1><span class="ta">எங்களைப் பற்றி</span><span class="en">About Us</span></h1>
+
+        <p class="ta">சுபம் அஸ்து என்பது தமிழ்நாட்டில் உள்ள குடும்பங்களையும், வாத்தியார்கள் (புரோகிதர்கள்), சமையல்காரர்கள் மற்றும் பூஜைப் பொருட்கள் வழங்கும் கடைகளையும் இணைக்கும் ஒரு தளம்.</p>
+        <p class="en">Subham Asthu is a platform that connects families in Tamil Nadu with priests (vathiyars), cooks and pooja stores.</p>
+        <p class="ta">நாங்கள் பூஜை நடத்துவதில்லை, பொருட்கள் விற்பதில்லை, கட்டணம் நிர்ணயிப்பதில்லை. சரியான நபரை உங்களுடன் இணைப்பதே எங்கள் பணி.</p>
+        <p class="en">We do not perform poojas, sell goods or set prices. Our work is to connect you with the right person.</p>
+
+        <h2><span class="ta">எங்கள் நோக்கம்</span><span class="en">Our Purpose</span></h2>
+        <ul class="ta">
+          <li>பாரம்பரிய முறைப்படி பூஜை செய்ய தெளிவான பட்டியல்களையும் வழிகாட்டிகளையும் வழங்குதல்.</li>
+          <li>நம்பகமான வாத்தியார்களையும் சமையல்காரர்களையும் உங்கள் பகுதியிலேயே கண்டறிய உதவுதல்.</li>
+          <li>வீட்டிலேயே பூஜை செய்ய விரும்புவோருக்கு மந்திரங்களுடன் கூடிய வழிகாட்டுதல்.</li>
+        </ul>
+        <ul class="en">
+          <li>Provide clear pooja lists and guides that follow traditional practice.</li>
+          <li>Help families find trusted priests and cooks in their own area.</li>
+          <li>Offer guidance with mantras for those who wish to perform poojas at home.</li>
+        </ul>
+
+        <h2><span class="ta">நாங்கள் எவ்வாறு செயல்படுகிறோம்</span><span class="en">How We Work</span></h2>
+        <ul class="ta">
+          <li>தட்சணை, சேவைக் கட்டணம் மற்றும் முன்பணம் ஆகியவை வாத்தியார் அல்லது சமையல்காரருடன் நேரடியாகத் தொலைபேசியில் பேசி முடிவு செய்யப்படும்.</li>
+          <li>இந்தத் தளத்தில் பணம் செலுத்தும் வசதியோ, விலைப்பட்டியலோ, கமிஷன் பங்கீடோ இல்லை.</li>
+          <li>வாத்தியார் அல்லது சமையல்காரரின் தொலைபேசி எண், நீங்கள் அனுப்பிய முன்பதிவை அவர்கள் ஏற்ற பின்னரே காட்டப்படும்.</li>
+        </ul>
+        <ul class="en">
+          <li>Dakshina, service fees and advances are agreed directly with the priest or cook over the phone.</li>
+          <li>This platform has no payment gateway, price quotes or commission splits.</li>
+          <li>A priest's or cook's phone number is shown only after they accept your booking request.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="page" data-page="faq" hidden>
+      <div class="card">
+        <h1><span class="ta">அடிக்கடி கேட்கப்படும் கேள்விகள்</span><span class="en">Frequently Asked Questions</span></h1>
+
+        <details class="faq-item">
+          <summary><span class="ta">சுபம் அஸ்து என்றால் என்ன?</span><span class="en">What is Subham Asthu?</span></summary>
+          <div class="ta"><p>சுபம் அஸ்து ஒரு இணைப்புத் தளம் மட்டுமே. வாத்தியார், சமையல்காரர் மற்றும் பூஜைப் பொருட்கள் கடைகளுடன் நேரடியாகத் தொடர்பு கொள்ள உதவுகிறோம்.</p></div>
+          <div class="en"><p>Subham Asthu is a connector only. We help you get in direct touch with priests, cooks and pooja stores.</p></div>
+        </details>
+
+        <details class="faq-item">
+          <summary><span class="ta">பூஜைப் பட்டியல்களைப் பார்க்க உள்நுழைய வேண்டுமா?</span><span class="en">Do I need to log in to view pooja lists?</span></summary>
+          <div class="ta"><p>இல்லை. பூஜைப் பட்டியல், வழிகாட்டிகள், எங்களைப் பற்றி மற்றும் கேள்விகள் பக்கங்களை உள்நுழையாமலேயே பார்க்கலாம். முன்பதிவு அல்லது ஆர்டர் செய்யும் போது மட்டுமே உள்நுழைவு தேவைப்படும்.</p></div>
+          <div class="en"><p>No. You can view pooja lists, guides, About Us and FAQ without logging in. Login is needed only when you place a booking or order.</p></div>
+        </details>
+
+        <details class="faq-item">
+          <summary><span class="ta">கட்டணம் மற்றும் தட்சணையை எவ்வாறு செலுத்துவது?</span><span class="en">How do I pay the dakshina or fees?</span></summary>
+          <div class="ta"><p>தட்சணை, கட்டணம் மற்றும் முன்பணம் அனைத்தும் வாத்தியார் அல்லது சமையல்காரருடன் நேரடியாகத் தொலைபேசியில் பேசி முடிவு செய்து செலுத்த வேண்டும். இத்தளத்தில் பணம் செலுத்தும் வசதி இல்லை.</p></div>
+          <div class="en"><p>Dakshina, fees and advances are settled directly with the priest or cook, as agreed by phone. This platform has no payment facility.</p></div>
+        </details>
+
+        <details class="faq-item">
+          <summary><span class="ta">"நானே வாங்கிக் கொள்கிறேன்" என்றால் என்ன?</span><span class="en">What does "I will buy it myself" do?</span></summary>
+          <div class="ta"><p>இந்தப் பொத்தானை அழுத்தினால் பூஜைப் பட்டியல் PDF பதிவிறக்கம் ஆகும். இது தனிப்பட்ட பயன்பாட்டிற்கு மட்டுமே; மறுவிற்பனை (Resale) செய்யக் கூடாது.</p></div>
+          <div class="en"><p>This button downloads the pooja list as a PDF. It is for personal use only and must not be resold.</p></div>
+        </details>
+
+        <details class="faq-item">
+          <summary><span class="ta">ஆன்லைனில் பூஜைப் பொருட்களை ஆர்டர் செய்தால் என்ன நடக்கும்?</span><span class="en">What happens when I order samagri online?</span></summary>
+          <div class="ta"><p>உங்கள் ஆர்டர் "உறுதிப்படுத்தலுக்காகக் காத்திருக்கிறது" நிலையில் பதிவாகும். கடை பொருட்களை உறுதிப்படுத்திய பின்னரே கடையின் தொடர்பு விவரங்கள் காட்டப்படும்.</p></div>
+          <div class="en"><p>Your order is recorded as "Waiting for Confirmation". The store's contact details appear only after they confirm or dispatch the order.</p></div>
+        </details>
+
+        <details class="faq-item">
+          <summary><span class="ta">வாத்தியார் அல்லது சமையல்காரரின் தொலைபேசி எண் எப்போது தெரியும்?</span><span class="en">When can I see a priest's or cook's phone number?</span></summary>
+          <div class="ta"><p>நீங்கள் அனுப்பிய முன்பதிவு கோரிக்கையை அவர்கள் ஏற்றுக்கொண்ட பின்னரே தொடர்பு எண் காட்டப்படும்.</p></div>
+          <div class="en"><p>Their phone number is shown only after they accept your booking request.</p></div>
+        </details>
+
+        <details class="faq-item">
+          <summary><span class="ta">PIN மறந்துவிட்டால் என்ன செய்வது?</span><span class="en">What if I forget my PIN?</span></summary>
+          <div class="ta"><p>மொபைல் எண் மற்றும் PIN மூலம் உள்நுழையலாம். PIN மறந்தால், பதிவு செய்த மின்னஞ்சல் வழியாக மட்டுமே மீட்டமைக்க முடியும். SMS அல்லது WhatsApp OTP பயன்படுத்தப்படாது.</p></div>
+          <div class="en"><p>You log in with your mobile number and PIN. If you forget your PIN, it can be reset only through your registered email. We do not use SMS or WhatsApp OTP.</p></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- DISCLAIMERS -->
+    <section class="page" data-page="disclaimers" hidden>
+      <div class="card">
+        <!-- Approved Tamil wording. English is a draft translation pending owner review. Partner subscription terms are intentionally excluded here (shown only in Partner Portal/Registration). -->
+        <h1><span class="ta">பொறுப்புத் துறப்பு</span><span class="en">Disclaimers</span></h1>
+
+        <h2><span class="ta">வாடிக்கையாளர் அறிவிப்பு</span><span class="en">Customer Disclaimer</span></h2>
+        <div data-setting="text_disclaimer_customer"></div>
+
+        <h2><span class="ta">வாத்தியார் / சமையல்காரர் &amp; கடைக்காரர் வழிகாட்டுதல்</span><span class="en">Partner &amp; Vendor Guidelines</span></h2>
+        <div data-setting="text_disclaimer_partner"></div>
+      </div>
+    </section>
+
+    <!-- LOGIN / REGISTER / PIN RESET -->
+    <section class="page" data-page="login" hidden>
+      <div class="card">
+        <h1><span class="ta">உள்நுழைவு</span><span class="en">Log in</span></h1>
+
+        <div id="account-in" hidden>
+          <p><span class="ta">வணக்கம்,</span><span class="en">Hello,</span> <strong id="account-name"></strong></p>
+          <p id="partner-link" hidden><a class="btn btn-outline" href="#partner"><span class="ta">கூட்டாளர் போர்ட்டல்</span><span class="en">Partner Portal</span></a></p>
+          <p id="admin-link" hidden><a class="btn btn-outline" href="#admin"><span class="ta">நிர்வாகப் பக்கம்</span><span class="en">Admin Dashboard</span></a></p>
+          <button type="button" class="btn btn-outline" id="logout-btn"><span class="ta">வெளியேறு</span><span class="en">Log out</span></button>
+        </div>
+
+        <div id="account-out">
+          <div class="tabs" role="tablist">
+            <button type="button" class="tab is-active" data-auth-view="login" role="tab" aria-selected="true"><span class="ta">உள்நுழை</span><span class="en">Log in</span></button>
+            <button type="button" class="tab" data-auth-view="register" role="tab" aria-selected="false"><span class="ta">புதிய பதிவு</span><span class="en">Register</span></button>
+            <button type="button" class="tab" data-auth-view="reset" role="tab" aria-selected="false"><span class="ta">PIN மறந்துவிட்டதா?</span><span class="en">Forgot PIN?</span></button>
+          </div>
+
+          <form id="login-form" data-auth-panel="login" novalidate>
+            <label class="field"><span class="ta">மொபைல் எண்</span><span class="en">Mobile number</span>
+              <input name="mobile" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" required></label>
+            <label class="field"><span class="ta">PIN (4 அல்லது 6 இலக்கம்)</span><span class="en">PIN (4 or 6 digits)</span>
+              <input name="pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="6" required></label>
+            <button type="submit" class="btn"><span class="ta">உள்நுழை</span><span class="en">Log in</span></button>
+            <p class="form-msg" role="status" aria-live="polite"></p>
+          </form>
+
+          <form id="register-form" data-auth-panel="register" novalidate hidden>
+            <label class="field"><span class="ta">பெயர்</span><span class="en">Full name</span>
+              <input name="name" type="text" autocomplete="name" required></label>
+            <label class="field"><span class="ta">மொபைல் எண்</span><span class="en">Mobile number</span>
+              <input name="mobile" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" required></label>
+            <label class="field"><span class="ta">மின்னஞ்சல் (PIN மீட்புக்கு)</span><span class="en">Email (for PIN recovery)</span>
+              <input name="email" type="email" autocomplete="email" required></label>
+            <label class="field"><span class="ta">பதிவு வகை</span><span class="en">Registering as</span>
+              <select name="role" required>
+                <option value="customer">வாடிக்கையாளர் (Customer)</option>
+                <option value="priest">வாத்தியார் (Priest)</option>
+                <option value="cook">சமையல்காரர் (Cook)</option>
+              </select></label>
+            <label class="field"><span class="ta">புதிய PIN (4 அல்லது 6 இலக்கம்)</span><span class="en">Create PIN (4 or 6 digits)</span>
+              <input name="pin" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
+            <label class="field"><span class="ta">PIN-ஐ மீண்டும் உள்ளிடவும்</span><span class="en">Confirm PIN</span>
+              <input name="pin2" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
+            <button type="submit" class="btn"><span class="ta">பதிவு செய்</span><span class="en">Register</span></button>
+            <p class="form-msg" role="status" aria-live="polite"></p>
+          </form>
+
+          <div data-auth-panel="reset" hidden>
+            <form id="reset-request-form" novalidate>
+              <label class="field"><span class="ta">மொபைல் எண்</span><span class="en">Mobile number</span>
+                <input name="mobile" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" required></label>
+              <label class="field"><span class="ta">பதிவு செய்த மின்னஞ்சல்</span><span class="en">Registered email</span>
+                <input name="email" type="email" autocomplete="email" required></label>
+              <button type="submit" class="btn"><span class="ta">குறியீடு அனுப்பு</span><span class="en">Send code</span></button>
+              <p class="form-msg" role="status" aria-live="polite"></p>
+            </form>
+
+            <form id="reset-confirm-form" novalidate hidden>
+              <label class="field"><span class="ta">மொபைல் எண்</span><span class="en">Mobile number</span>
+                <input name="mobile" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" required></label>
+              <label class="field"><span class="ta">மின்னஞ்சலில் வந்த 6 இலக்கக் குறியீடு</span><span class="en">6-digit code from email</span>
+                <input name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required></label>
+              <label class="field"><span class="ta">புதிய PIN (4 அல்லது 6 இலக்கம்)</span><span class="en">New PIN (4 or 6 digits)</span>
+                <input name="pin" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
+              <label class="field"><span class="ta">புதிய PIN-ஐ மீண்டும் உள்ளிடவும்</span><span class="en">Confirm new PIN</span>
+                <input name="pin2" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
+              <button type="submit" class="btn"><span class="ta">PIN-ஐ மாற்று</span><span class="en">Set new PIN</span></button>
+              <p class="form-msg" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADMIN DASHBOARD (admin role only; rendered by js/admin.js) -->
+    <section class="page" data-page="admin" hidden>
+      <div class="card" id="admin-box"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="footer-links">
+        <a href="#about"><span class="ta">எங்களைப் பற்றி</span><span class="en">About Us</span></a>
+        <a href="#faq"><span class="ta">கேள்விகள்</span><span class="en">FAQ</span></a>
+        <a href="#disclaimers"><span class="ta">பொறுப்புத் துறப்பு</span><span class="en">Disclaimers</span></a>
+      </p>
+      <div data-setting="text_footer"></div>
+      <div class="footer-static">
+        <p class="ta">சுபம் அஸ்து என்பது பரணி இன்னோவேஷன்ஸ் நிறுவனத்தின் தயாரிப்பு – சென்னை 600 126</p>
+        <p class="en">Subham Asthu is a product of Bharani Innovations – Chennai 600 126</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <nav class="bottom-nav" aria-label="Mobile">
+    <a href="#home" data-nav="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6a2 2 0 0 1 4 0v6"/></svg><span class="ta">முகப்பு</span><span class="en">Home</span></a>
+    <a href="#poojas" data-nav="poojas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c2 3 3 4.5 3 6.5a3 3 0 0 1-6 0C9 6.5 10 5 12 2z"/><path d="M4 13h16c0 4-3.5 6-8 6s-8-2-8-6z"/><path d="M9 22h6"/></svg><span class="ta">பூஜைகள்</span><span class="en">Poojas</span></a>
+    <a href="#bookings" data-nav="bookings"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M9 15l2 2 4-4"/></svg><span class="ta">புக்கிங்</span><span class="en">Bookings</span></a>
+    <a href="#login" data-nav="login"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span class="ta">கணக்கு</span><span class="en">Account</span></a>
+  </nav>
+
+  <script src="js/config.js" defer></script>
+  <script src="js/db.js" defer></script>
+  <script src="js/settings.js" defer></script>
+  <script src="js/auth.js" defer></script>
+  <script src="js/account.js" defer></script>
+  <script src="js/poojas-data.js" defer></script>
+  <script src="js/pooja.js" defer></script>
+  <script src="js/partners-data.js" defer></script>
+  <script src="js/subscription.js" defer></script>
+  <script src="js/whatsapp.js" defer></script>
+  <script src="js/partners.js" defer></script>
+  <script src="js/partner-portal.js" defer></script>
+  <script src="js/admin.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>
