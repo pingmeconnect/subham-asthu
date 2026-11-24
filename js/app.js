@@ -3,7 +3,7 @@
   'use strict';
 
   var LANG_KEY = 'subham-asthu-lang';
-  var PAGES = ['home', 'poojas', 'pooja', 'bookings', 'partner', 'about', 'faq', 'disclaimers', 'privacy', 'login', 'admin'];
+  var PAGES = ['home', 'poojas', 'guides', 'pooja', 'bookings', 'partner', 'about', 'faq', 'disclaimers', 'privacy', 'login', 'admin'];
   var root = document.documentElement;
 
   function readStored(key) {

@@ -206,13 +206,13 @@
   }
 
   // ---------- List ----------
-  function renderList() {
+  function renderList(guides) {
     return Promise.all([P.seed(), loadDates()]).then(function (res) {
       var rows = res[0], dates = res[1];
       var t = todayStr();
       var next = {};
       dates.forEach(function (x) { if (x.date >= t && !next[x.slug]) next[x.slug] = x.date; });
-      var html = '<div id="pooja-cal">' + calHtml(rows, dates) + '</div>';
+      var html = guides ? '' : '<div id="pooja-cal">' + calHtml(rows, dates) + '</div>';
       Object.keys(P.CATEGORIES).forEach(function (cat) {
         var items = rows.filter(function (r) { return r.category === cat; });
         html += '<section class="pooja-group cat-' + cat + '" style="--cc:' + CAT_COLOR[cat] + '"><h2>' + bi(P.CATEGORIES[cat].ta, P.CATEGORIES[cat].en) + '</h2><div class="pooja-grid">';
@@ -225,7 +225,7 @@
         });
         html += '</div></section>';
       });
-      var box = $('pooja-list');
+      var box = $(guides ? 'guide-list' : 'pooja-list');
       box._rows = rows; box._dates = dates;
       box.innerHTML = html;
       if (!box.dataset.calBound) {
@@ -539,7 +539,8 @@
   // ---------- Routing ----------
   function route() {
     var hash = location.hash || '';
-    if (hash === '#poojas') return renderList();
+    if (hash === '#poojas') return renderList(false);
+    if (hash === '#guides') return renderList(true);
     if (hash.indexOf('#pooja/') === 0) {
       var rest = hash.slice('#pooja/'.length);
       if (/\/order$/.test(rest)) return renderOrder(rest.replace(/\/order$/, ''));
