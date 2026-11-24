@@ -1,4 +1,4 @@
-/* Subham Asthu — samagri order catalogue (no prices). Each item: [Tamil, English, unit, default quantity, usually-at-home?].
+/* Subham Astu — samagri order catalogue (no prices). Each item: [Tamil, English, unit, default quantity, usually-at-home?].
    Used by the online order page: the customer edits quantities, adds missing items from this A-Z list and adds comments. */
 (function () {
   'use strict';

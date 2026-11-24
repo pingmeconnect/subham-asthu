@@ -1,4 +1,4 @@
-/* Subham Asthu — priest/cook directory, booking request, My bookings (Phase 4/6).
+/* Subham Astu — priest/cook directory, booking request, My bookings (Phase 4/6).
    Public: directory. Login: request a booking. Phone numbers are never listed; the server
    returns them only on a booking the partner has accepted. */
 (function () {

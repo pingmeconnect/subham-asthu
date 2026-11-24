@@ -1,4 +1,4 @@
-/* Subham Asthu — pooja catalog seed + content (Phase 3).
+/* Subham Astu — pooja catalog seed + content (Phase 3).
    Source: pooja-catalog.md (48 items, 4 categories).
    Mantra Rule: only self-done home poojas (is_self_pooja) carry mantras.
    Priest-led kinds (homa, puja, samskara) carry samagri + steps only.

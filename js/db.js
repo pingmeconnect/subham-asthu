@@ -1,4 +1,4 @@
-/* Subham Asthu — Supabase connection (live).
+/* Subham Astu — Supabase connection (live).
    The browser never reads tables directly. Every call goes to a sa_* function in the database,
    which checks the session token (or admin role) itself. Requires the supabase-js CDN script
    in index.html, loaded before this file. */

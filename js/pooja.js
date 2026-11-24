@@ -1,4 +1,4 @@
-/* Subham Asthu — pooja list, pooja detail, samagri order, branded PDF (Phase 3, logo Phase 5).
+/* Subham Astu — pooja list, pooja detail, samagri order, branded PDF (Phase 3, logo Phase 5).
    Public: list + detail + PDF. Login required only for the samagri order. */
 (function () {
   'use strict';
@@ -11,7 +11,7 @@
   var RETURN_KEY = 'subham-asthu-return';
   var JSPDF_SRC = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
   var H2C_SRC = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
-  var LOGO_SRC = 'img/logo.png';
+  var LOGO_SRC = 'img/subham-astu-emblem.png';
 
   var mtSize = 1.4;
   function todayStr() {
@@ -127,7 +127,7 @@
   // Tamil month starts that are confirmed; later months show only the English date.
   var TM = [['2026-11-17', 'கார்த்திகை', 'Karthigai'], ['2026-12-16', 'மார்கழி', 'Margazhi'], ['2027-01-15', 'தை', 'Thai']];
   var TM_END = '2027-02-12';
-  var CAT_COLOR = { daily_monthly: '#7A1C1C', annual_vratam: '#B45309', home_subha_homa: '#2E7D32', samskara_pitru: '#3F5BA9' };
+  var CAT_COLOR = { daily_monthly: '#702C35', annual_vratam: '#B18A45', home_subha_homa: '#581E28', samskara_pitru: '#75685B' };
 
   function parts(ymd) { var a = ymd.split('-'); return new Date(Number(a[0]), Number(a[1]) - 1, Number(a[2])); }
   function fmt(d) { var m = d.getMonth() + 1, x = d.getDate(); return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (x < 10 ? '0' : '') + x; }
@@ -185,7 +185,7 @@
         '<div class="cal-dl">' + dateLabel(d) + (d === t ? ' · <b>' + bi('இன்று', 'Today') + '</b>' : '') + '</div>' +
         groups[d].map(function (x) {
           var r = by[x.slug];
-          return '<a class="cal-item" style="--cc:' + (CAT_COLOR[r.category] || '#7A1C1C') + '" href="#pooja/' + esc(r.slug) + '"><span>' + bi(esc(r.name_ta), esc(r.name_en)) + '</span>' +
+          return '<a class="cal-item" style="--cc:' + (CAT_COLOR[r.category] || '#702C35') + '" href="#pooja/' + esc(r.slug) + '"><span>' + bi(esc(r.name_ta), esc(r.name_en)) + '</span>' +
             (x.note_ta || x.note_en ? '<small>' + bi(esc(x.note_ta || x.note_en), esc(x.note_en || x.note_ta)) + '</small>' : '') + '</a>';
         }).join('') + '</div></div>';
     }).join('');
@@ -294,7 +294,7 @@
       if (!p) { box.innerHTML = '<p>' + bi(MSG.not_found[0], MSG.not_found[1]) + '</p>'; return; }
       var d = sheetData(p);
       var info = infoFor(p) || {};
-      var cc = CAT_COLOR[p.category] || '#7A1C1C';
+      var cc = CAT_COLOR[p.category] || '#702C35';
       var t0 = todayStr();
       var mine = dates.filter(function (x) { return x.slug === slug && x.date >= t0; }).slice(0, 3);
       var whenVal = (d.when ? '<p>' + bi(esc(d.when[0]), esc(d.when[1])) + '</p>' : (info.start ? '' : '')) +
@@ -398,13 +398,15 @@
     page.innerHTML =
       '<div class="pdf-wm">' + watermark() + '</div>' +
       '<div class="pdf-head"><img class="pdf-logo" src="' + LOGO_SRC + '" alt="">' +
-      '<div class="pdf-brand">' + bi('சுபம் அஸ்து', 'Subham Asthu') + '</div>' +
+      '<div class="pdf-brandbox"><div class="pdf-brand">சுபம் அஸ்து</div><div class="pdf-brand-en">SUBHAM ASTU</div>' +
+      '<div class="pdf-tagline">எல்லாம் மங்களமாகட்டும்!</div></div>' +
       '<div class="pdf-pn"></div></div>' +
       '<div class="pdf-body">' + (first ? '' : '<div class="pdf-cont">' + titleHtml + '</div>') + '</div>' +
       '<div class="pdf-foot">' +
-        '<div class="pdf-foot-brand"><img class="pdf-foot-logo" src="' + LOGO_SRC + '" alt="">' +
-        '<strong>' + bi('சுபம் அஸ்து', 'Subham Asthu') + '</strong></div>' +
-        '<div>' + watermark() + '</div></div>';
+        '<div class="pdf-foot-brand"><strong>சுபம் அஸ்து | SUBHAM ASTU</strong> <span class="pdf-foot-tag">எல்லாம் மங்களமாகட்டும்!</span></div>' +
+        '<div>' + watermark() + '</div>' +
+        '<div class="pdf-foot-meta"><span>' + (/^https?:/.test(location.protocol) ? esc(location.host) : '') + '</span>' +
+        '<span>© ' + new Date().getFullYear() + ' சுபம் அஸ்து</span><span class="pdf-pn"></span></div></div>';
     return page;
   }
 
@@ -482,7 +484,7 @@
       }
     });
     pages.forEach(function (pg, i) {
-      pg.querySelector('.pdf-pn').textContent = (i + 1) + ' / ' + pages.length;
+      Array.prototype.forEach.call(pg.querySelectorAll('.pdf-pn'), function (n) { n.textContent = (i + 1) + ' / ' + pages.length; });
     });
     return pages;
   }
@@ -522,7 +524,7 @@
             doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 210, 297);
           });
         });
-        return chain.then(function () { doc.save('subham-asthu-' + p.slug + '-mantras.pdf'); });
+        return chain.then(function () { doc.save('subham-astu-' + p.slug + '-mantras.pdf'); });
       });
     }).then(function () {
       out.innerHTML = '';

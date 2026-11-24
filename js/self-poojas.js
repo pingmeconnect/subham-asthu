@@ -1,4 +1,4 @@
-/* Subham Asthu — content for poojas a family can do at home (is_self_pooja).
+/* Subham Astu — content for poojas a family can do at home (is_self_pooja).
    Small line icons for checklist items, a library of traditional mantras in Tamil script, and
    pooja-specific samagri, steps and mantras for all 20 self-done poojas.
    Priest-led poojas (homas, samskaras) never use mantras (project rule 7).
@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var M = '#741C20', G = '#C49A39';
+  var M = '#702C35', G = '#B18A45';
   function svg(inner) {
     return '<svg class="ico" viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="' + M +
       '" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + inner + '</svg>';

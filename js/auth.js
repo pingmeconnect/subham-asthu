@@ -1,4 +1,4 @@
-/* Subham Asthu — mobile + PIN auth on Supabase (Phase 6).
+/* Subham Astu — mobile + PIN auth on Supabase (Phase 6).
    The database checks PINs (bcrypt), lockouts and reset codes. The browser keeps only the
    session token. No SMS/WhatsApp OTP: email is the only PIN-reset channel. */
 (function () {

@@ -1,4 +1,4 @@
-/* Subham Asthu — account screens (Phase 2, admin link Phase 5): log in, register, email PIN reset. */
+/* Subham Astu — account screens (Phase 2, admin link Phase 5): log in, register, email PIN reset. */
 (function () {
   'use strict';
 

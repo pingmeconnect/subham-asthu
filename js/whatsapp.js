@@ -1,4 +1,4 @@
-/* Subham Asthu — WhatsApp message previews (Phase 5/7). The database queues and renders the live
+/* Subham Astu — WhatsApp message previews (Phase 5/7). The database queues and renders the live
    messages from app_settings (sa_queue_wa). This file only previews the same templates for the
    Admin screen, using the sample values stored in settings. Exactly four triggers:
      1  order_received                      Samagri order received

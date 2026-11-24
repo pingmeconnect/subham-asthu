@@ -1,4 +1,4 @@
-/* Subham Asthu — priest/cook labels and fee ranges (Phase 4). Partner rows live in the
+/* Subham Astu — priest/cook labels and fee ranges (Phase 4). Partner rows live in the
    database (partner_profiles); placeholder profiles are seeded there and hidden from customers. */
 (function () {
   'use strict';

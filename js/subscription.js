@@ -1,4 +1,4 @@
-/* Subham Asthu — date helper for the app (Phase 4/7). The subscription rules themselves
+/* Subham Astu — date helper for the app (Phase 4/7). The subscription rules themselves
    (free events, grace day, enable switch, fee ranges) are computed in the database from
    app_settings; see sa_partner_state in schema.sql / migration_app_settings.sql. */
 (function () {

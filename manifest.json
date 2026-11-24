@@ -1,5 +1,5 @@
 {
-  "name": "சுபம் அஸ்து · Subham Asthu",
+  "name": "SUBHAM ASTU | சுபம் அஸ்து",
   "short_name": "சுபம் அஸ்து",
   "description": "Connects families in Tamil Nadu with priests, cooks and pooja stores.",
   "lang": "ta",
@@ -8,8 +8,8 @@
   "id": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#FDF9F3",
-  "theme_color": "#7A1C1C",
+  "background_color": "#FAF7F0",
+  "theme_color": "#702C35",
   "icons": [
     {
       "src": "img/icon-192.png",

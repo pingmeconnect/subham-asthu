@@ -1,4 +1,4 @@
-/* Subham Asthu — online samagri order page: edit items -> review -> submit. No prices; payment is settled directly. */
+/* Subham Astu — online samagri order page: edit items -> review -> submit. No prices; payment is settled directly. */
 (function () {
   'use strict';
 
@@ -67,7 +67,7 @@
     var priestNote = !p.is_self_pooja
       ? '<p class="pj-note">' + bi('குறிப்பு: இந்தப் பட்டியல் பொதுவானது. உங்கள் வாத்தியார் அறிவுறுத்தலின்படியும் உங்கள் குடும்ப வழக்கப்படியும் சில சாமான்கள் மாறலாம். வாத்தியாரிடம் கேட்டு உறுதி செய்த பின் ஆர்டர் செய்யவும்.',
         'Note: This list is general. Items may change as your priest advises and as per your family custom. Please confirm with your priest before ordering.') + '</p>' : '';
-    box.innerHTML = '<div class="pj od" style="--cc:' + (st.color || '#7A1C1C') + '">' + head(p, 1) +
+    box.innerHTML = '<div class="pj od" style="--cc:' + (st.color || '#702C35') + '">' + head(p, 1) +
       '<section class="pj-card"><h2>1. ' + bi('சாமான்களைச் சரிபார்க்கவும்', 'Check your items') + '</h2>' +
       '<p class="od-help">' + bi('தேவையில்லாததை டிக் நீக்கவும்; அளவை மாற்றலாம்.', 'Untick what you do not need. You can change the quantity.') + '</p>' + priestNote +
       '<ul class="od-list" id="od-list">' + st.rows.map(rowHtml).join('') + '</ul>' +
@@ -163,7 +163,7 @@
   // ---------- Step 2: review ----------
   function review(box, p) {
     var chosen = st.rows.filter(function (r) { return r.on && r.qty > 0; });
-    box.innerHTML = '<div class="pj od" style="--cc:' + (st.color || '#7A1C1C') + '">' + head(p, 2) +
+    box.innerHTML = '<div class="pj od" style="--cc:' + (st.color || '#702C35') + '">' + head(p, 2) +
       '<section class="pj-card"><h2>' + bi('உங்கள் ஆர்டரைச் சரிபாருங்கள்', 'Please check your order') + '</h2>' +
       '<ul class="od-sum">' + chosen.map(function (r) {
         var it = O.info(r.key);

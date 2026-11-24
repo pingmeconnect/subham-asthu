@@ -538,7 +538,7 @@
     out.forEach(function (txt, i) {
       var a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob(['﻿' + txt], { type: 'text/csv' }));
-      a.download = 'subham-asthu-contacts-' + (i + 1) + '.csv';
+      a.download = 'subham-astu-contacts-' + (i + 1) + '.csv';
       document.body.appendChild(a); a.click(); a.remove();
     });
   }

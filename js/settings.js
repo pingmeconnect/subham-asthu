@@ -1,4 +1,4 @@
-/* Subham Asthu — live app settings (Phase 7). Loads every rule, fee range, threshold, text and
+/* Subham Astu — live app settings (Phase 7). Loads every rule, fee range, threshold, text and
    WhatsApp template from the database once per page load. Other scripts wait on SASettings.ready().
    Elements with data-setting="<key>" are filled with that text setting ({ta, en}) on load. */
 (function () {
