@@ -143,8 +143,8 @@
       me: ['மூன்று கண்ணுடைய, வளம் தருபவனை வணங்குகிறேன்; பழம் காம்பிலிருந்து விடுபடுவது போல, மரண பயத்திலிருந்து என்னை விடுவிப்பாயாக.', 'We worship the three-eyed giver of nourishment; as a ripe fruit frees itself from its stem, free us from the fear of death.'] },
     sivapuranam: { t: ['சிவபுராணம் (திருவாசகம்)', 'Sivapuranam (Thiruvasagam)'], v: ['நமச்சிவாய வாழ்க நாதன் தாள் வாழ்க', 'இமைப்பொழுதும் என் நெஞ்சில் நீங்காதான் தாள் வாழ்க', 'கோகழி ஆண்ட குருமணி தன் தாள் வாழ்க ||'],
       me: ['மாணிக்கவாசகர் பாடிய சிவபுராணத்தின் தொடக்க வரிகள்.', 'Opening lines of Sivapuranam by Manikkavasagar.'] },
-    lingashtaka: { t: ['லிங்காஷ்டகம்', 'Lingashtakam'], v: ['ப்ரஹ்ம முராரி ஸுரார்ச்சித லிங்கம் நிர்மல பாஸித ஶோபித லிங்கம் |', 'ஜன்மஜ துக்க வினாஶக லிங்கம் தத்ப்ரணமாமி ஸதாஶிவ லிங்கம் ||'],
-      me: ['பிரம்மா, விஷ்ணு, தேவர்களால் வணங்கப்படும், பிறவித் துயரை அழிக்கும் சதாசிவ லிங்கத்தை வணங்குகிறேன்.', 'I bow to the Sadashiva Linga, worshipped by Brahma, Vishnu and the gods, destroyer of the sorrow of rebirth.'] },
+    lingashtaka: { t: ['லிங்காஷ்டகம் (1-4)', 'Lingashtakam (1-4)'], v: ['ப்ரஹ்மமுராரி ஸுரார்சித லிங்கம் நிர்மலபாஸித ஶோபித லிங்கம் |', 'ஜன்மஜ து:கவிநாஶக லிங்கம் தத்ப்ரணமாமி ஸதாஶிவ லிங்கம் ||', 'தேவமுநிப்ரவரார்சித லிங்கம் காமதஹன கருணாகர லிங்கம் |', 'ராவணதர்பவிநாஶன லிங்கம் தத்ப்ரணமாமி ஸதாஶிவ லிங்கம் ||', 'ஸர்வஸுகந்தி ஸுலேபித லிங்கம் புத்திவிவர்தன காரண லிங்கம் |', 'ஸித்தஸுராஸுர வந்தித லிங்கம் தத்ப்ரணமாமி ஸதாஶிவ லிங்கம் ||', 'கனகமஹாமணி பூஷித லிங்கம் பணிபதிவேஷ்டித ஶோபித லிங்கம் |', 'தக்ஷஸுயஜ்ஞ விநாஶன லிங்கம் தத்ப்ரணமாமி ஸதாஶிவ லிங்கம் ||'],
+      me: ['சதாசிவ லிங்கத்தைப் போற்றும் எட்டுப் பாடல்களில் முதல் நான்கு: பிரம்மாவும் விஷ்ணுவும் வணங்கும், களங்கமற்ற, பிறவித் துன்பம் போக்கும் லிங்கத்தை வணங்குகிறேன்.', 'First four of eight verses praising the Sadashiva lingam, worshipped by Brahma and Vishnu, spotless, destroyer of the sorrow of birth.'] },
     uma: { t: ['உமாமகேஸ்வர நாமம்', 'Uma-Maheshwara name'], v: ['ஓம் உமாமஹேஶ்வராப்யாம் நம: ||'], me: ['உமையும் மகேசனும் ஆகிய இருவருக்கும் வணக்கம்.', 'Salutations to Uma and Maheshwara.'] },
     vishnu_shanta: { t: ['விஷ்ணு தியானம்', 'Vishnu meditation'], v: ['ஶாந்தாகாரம் புஜகஶயநம் பத்மநாபம் ஸுரேஶம்', 'விஶ்வாதாரம் ககநஸத்ருஶம் மேகவர்ணம் ஶுபாங்கம் |', 'லக்ஷ்மீகாந்தம் கமலநயநம் யோகிஹ்ருத்த்யாநகம்யம்', 'வந்தே விஷ்ணும் பவபயஹரம் ஸர்வலோகைகநாதம் ||'],
       me: ['அமைதியான வடிவினர், பாம்புப் படுக்கையில் துயில்பவர், தாமரை நாபியர்; பிறவிப் பயம் தீர்க்கும் உலகநாதன் விஷ்ணுவை வணங்குகிறேன்.', 'I bow to the serene Vishnu reclining on the serpent, lotus-naveled lord of all worlds, remover of the fear of rebirth.'] },
@@ -172,7 +172,27 @@
       me: ['பாஸ்கரனை அறிவோம்; பேரொளி தருபவனைத் தியானிப்போம்; சூரியன் நம்மை நல்வழிப்படுத்தட்டும்.', 'We know Bhaskara and meditate on the giver of great light; may the Sun guide us.'] },
     kaveri: { t: ['நதி வணக்கம்', 'River prayer'], v: ['கங்கே ச யமுநே சைவ கோதாவரி ஸரஸ்வதி |', 'நர்மதே ஸிந்து காவேரி ஜலேஸ்மிந் ஸந்நிதிம் குரு ||'],
       me: ['கங்கை, யமுனை, கோதாவரி, சரஸ்வதி, நர்மதை, சிந்து, காவேரி ஆகிய நதிகளே, இந்த நீரில் வந்து அமையுங்கள்.', 'O Ganga, Yamuna, Godavari, Saraswati, Narmada, Sindhu and Kaveri, be present in this water.'] },
-    lalita_nama: { t: ['அம்பாள் நாமம்', 'Ambal name'], v: ['ஓம் ஶ்ரீ மாத்ரே நம: ||'], me: ['ஸ்ரீ அன்னைக்கு வணக்கம்.', 'Salutations to Sri Mata, the Divine Mother.'] }
+    lalita_nama: { t: ['அம்பாள் நாமம்', 'Ambal name'], v: ['ஓம் ஶ்ரீ மாத்ரே நம: ||'], me: ['ஸ்ரீ அன்னைக்கு வணக்கம்.', 'Salutations to Sri Mata, the Divine Mother.'] },
+    lingashtaka2: { t: ['லிங்காஷ்டகம் (5-8)', 'Lingashtakam (5-8)'], v: ['குங்குமசந்தன லேபித லிங்கம் பங்கஜஹார ஸுஶோபித லிங்கம் |', 'ஸஞ்சித பாபவிநாஶன லிங்கம் தத்ப்ரணமாமி ஸதாஶிவ லிங்கம் ||', 'தேவகணார்சித ஸேவித லிங்கம் பாவைர்பக்திபிரேவ ச லிங்கம் |', 'தினகரகோடி ப்ரபாகர லிங்கம் தத்ப்ரணமாமி ஸதாஶிவ லிங்கம் ||', 'அஷ்டதளோபரிவேஷ்டித லிங்கம் ஸர்வஸமுத்பவ காரண லிங்கம் |', 'அஷ்டதரித்ர வினாஶன லிங்கம் தத்ப்ரணமாமி ஸதாஶிவ லிங்கம் ||', 'ஸுரகுருஸுரவர பூஜித லிங்கம் ஸுரவனபுஷ்ப ஸதார்சித லிங்கம் |', 'பராத்பரம் பரமாத்மக லிங்கம் தத்ப்ரணமாமி ஸதாஶிவ லிங்கம் ||', 'லிங்காஷ்டகமிதம் புண்யம் ய: படேச்சிவஸந்நிதௌ |', 'ஶிவலோகமவாப்னோதி ஶிவேன ஸஹ மோததே ||'],
+      me: ['குங்குமம் சந்தனம் பூசிய, பாவம் போக்கும், கோடி சூரிய ஒளியுடைய, வறுமை நீக்கும், பரம்பொருளான லிங்கத்தை வணங்குகிறேன். இதைச் சிவ சந்நிதியில் படிப்பவர் சிவலோகம் அடைவார்.', 'I bow to the lingam smeared with kumkum and sandal, destroyer of sins and poverty, bright as a crore of suns, the Supreme. One who reads this near Shiva reaches the realm of Shiva.'] },
+    pancha1: { t: ['சிவ பஞ்சாக்ஷர ஸ்தோத்ரம் (1-3)', 'Shiva Panchakshara Stotram (1-3)'], v: ['நாகேந்த்ரஹாராய த்ரிலோசனாய பஸ்மாங்கராகாய மஹேஶ்வராய |', 'நித்யாய ஶுத்தாய திகம்பராய தஸ்மை நகாராய நம: ஶிவாய ||', 'மந்தாகினீ ஸலில சந்தன சர்சிதாய நந்தீஶ்வர ப்ரமதநாத மஹேஶ்வராய |', 'மந்தாரமுக்ய பஹுபுஷ்ப ஸுபூஜிதாய தஸ்மை மகாராய நம: ஶிவாய ||', 'ஶிவாய கௌரீவதனாப்ஜ ப்ருந்த ஸூர்யாய தக்ஷாத்வர நாஶகாய |', 'ஶ்ரீ நீலகண்டாய வ்ருஷத்வஜாய தஸ்மை ஶிகாராய நம: ஶிவாய ||'],
+      me: ['பாம்பை மாலையாக அணிந்த, மூன்று கண்ணுடைய, திருநீறு பூசிய, தூய, திசைகளை ஆடையாகக் கொண்ட சிவனுக்கு ந, ம, ஶி என்ற எழுத்துகளால் வணக்கம்.', 'Salutations to Shiva - serpent-garlanded, three-eyed, smeared with sacred ash, pure and sky-clad - through the syllables Na, Ma and Shi.'] },
+    pancha2: { t: ['சிவ பஞ்சாக்ஷர ஸ்தோத்ரம் (4-5)', 'Shiva Panchakshara Stotram (4-5)'], v: ['வஶிஷ்ட கும்போத்பவ கௌதமார்ய முனீந்த்ர தேவார்சித ஶேகராய |', 'சந்த்ரார்க வைஶ்வானர லோசனாய தஸ்மை வகாராய நம: ஶிவாய ||', 'யஜ்ஞ ஸ்வரூபாய ஜடாதராய பினாக ஹஸ்தாய ஸனாதனாய |', 'திவ்யாய தேவாய திகம்பராய தஸ்மை யகாராய நம: ஶிவாய ||', 'பஞ்சாக்ஷரமிதம் புண்யம் ய: படேச்சிவஸந்நிதௌ |', 'ஶிவலோகமவாப்னோதி ஶிவேன ஸஹ மோததே ||'],
+      me: ['முனிவர்களும் தேவர்களும் வணங்கும், சந்திரன் சூரியன் அக்னியை கண்களாகக் கொண்ட, யாகத்தின் வடிவான சிவனுக்கு வ, ய என்ற எழுத்துகளால் வணக்கம். இந்த ஐந்தெழுத்துத் துதியைச் சிவ சந்நிதியில் படிப்பவர் சிவலோகம் அடைவார்.', 'Salutations to Shiva, worshipped by sages and gods, whose eyes are the moon, sun and fire, the form of sacrifice, through Va and Ya. One who reads this near Shiva reaches the realm of Shiva.'] },
+    lakshmi_a1: { t: ['மகாலட்சுமி அஷ்டகம் (1-4)', 'Mahalakshmi Ashtakam (1-4)'], v: ['நமஸ்தேஸ்து மஹாமாயே ஶ்ரீபீடே ஸுரபூஜிதே |', 'ஶங்கசக்ரகதாஹஸ்தே மஹாலக்ஷ்மி நமோஸ்துதே ||', 'நமஸ்தே கருடாரூடே கோலாஸுரபயங்கரி |', 'ஸர்வபாபஹரே தேவி மஹாலக்ஷ்மி நமோஸ்துதே ||', 'ஸர்வஜ்ஞே ஸர்வவரதே ஸர்வதுஷ்டபயங்கரி |', 'ஸர்வது:கஹரே தேவி மஹாலக்ஷ்மி நமோஸ்துதே ||', 'ஸித்திபுத்திப்ரதே தேவி புக்திமுக்திப்ரதாயினி |', 'மந்த்ரமூர்தே ஸதா தேவி மஹாலக்ஷ்மி நமோஸ்துதே ||'],
+      me: ['இந்திரன் இயற்றிய துதி. சங்கு சக்கரம் கதை ஏந்தியவளே, கருடன் மீது அமர்ந்தவளே, எல்லாம் அறிந்து வரம் தருபவளே, துன்பம் தீர்ப்பவளே, மகாலட்சுமியே, வணக்கம்.', 'Hymn by Indra. Salutations, Mahalakshmi: bearer of conch, discus and mace, rider of Garuda, all-knowing giver of boons, remover of all sorrow.'] },
+    lakshmi_a2: { t: ['மகாலட்சுமி அஷ்டகம் (5-8)', 'Mahalakshmi Ashtakam (5-8)'], v: ['ஆத்யந்தரஹிதே தேவி ஆத்யஶக்தி மஹேஶ்வரி |', 'யோகஜே யோகஸம்பூதே மஹாலக்ஷ்மி நமோஸ்துதே ||', 'ஸ்தூலஸூக்ஷ்ம மஹாரௌத்ரே மஹாஶக்தி மஹோதரே |', 'மஹாபாபஹரே தேவி மஹாலக்ஷ்மி நமோஸ்துதே ||', 'பத்மாஸனஸ்திதே தேவி பரப்ரஹ்மஸ்வரூபிணி |', 'பரமேஶி ஜகன்மாத: மஹாலக்ஷ்மி நமோஸ்துதே ||', 'ஶ்வேதாம்பரதரே தேவி நானாலங்காரபூஷிதே |', 'ஜகத்ஸ்திதே ஜகன்மாத: மஹாலக்ஷ்மி நமோஸ்துதே ||', 'த்ரிகாலம் ய: படேந்நித்யம் மஹாஶத்ருவிநாஶனம் |', 'மஹாலக்ஷ்மீர்பவேந்நித்யம் ப்ரஸன்னா வரதா ஶுபா ||'],
+      me: ['ஆதியும் அந்தமும் இல்லாதவளே, தாமரையில் அமர்ந்தவளே, வெண்ணாடை அணிந்தவளே, உலகத்தின் தாயே, மகாலட்சுமியே, வணக்கம். மூன்று வேளையும் படிப்பவருக்குத் தடைகள் நீங்கி, மகாலட்சுமி மகிழ்ந்து வரம் அருள்வாள்.', 'Salutations to Mahalakshmi, without beginning or end, seated on the lotus, in white garments, mother of the world. For one who reads it thrice daily, obstacles end and Lakshmi gladly grants boons.'] },
+    sankata_stotra: { t: ['சங்கடநாசன கணேச ஸ்தோத்ரம்', 'Sankata Nashana Ganesha Stotram'], v: ['ப்ரணம்ய ஶிரஸா தேவம் கௌரீபுத்ரம் விநாயகம் |', 'பக்தாவாஸம் ஸ்மரேந்நித்யம் ஆயு:காமார்த்தஸித்தயே ||', 'ப்ரதமம் வக்ரதுண்டம் ச ஏகதந்தம் த்விதீயகம் |', 'த்ருதீயம் க்ருஷ்ணபிங்காக்ஷம் கஜவக்த்ரம் சதுர்த்தகம் ||', 'லம்போதரம் பஞ்சமம் ச ஷஷ்டம் விகடமேவ ச |', 'ஸப்தமம் விக்னராஜம் ச தூம்ரவர்ணம் ததாஷ்டமம் ||', 'நவமம் பாலசந்த்ரம் ச தஶமம் து விநாயகம் |', 'ஏகாதஶம் கணபதிம் த்வாதஶம் து கஜாநநம் ||', 'த்வாதஶைதானி நாமானி த்ரிஸந்த்யம் ய: படேந்நர: |', 'ந ச விக்னபயம் தஸ்ய ஸர்வஸித்திகரம் ப்ரபோ ||'],
+      me: ['நாரத புராணத்தில் உள்ள துதி. கௌரியின் மகன் விநாயகரைத் தலை வணங்குகிறேன். வக்ரதுண்டர், ஏகதந்தர், கிருஷ்ணபிங்காக்ஷர், கஜவக்த்ரர், லம்போதரர், விகடர், விக்னராஜர், தூம்ரவர்ணர், பாலசந்திரர், விநாயகர், கணபதி, கஜானனர் - இந்தப் பன்னிரண்டு பெயர்களை மூன்று வேளை சொல்பவருக்குத் தடை பயம் இல்லை.', 'From the Narada Purana. I bow to Vinayaka, son of Gauri. These twelve names - Vakratunda, Ekadanta, Krishnapingaksha, Gajavaktra, Lambodara, Vikata, Vighnaraja, Dhumravarna, Bhalachandra, Vinayaka, Ganapati, Gajanana - said at dawn, noon and dusk free one from fear of obstacles.'] },
+    appar: { t: ['திருநாவுக்கரசர் தேவாரம்', 'Appar Thevaram'], v: ['மாசில் வீணையும் மாலை மதியமும்', 'வீசு தென்றலும் வீங்கிள வேனிலும்', 'மூசு வண்டறை பொய்கையும் போன்றதே', 'ஈசன் எந்தை இணையடி நீழலே ||'],
+      me: ['குற்றமற்ற வீணை இசை, மாலை நிலவு, வீசும் தென்றல், இளவேனில், வண்டு ஒலிக்கும் குளம் போல இனிது - ஈசனான என் தந்தையின் இரு திருவடி நிழல்.', 'Sweet as a faultless veena, evening moon, soft breeze, early spring and a bee-hummed pond is the shade of the feet of my Lord Shiva.'] },
+    sambandar: { t: ['திருஞானசம்பந்தர் தேவாரம்', 'Sambandar Thevaram'], v: ['காதலாகிக் கசிந்து கண்ணீர்மல்கி', 'ஓதுவார்தமை நன்னெறிக் குய்ப்பது', 'வேதம் நான்கினும் மெய்ப்பொரு ளாவது', 'நாதன் நாமம் நமச்சி வாயவே ||'],
+      me: ['அன்புடன் உருகிக் கண்ணீர் பெருகப் பாடுவோரை நல்வழியில் செலுத்துவது, நான்கு வேதங்களின் உண்மைப் பொருளானது, இறைவனின் திருநாமமான நமச்சிவாயவே.', 'The name Namah Shivaya leads those who chant it with melting love and tears to the good path; it is the true meaning of the four Vedas.'] },
+    abirami: { t: ['அபிராமி அந்தாதி - காப்பு', 'Abirami Anthadhi - first verse'], v: ['உதிக்கின்ற செங்கதிர் உச்சித் திலகம் உணர்வுடையோர்', 'மதிக்கின்ற மாணிக்கம் மாதுளம் போது மலர்க்கமலை', 'துதிக்கின்ற மின்கொடி மென்கடிக் குங்கும தோயமென்ன', 'விதிக்கின்ற மேனி அபிராமி என்றன் விழுத்துணையே ||'],
+      me: ['உதிக்கும் செங்கதிர், நெற்றித் திலகம், மாணிக்கம் போன்ற அழகிய மேனியுடைய அபிராமி அன்னையே என் சிறந்த துணை.', 'Mother Abirami, with a form bright as the rising sun and a ruby, is my greatest support.'] },
+    kamban: { t: ['அனுமன் - கம்பராமாயணம்', 'Hanuman - Kamba Ramayanam'], v: ['அஞ்சிலே ஒன்று பெற்றான் அஞ்சிலே ஒன்றைத் தாவி', 'அஞ்சிலே ஒன்றா றாகத் தாயவ ளுக்காக ஏகி', 'அஞ்சிலே ஒன்று பெற்ற அணங்கைக்கண் டயலார் ஊரில்', 'அஞ்சிலே ஒன்றை வைத்தான் அவன்நம்மை அளித்துக் காப்பான் ||'],
+      me: ['ஐம்பூதங்களில் ஒன்றான வாயுவின் மகன் அனுமன், கடலைத் தாண்டி சீதையைக் கண்டு, இலங்கையில் தீ வைத்தவன்; அவன் நம்மைக் காப்பான்.', 'Hanuman, son of the Wind, crossed the sea, found Sita and set Lanka afire; may he protect us.'] }
   };
 
   // ---------- reusable steps: [Tamil, English] ----------
@@ -392,17 +412,68 @@
   };
 
   // Turns a pooja entry into ready-to-render data (resolved items, steps and mantras).
+
+  // ---------- extra full stotras, added after the core mantras (so step numbers stay valid) ----------
+  var SHIVA = [['pancha1', 'அபிஷேகம் / வழிபாட்டின் போது', 'During abhishekam / worship', '1'], ['pancha2', 'தொடர்ந்து', 'Continue', '1'],
+    ['lingashtaka', 'ஆரத்திக்கு முன்', 'Before aarti', '1'], ['lingashtaka2', 'தொடர்ந்து', 'Continue', '1'],
+    ['appar', 'நிறைவில்', 'At the end', '1'], ['sambandar', 'நிறைவில்', 'At the end', '1']];
+  var LAKSHMI = [['lakshmi_a1', 'அர்ச்சனைக்குப் பின்', 'After the offerings', '1'], ['lakshmi_a2', 'தொடர்ந்து', 'Continue', '1']];
+  var AMBAL = [['abirami', 'நிறைவில்', 'At the end', '1']];
+  var EXTRA = {
+    'sankatahara-chaturthi': [['sankata_stotra', 'அர்ச்சனைக்குப் பின்', 'After the offerings', '1']],
+    'vinayagar-chaturthi': [['sankata_stotra', 'அர்ச்சனைக்குப் பின்', 'After the offerings', '1']],
+    'pradosham': SHIVA, 'maha-shivaratri': SHIVA,
+    'varalakshmi-vratam': LAKSHMI.concat(AMBAL), 'weekly-home-pooja': LAKSHMI, 'aadi-velli-pooram-perukku': LAKSHMI.concat(AMBAL),
+    'navaratri-golu-ayudha-pooja': LAKSHMI.concat(AMBAL), 'thiruvilakku-pooja': AMBAL, 'kedara-gauri-vratam': AMBAL,
+    'rama-navami-hanuman-jayanthi': [['kamban', 'நிறைவில்', 'At the end', '1']]
+  };
+
+  // ---------- when to do it: [Tamil, English] ----------
+  var WHEN = {
+    'sankatahara-chaturthi': ['மாதம் ஒருமுறை - தேய்பிறை சதுர்த்தி அன்று மாலை; சந்திரன் உதித்த பின் விரதம் முடிக்கவும்.', 'Once a month on the waning-moon Chaturthi, in the evening; break the fast after moonrise.'],
+    'pradosham': ['மாதம் இருமுறை - திரயோதசி அன்று மாலை சுமார் 4:30–6:00 பிரதோஷ வேளையில்.', 'Twice a month on Trayodashi, in the evening Pradosha time, about 4:30–6:00 PM.'],
+    'pournami-satyanarayana': ['மாதம் ஒருமுறை - பௌர்ணமி அன்று, காலை அல்லது மாலை.', 'Once a month on Pournami (full moon), morning or evening.'],
+    'krithigai': ['மாதம் ஒருமுறை - கிருத்திகை நட்சத்திர நாளில், காலை.', 'Once a month on the Krithigai star day, in the morning.'],
+    'ekadashi': ['மாதம் இருமுறை - ஏகாதசி அன்று விரதம்; மறுநாள் துவாதசி காலையில் விரதம் முடிக்கவும்.', 'Twice a month on Ekadashi; break the fast next morning (Dwadashi).'],
+    'thiruvilakku-pooja': ['வெள்ளி அல்லது செவ்வாய் மாலை, சுமார் 6:00 மணிக்கு.', 'Friday or Tuesday evening, around 6:00 PM.'],
+    'weekly-home-pooja': ['ஒவ்வொரு வெள்ளி அல்லது செவ்வாய், காலை அல்லது மாலை.', 'Every Friday or Tuesday, morning or evening.'],
+    'varalakshmi-vratam': ['ஆவணி பௌர்ணமிக்கு முந்தைய வெள்ளிக்கிழமை (ஆடி / ஆவணி), காலை.', 'The Friday before the Aavani full moon (Aadi/Aavani), in the morning.'],
+    'vinayagar-chaturthi': ['ஆவணி வளர்பிறை சதுர்த்தி (ஆகஸ்ட் / செப்டம்பர்), காலை அல்லது மதியம்.', 'Aavani waxing-moon Chaturthi (Aug/Sep), morning or noon.'],
+    'navaratri-golu-ayudha-pooja': ['புரட்டாசி / ஐப்பசி மாதத்தில் அமாவாசைக்குப் பின் 9 நாள்; கடைசி நாட்களில் சரஸ்வதி / ஆயுத பூஜை.', '9 nights after the Amavasya in Purattasi/Aippasi; Saraswathi and Ayudha Pooja on the last days.'],
+    'karthigai-deepam': ['கார்த்திகை மாதம் கிருத்திகை நட்சத்திரமும் பௌர்ணமியும் சேரும் நாள்; மாலை 6:00 மணிக்கு விளக்கேற்றவும்.', 'In Karthigai month, on the day the Krithigai star meets the full moon; light lamps at about 6:00 PM.'],
+    'maha-shivaratri': ['மாசி தேய்பிறை சதுர்த்தசி; இரவு முழுவதும் விழித்திருந்து நான்கு ஜாமம் வழிபடவும்.', 'Masi waning-moon Chaturdashi; stay awake through the night and worship in four watches.'],
+    'vaikunta-ekadashi': ['மார்கழி வளர்பிறை ஏகாதசி; அதிகாலை.', 'Margazhi waxing-moon Ekadashi; early morning.'],
+    'thai-pongal': ['தை 1 (ஜனவரி 14 / 15) காலை, சூரிய உதயத்தின்போது.', 'Thai 1 (14/15 January), in the morning at sunrise.'],
+    'tamil-puthandu': ['சித்திரை 1 (ஏப்ரல் 14), காலை.', 'Chithirai 1 (14 April), in the morning.'],
+    'aadi-velli-pooram-perukku': ['ஆடி மாதம் வெள்ளிக்கிழமைகள், ஆடிப் பூரம், ஆடிப் பெருக்கு (ஆடி 18).', 'Fridays of Aadi, Aadi Pooram and Aadi Perukku (Aadi 18).'],
+    'kedara-gauri-vratam': ['ஐப்பசி மாதம்; தீபாவளி அமாவாசை அன்று நிறைவு.', 'In Aippasi; concludes on Deepavali Amavasya.'],
+    'skanda-sashti': ['ஐப்பசி வளர்பிறை பிரதமை முதல் சஷ்டி வரை 6 நாள்.', 'Six days from Pratipada to Sashti in Aippasi waxing moon.'],
+    'krishna-jayanthi': ['ஆவணி தேய்பிறை அஷ்டமி (கோகுலாஷ்டமி); மாலை முதல் நள்ளிரவு வரை.', 'Aavani waning-moon Ashtami (Gokulashtami); evening to midnight.'],
+    'rama-navami-hanuman-jayanthi': ['ராம நவமி - பங்குனி / சித்திரை வளர்பிறை நவமி; அனுமன் ஜெயந்தி - மார்கழி அமாவாசை.', 'Rama Navami - waxing-moon Navami in Panguni/Chithirai; Hanuman Jayanthi - Margazhi Amavasya.']
+  };
+
   function get(slug) {
     var d = POOJA[slug];
     if (!d) return null;
+    var list = d.m.slice(), have = {};
+    list.forEach(function (x) { have[x[0]] = true; });
+    var firstExtra = list.length + 1;
+    (EXTRA[slug] || []).forEach(function (x) { if (!have[x[0]]) { list.push(x); have[x[0]] = true; } });
+    var steps = d.steps.map(function (s) {
+      var st = typeof s === 'string' ? S[s] : s;
+      return { ta: st[0], en: st[1], m: st[2] || 0 };
+    });
+    if (list.length >= firstExtra) {
+      steps.splice(Math.max(1, steps.length - 1), 0, {
+        ta: 'நேரம் இருந்தால், PDF-இல் உள்ள கூடுதல் துதிகளையும் (மந்திரம் ' + firstExtra + ' முதல்) படிக்கலாம்.',
+        en: 'If you have time, also read the extra hymns in the PDF (from Mantra ' + firstExtra + ').', m: firstExtra });
+    }
     return {
       time: d.time,
+      when: WHEN[slug] || null,
       samagri: d.sam.map(function (k) { var it = ITEM[k]; return { icon: it[0], ta: it[1], en: it[2] }; }),
-      steps: d.steps.map(function (s) {
-        var st = typeof s === 'string' ? S[s] : s;
-        return { ta: st[0], en: st[1], m: st[2] || 0 };
-      }),
-      mantras: d.m.map(function (x) {
+      steps: steps,
+      mantras: list.map(function (x) {
         var m = MANTRA[x[0]];
         return { ta: m.t[0], en: m.t[1], whenTa: x[1], whenEn: x[2], count: x[3], lines: m.v, meTa: m.me[0], meEn: m.me[1] };
       })

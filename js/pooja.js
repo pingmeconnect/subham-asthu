@@ -78,7 +78,7 @@
   function stepCards(steps) {
     return '<ol class="st-list">' + steps.map(function (s) {
       return '<li>' + bi(esc(s.ta), esc(s.en)) +
-        (s.m ? ' <span class="st-m">' + bi('மந்திரம் ' + s.m, 'Mantra ' + s.m) + '</span>' : '') + '</li>';
+        '</li>';
     }).join('') + '</ol>';
   }
 
@@ -113,31 +113,153 @@
     return P.KINDS[catalogFor(p.slug).kind];
   }
 
+
+  // ---------- Disclaimer shown with every mantra sheet ----------
+  var DISC = ['குறிப்பு: இங்குத் தரப்பட்டுள்ள மந்திரங்கள் பொதுவாக வழக்கத்தில் உள்ளவை; பொது வழிகாட்டுதலுக்காக மட்டுமே. ஒவ்வொரு குடும்பத்திற்கும் தனி வழக்கம் உண்டு. உங்கள் வீட்டுப் பெரியவர்களின் அறிவுறுத்தலின்படியோ, உங்கள் குடும்ப வாத்தியாரின் அறிவுறுத்தலின்படியோ, எப்படிச் செய்ய வேண்டும் என்பதைக் கேட்டுத் தெரிந்து கொண்டு பின்பற்றவும்.',
+    'Note: The mantras here are the commonly used ones, given for general guidance only. Every family has its own tradition. Please ask the elders of your home or your family priest how it should be done in your family, and follow their guidance.'];
+
+  // ---------- Dates (entered by the admin from the Tamil panchangam) ----------
+  var TA_DAY = ['ஞாயிறு', 'திங்கள்', 'செவ்வாய்', 'புதன்', 'வியாழன்', 'வெள்ளி', 'சனி'];
+  var EN_DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var TA_MON = ['ஜன', 'பிப்', 'மார்', 'ஏப்', 'மே', 'ஜூன்', 'ஜூலை', 'ஆக', 'செப்', 'அக்', 'நவ', 'டிச'];
+  var EN_MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  // Tamil month starts that are confirmed; later months show only the English date.
+  var TM = [['2026-11-17', 'கார்த்திகை', 'Karthigai'], ['2026-12-16', 'மார்கழி', 'Margazhi'], ['2027-01-15', 'தை', 'Thai']];
+  var TM_END = '2027-02-12';
+  var CAT_COLOR = { daily_monthly: '#7A1C1C', annual_vratam: '#B45309', home_subha_homa: '#2E7D32', samskara_pitru: '#3F5BA9' };
+
+  function parts(ymd) { var a = ymd.split('-'); return new Date(Number(a[0]), Number(a[1]) - 1, Number(a[2])); }
+  function fmt(d) { var m = d.getMonth() + 1, x = d.getDate(); return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (x < 10 ? '0' : '') + x; }
+  function addDays(ymd, n) { var d = parts(ymd); d.setDate(d.getDate() + n); return fmt(d); }
+  function monthEnd(ymd) { var d = parts(ymd); return fmt(new Date(d.getFullYear(), d.getMonth() + 1, 0)); }
+  function tamilMonth(ymd) {
+    if (ymd > TM_END) return null;
+    var hit = null;
+    TM.forEach(function (t) { if (t[0] <= ymd) hit = t; });
+    return hit;
+  }
+  function tamilMonthEnd(ymd) {
+    var t = tamilMonth(ymd);
+    if (!t) return null;
+    var next = TM.filter(function (x) { return x[0] > t[0]; })[0];
+    return next ? addDays(next[0], -1) : TM_END;
+  }
+  function dateLabel(ymd) {
+    var d = parts(ymd);
+    var tm = tamilMonth(ymd);
+    return bi(d.getDate() + ' ' + TA_MON[d.getMonth()] + ' (' + TA_DAY[d.getDay()] + ')' + (tm ? ' · ' + tm[1] : ''),
+      EN_DAY[d.getDay()] + ', ' + d.getDate() + ' ' + EN_MON[d.getMonth()] + (tm ? ' · ' + tm[2] : ''));
+  }
+
+  var datesCache = null, datesAt = 0;
+  function loadDates() {
+    if (datesCache && Date.now() - datesAt < 600000) return Promise.resolve(datesCache);
+    return DB.rpc('sa_pooja_dates', {}).then(function (r) {
+      datesCache = Array.isArray(r) ? r : [];
+      datesAt = Date.now();
+      return datesCache;
+    }).catch(function () { return []; });
+  }
+
+  var cal = { mode: '30', date: '' };
+
+  function calHtml(rows, dates) {
+    var t = todayStr();
+    var by = {};
+    rows.forEach(function (r) { by[r.slug] = r; });
+    var from = t, to = addDays(t, 30), title;
+    if (cal.mode === 'month') to = monthEnd(t);
+    if (cal.mode === 'tamil') to = tamilMonthEnd(t) || monthEnd(t);
+    if (cal.mode === '3m') to = addDays(t, 92);
+    if (cal.mode === 'date') { from = to = cal.date || t; }
+    var list = dates.filter(function (x) { return x.date >= from && x.date <= to && by[x.slug]; });
+    var groups = {};
+    list.forEach(function (x) { (groups[x.date] = groups[x.date] || []).push(x); });
+    var chip = function (k, ta, en) {
+      return '<button type="button" class="ad-chip' + (cal.mode === k ? ' is-on' : '') + '" data-cal="' + k + '">' + bi(ta, en) + '</button>';
+    };
+    var body = Object.keys(groups).sort().map(function (d) {
+      var d0 = parts(d);
+      return '<div class="cal-day"><div class="cal-date"><strong>' + d0.getDate() + '</strong><span>' + EN_MON[d0.getMonth()] + '</span></div><div class="cal-items">' +
+        '<div class="cal-dl">' + dateLabel(d) + (d === t ? ' · <b>' + bi('இன்று', 'Today') + '</b>' : '') + '</div>' +
+        groups[d].map(function (x) {
+          var r = by[x.slug];
+          return '<a class="cal-item" style="--cc:' + (CAT_COLOR[r.category] || '#7A1C1C') + '" href="#pooja/' + esc(r.slug) + '"><span>' + bi(esc(r.name_ta), esc(r.name_en)) + '</span>' +
+            (x.note_ta || x.note_en ? '<small>' + bi(esc(x.note_ta || x.note_en), esc(x.note_en || x.note_ta)) + '</small>' : '') + '</a>';
+        }).join('') + '</div></div>';
+    }).join('');
+    if (!body) {
+      var nxt = cal.mode === 'date' ? dates.filter(function (x) { return x.date > from && by[x.slug]; })[0] : null;
+      body = '<p class="ad-empty">' + bi('இந்தக் காலத்தில் பதிவு செய்யப்பட்ட விசேஷங்கள் இல்லை.', 'No special poojas listed for this period.') + '</p>' +
+        (nxt ? '<p>' + bi('அடுத்த விசேஷம்: ', 'Next one: ') + '<a href="#pooja/' + esc(nxt.slug) + '">' + bi(esc(by[nxt.slug].name_ta), esc(by[nxt.slug].name_en)) + '</a> - ' + dateLabel(nxt.date) + '</p>' : '');
+    }
+    var legend = Object.keys(P.CATEGORIES).map(function (c) {
+      return '<span class="cal-leg"><i style="background:' + CAT_COLOR[c] + '"></i>' + bi(P.CATEGORIES[c].ta, P.CATEGORIES[c].en) + '</span>';
+    }).join('');
+    return '<div class="cal-box"><h2>📅 ' + bi('வரும் பூஜைகள் & விசேஷங்கள்', 'Coming poojas & special days') + '</h2>' +
+      '<div class="ad-chips">' + chip('30', 'அடுத்த 30 நாள்', 'Next 30 days') + chip('month', 'இந்த மாதம்', 'This month') +
+      (tamilMonth(t) ? chip('tamil', 'இந்த தமிழ் மாதம்', 'This Tamil month') : '') + chip('3m', 'அடுத்த 3 மாதம்', 'Next 3 months') + '</div>' +
+      '<label class="field cal-pick"><span class="ta">ஒரு தேதியைத் தேர்ந்தெடுத்து அன்றைய விசேஷங்களைப் பாருங்கள்</span><span class="en">Pick a date to see what is special that day</span>' +
+      '<input type="date" id="cal-date" min="' + t + '" value="' + esc(cal.date) + '"></label>' +
+      '<div class="cal-legend">' + legend + '</div>' + body + '</div>';
+  }
+
   // ---------- List ----------
   function renderList() {
-    return P.seed().then(function (rows) {
-      var html = '';
+    return Promise.all([P.seed(), loadDates()]).then(function (res) {
+      var rows = res[0], dates = res[1];
+      var t = todayStr();
+      var next = {};
+      dates.forEach(function (x) { if (x.date >= t && !next[x.slug]) next[x.slug] = x.date; });
+      var html = '<div id="pooja-cal">' + calHtml(rows, dates) + '</div>';
       Object.keys(P.CATEGORIES).forEach(function (cat) {
         var items = rows.filter(function (r) { return r.category === cat; });
-        html += '<section class="pooja-group cat-' + cat + '"><h2>' + bi(P.CATEGORIES[cat].ta, P.CATEGORIES[cat].en) + '</h2><div class="pooja-grid">';
+        html += '<section class="pooja-group cat-' + cat + '" style="--cc:' + CAT_COLOR[cat] + '"><h2>' + bi(P.CATEGORIES[cat].ta, P.CATEGORIES[cat].en) + '</h2><div class="pooja-grid">';
         items.forEach(function (r) {
-          html += '<a class="pooja-card" href="#pooja/' + r.slug + '">' +
+          html += '<a class="pooja-card" style="--cc:' + CAT_COLOR[cat] + '" href="#pooja/' + r.slug + '">' +
             '<strong>' + bi(esc(r.name_ta), esc(r.name_en)) + '</strong>' +
+            (next[r.slug] ? '<span class="badge cal-next">' + bi('அடுத்து', 'Next') + ': ' + dateLabel(next[r.slug]) + '</span>' : '') +
             (r.has_cook_option ? '<span class="badge">' + bi('சமையல்காரர் வசதி', 'Cook option') + '</span>' : '') +
             '</a>';
         });
         html += '</div></section>';
       });
-      $('pooja-list').innerHTML = html;
+      var box = $('pooja-list');
+      box._rows = rows; box._dates = dates;
+      box.innerHTML = html;
+      if (!box.dataset.calBound) {
+        box.dataset.calBound = '1';
+        box.addEventListener('click', function (e) {
+          var b = e.target.closest('[data-cal]');
+          if (!b) return;
+          cal.mode = b.getAttribute('data-cal'); cal.date = '';
+          $('pooja-cal').innerHTML = calHtml(box._rows, box._dates);
+        });
+        box.addEventListener('change', function (e) {
+          if (e.target.id !== 'cal-date') return;
+          cal.date = e.target.value; cal.mode = cal.date ? 'date' : '30';
+          $('pooja-cal').innerHTML = calHtml(box._rows, box._dates);
+        });
+      }
+      box._rows = rows; box._dates = dates;
     });
   }
 
   // ---------- Detail ----------
+  function whenBox(d, slug, dates) {
+    var t = todayStr();
+    var mine = dates.filter(function (x) { return x.slug === slug && x.date >= t; }).slice(0, 4);
+    if (!d.when && !mine.length) return '';
+    return '<div class="when-box"><strong>🗓 ' + bi('எப்போது செய்யலாம்?', 'When to do it') + '</strong>' +
+      (d.when ? '<p>' + bi(esc(d.when[0]), esc(d.when[1])) + '</p>' : '') +
+      (mine.length ? '<p>' + bi('வரும் தேதிகள்', 'Coming dates') + ':</p><div class="badges">' +
+        mine.map(function (x) { return '<span class="badge cal-next">' + dateLabel(x.date) + '</span>'; }).join('') + '</div>' : '') + '</div>';
+  }
+
   function renderDetail(slug) {
     var box = $('pooja-detail');
-    return P.seed().then(function () {
-      return P.seed();
-    }).then(function (rows) {
+    return Promise.all([P.seed(), loadDates()]).then(function (res) {
+      var rows = res[0], dates = res[1];
       var p = rows.filter(function (r) { return r.slug === slug; })[0] || null;
       if (!p) { box.innerHTML = '<p>' + bi(MSG.not_found[0], MSG.not_found[1]) + '</p>'; return; }
       var d = sheetData(p);
@@ -149,23 +271,21 @@
         (p.is_self_pooja ? '<span class="badge">' + bi('வீட்டிலேயே செய்யலாம்', 'Can be done at home') + '</span>' : '') +
         (d.time ? '<span class="badge">⏱ ' + bi(esc(d.time[0]), esc(d.time[1])) + '</span>' : '') +
         '</div>' +
+        whenBox(d, slug, dates) +
         '<h2>' + bi('தேவையான சாமான்கள்', 'What you need') + '</h2>' + checkGrid(d.samagri) +
         '<h2>' + bi('செய்முறை', 'Step by step') + '</h2>' + stepCards(d.steps);
 
-      // Mantra Rule: only self-done poojas carry mantras (Tamil script, same web fonts, adjustable size).
+      // Mantra Rule: mantras are shown only in the PDF of self-done poojas; the page shows samagri, steps and timing.
       if (d.mantras.length) {
-        html += '<h2>' + bi('மந்திரங்கள்', 'Mantras') + '</h2>' +
-          '<div class="mt-size" role="group" aria-label="Text size">' + bi('எழுத்தின் அளவு', 'Text size') +
-          ' <button type="button" class="btn btn-outline" data-mt-size="-1">A−</button>' +
-          '<button type="button" class="btn btn-outline" data-mt-size="1">A+</button></div>' +
-          '<div id="mt-cards">' + mantraCards(d.mantras) + '</div>' +
-          '<p class="soon">' + bi('மந்திரங்களை உங்கள் குடும்ப வாத்தியாரிடம் ஒருமுறை சரிபார்த்துக் கொள்ளலாம்.', 'You may check the mantras once with your family priest.') + '</p>';
+        html += '<p class="soon">📄 ' + bi('இந்த பூஜைக்கான மந்திரங்கள் (தமிழ் எழுத்தில், பெரிய எழுத்தில்) PDF-இல் மட்டும் உள்ளன. கீழே உள்ள PDF பொத்தானை அழுத்தவும்.', 'The mantras for this pooja (in Tamil script, large print) are only in the PDF. Use the PDF button below.') + '</p>' +
+          '<p class="soon disc">' + bi(DISC[0], DISC[1]) + '</p>';
       }
 
       html += '<div class="action-row">' +
-        '<button type="button" class="btn btn-wide" id="btn-pdf">' + bi('நானே வாங்கிக் கொள்கிறேன்', 'I will buy it myself (PDF)') + '</button>' +
+        '<button type="button" class="btn btn-wide" id="btn-pdf">📄 ' + bi('நானே வாங்கிக் கொள்கிறேன் — PDF பதிவிறக்கம்', 'I will buy it myself — Download PDF') + '</button>' +
         '<button type="button" class="btn btn-wide btn-outline" id="btn-order">' + bi('ஆன்லைனில் ஆர்டர் செய்கிறேன்', 'I will order samagri online') + '</button>' +
         '</div>' +
+        '<p class="soon">📄 ' + bi('PDF-இல்: அச்சிட்டுப் பயன்படுத்தக்கூடிய, டிக் செய்யும் சாமான் பட்டியல், படிகள், பெரிய எழுத்தில் மந்திரங்கள். கடைக்கு எடுத்துச் செல்லலாம்; வாத்தியார் இல்லாமல் பூஜை செய்யலாம்.', 'The PDF is a printable sheet: a tick-box shopping checklist, the steps and the mantras in large print. Take it to the shop and use it during the pooja.') + '</p>' +
         '<p class="form-msg" id="pdf-msg" role="status" aria-live="polite"></p>' +
         '<form id="order-form" class="order-form" novalidate hidden>' +
         '<label class="field"><span class="ta">டெலிவரி PIN குறியீடு (6 இலக்கம்)</span><span class="en">Delivery PIN code (6 digits)</span>' +
@@ -269,7 +389,8 @@
   // Atomic blocks (heading + first item stay together). Returns an array of HTML strings.
   function sheetBlocks(p, d) {
     var title = bi(esc(p.name_ta), esc(p.name_en));
-    var blocks = ['<h1>' + title + '</h1>' + (d.time ? '<p class="pdf-time">⏱ ' + bi(esc(d.time[0]), esc(d.time[1])) + '</p>' : '')];
+    var blocks = ['<h1>' + title + '</h1>' + (d.time ? '<p class="pdf-time">⏱ ' + bi(esc(d.time[0]), esc(d.time[1])) + '</p>' : '') +
+      (d.when ? '<p class="pdf-time">🗓 ' + bi(esc(d.when[0]), esc(d.when[1])) + '</p>' : '')];
     var row = function (it) {
       return '<div class="pdf-ck"><span class="ck-ico">' + SELF.icon(it.icon) + '</span><span>' + bi(esc(it.ta), esc(it.en)) + '</span></div>';
     };
@@ -292,8 +413,9 @@
         '<div class="pdf-mt-mean">' + bi(esc(m.meTa), esc(m.meEn)) + '</div></div>';
     });
     if (mantras.length) {
-      mantras[0] = '<h2>' + bi('மந்திரங்கள்', 'Mantras') + '</h2>' + mantras[0];
+      mantras[0] = '<h2>' + bi('மந்திரங்கள்', 'Mantras') + '</h2><div class="pdf-disc">' + bi(esc(DISC[0]), esc(DISC[1])) + '</div>' + mantras[0];
       blocks = blocks.concat(mantras);
+      blocks.push('<div class="pdf-disc">' + bi(esc(DISC[0]), esc(DISC[1])) + '</div>');
     }
     return { blocks: blocks, title: title };
   }

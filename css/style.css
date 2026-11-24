@@ -668,7 +668,7 @@ html[data-lang="en"] .why-card strong, html[data-lang="en"] .trust-card strong {
 .pdf-m { display: inline-block; padding: 0 8px; border: 1px solid var(--gold); border-radius: 999px; font-size: 13px; color: var(--maroon); }
 .pdf-mt { border: 1.5px solid var(--gold); border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; }
 .pdf-mt-when { font-size: 14px; color: var(--muted); margin-bottom: 4px; }
-.pdf-mt-text { font-family: "Noto Sans Tamil", "Hind Madurai", sans-serif; font-size: 21px; line-height: 1.95; color: var(--maroon); background: #FFF8EA; border-left: 4px solid var(--gold); padding: 6px 12px; }
+.pdf-mt-text { font-family: "Noto Sans Tamil", "Hind Madurai", sans-serif; font-size: 22px; line-height: 1.95; color: var(--maroon); background: #FFF8EA; border-left: 4px solid var(--gold); padding: 6px 12px; }
 .pdf-mt-mean { font-size: 14px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
 
 /* ---------- v3: account tools, honeypot, partner payment box ---------- */
@@ -679,3 +679,76 @@ html[data-lang="en"] .why-card strong, html[data-lang="en"] .trust-card strong {
 .pay-box { margin: 14px 0; padding: 14px 16px; border: 1.5px dashed var(--gold); border-radius: var(--radius); background: #FFF3D6; }
 .pay-box p { margin: 6px 0 0; }
 textarea { width: 100%; font: inherit; padding: 10px 12px; border: 1.5px solid var(--gold); border-radius: 10px; background: #FFFEFB; color: var(--ink); }
+
+/* ---------- v3b: calendar, colours, when-box, disclaimer ---------- */
+.cal-box { margin: 16px 0 24px; padding: 16px; border: 1.5px solid var(--gold); border-radius: var(--radius); background: #fff; }
+.cal-box h2 { margin-top: 0; }
+.cal-pick { margin-top: 12px; }
+.cal-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 12px 0; font-size: 0.95rem; }
+.cal-leg i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 6px; vertical-align: -2px; }
+.cal-day { display: flex; gap: 12px; margin: 12px 0; align-items: flex-start; }
+.cal-date { min-width: 58px; text-align: center; border: 1.5px solid var(--gold); border-radius: 12px; padding: 6px 4px; background: #FFF9EF; }
+.cal-date strong { display: block; font-size: 1.6rem; line-height: 1.1; color: var(--maroon); }
+.cal-date span { font-size: 0.85rem; }
+.cal-items { flex: 1; display: grid; gap: 8px; }
+.cal-dl { font-weight: 600; }
+.cal-item { display: block; padding: 10px 14px; border-radius: 10px; border-left: 8px solid var(--cc, #7A1C1C); background: color-mix(in srgb, var(--cc, #7A1C1C) 9%, #fff); text-decoration: none; color: var(--ink); min-height: 44px; }
+.cal-item span { font-weight: 700; color: var(--cc, #7A1C1C); }
+.cal-item small { display: block; opacity: .85; }
+.cal-next { background: #FFF3D6; border-color: var(--gold); }
+.pooja-card { border-left: 8px solid var(--cc, var(--gold)); }
+.pooja-group > h2 { color: var(--cc, var(--maroon)); }
+.when-box { margin: 14px 0; padding: 12px 16px; border: 1.5px dashed var(--gold); border-radius: var(--radius); background: #FFF9EF; }
+.when-box p { margin: 6px 0; }
+.disc { font-size: 0.95rem; border-left: 4px solid var(--gold); padding-left: 10px; }
+.pdf-disc { margin: 10px 0; padding: 10px 14px; border: 1.5px solid #C49A39; border-radius: 8px; background: #FFF9EF; font-size: 14px; line-height: 1.7; }
+
+/* ---------- v3c: pooja page template ---------- */
+.pj { --cc: #7A1C1C; }
+.pj-head { text-align: center; padding: 18px 12px 10px; border-bottom: 3px solid var(--cc); margin-bottom: 14px; }
+.pj-head h1 { margin: 6px 0; color: var(--cc); }
+.pj-head .badges { justify-content: center; }
+.pj-cat { display: inline-block; padding: 4px 14px; border-radius: 999px; background: var(--cc); color: #fff; font-size: 0.95rem; }
+.pj-deity { margin: 4px 0 8px; font-size: 1.1rem; }
+.pj-actions { justify-content: center; margin-top: 14px; }
+.pj-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; margin: 14px 0; }
+.pj-tile { display: flex; gap: 10px; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--cc) 8%, #fff); border: 1.5px solid color-mix(in srgb, var(--cc) 35%, #fff); }
+.pj-ti { font-size: 1.5rem; }
+.pj-tile small { display: block; font-weight: 700; color: var(--cc); }
+.pj-tile p { margin: 2px 0; }
+.pj-cols { display: grid; grid-template-columns: 1fr; gap: 14px; margin: 14px 0; }
+@media (min-width: 900px) { .pj-cols { grid-template-columns: 1.1fr 1fr; align-items: start; } }
+.pj-card { padding: 14px 16px; border: 1.5px solid var(--gold); border-radius: var(--radius); background: #fff; margin: 14px 0; }
+.pj-cols .pj-card { margin: 0; }
+.pj-card h2 { margin-top: 0; font-size: 1.25rem; color: var(--cc); border: 0; }
+.pj-card h3 { margin: 14px 0 4px; font-size: 1.05rem; color: var(--cc); }
+.pj-sam { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.pj-sam li { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; background: #FFFEFB; border: 1px solid #EFE2BE; border-radius: 10px; }
+.pj-sam strong { display: block; }
+.pj-sam small { display: block; color: #5b4b3b; line-height: 1.5; }
+.pj-note { margin-top: 10px; padding: 10px 12px; border-left: 4px solid var(--gold); background: #FFF9EF; font-size: 0.95rem; }
+.pj-pdfnote { text-align: center; font-weight: 600; margin: 12px 0; }
+.pj-boxes { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 14px 0; }
+@media (min-width: 900px) { .pj-boxes { grid-template-columns: 1fr 1fr; } }
+.pj-box { padding: 12px 14px; border-radius: 12px; border-left: 8px solid var(--bc); background: color-mix(in srgb, var(--bc) 8%, #fff); }
+.pj-box h3 { margin: 0 0 6px; font-size: 1.05rem; color: var(--bc); }
+.pj-box p, .pj-box ul { margin: 4px 0; }
+.pj-tips { padding-left: 18px; }
+.pj-avoid { --bc: #B3261E; } .pj-miss { --bc: #B7791F; } .pj-give { --bc: #2E7D32; }
+.pj-temples { --bc: #3F5BA9; } .pj-tips { --bc: #7A1C1C; } .pj-custom { --bc: #6B5B95; }
+.pj-box.pj-tips { --bc: #7A1C1C; padding-left: 14px; }
+.pdf-deity { font-size: 18px; margin: 2px 0; }
+.pdf-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+.pdf-fact { border: 1.5px solid #C49A39; border-radius: 8px; padding: 6px 10px; background: #FFF9EF; font-size: 14px; line-height: 1.6; }
+.pdf-fact b { display: block; color: #7A1C1C; }
+.pdf-ck b { display: block; }
+.pdf-ck small { display: block; font-size: 12px; color: #5b4b3b; line-height: 1.45; }
+.pdf-card { border: 1.5px solid #C49A39; border-radius: 10px; padding: 10px 14px; margin: 8px 0; font-size: 14px; line-height: 1.75; }
+.pdf-card h2 { margin: 0 0 4px; }
+.pdf-card h3 { margin: 8px 0 2px; color: #7A1C1C; font-size: 15px; }
+.pdf-box { border-left: 8px solid var(--bc, #C49A39); border-radius: 8px; padding: 8px 12px; margin: 8px 0; background: #FFFCF6; font-size: 14px; line-height: 1.7; }
+.pdf-box h3 { margin: 0 0 2px; color: var(--bc, #7A1C1C); font-size: 15px; }
+.pdf-box p, .pdf-box ul { margin: 2px 0; } .pdf-box ul { padding-left: 18px; }
+.pdf-box-avoid { --bc: #B3261E; } .pdf-box-miss { --bc: #B7791F; } .pdf-box-give { --bc: #2E7D32; }
+.pdf-box-temples { --bc: #3F5BA9; } .pdf-box-tips { --bc: #7A1C1C; }
+.pdf-mt-text { font-weight: 500; }

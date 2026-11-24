@@ -27,6 +27,8 @@
     offer_saved: ['செய்தி சேமிக்கப்பட்டது.', 'Message saved.'],
     offer_need: ['முதலில் தலைப்பு மற்றும் செய்தியை எழுதவும்.', 'Write a title and a message first.'],
     offer_deleted: ['செய்தி நீக்கப்பட்டது.', 'Message deleted.'],
+    dates_saved: ['தேதிகள் சேர்க்கப்பட்டன.', 'Dates added.'],
+    dates_bad: ['தேதியைச் சரியாகத் தேர்ந்தெடுக்கவும்.', 'Please choose valid dates.'],
     copied: ['நகலெடுக்கப்பட்டது.', 'Copied.'],
     fees_queued: ['கட்டண நினைவூட்டல் மின்னஞ்சல்கள் அனுப்பப்படுகின்றன.', 'Fee reminder emails are being sent.'],
     upi_saved: ['UPI விவரங்கள் சேமிக்கப்பட்டன.', 'UPI details saved.'],
@@ -36,7 +38,7 @@
   var last = null;                 // last loaded dashboard data
   var pinFilter = { order: '', booking: '' };
   var offer = { id: null, title: '', ta: '', en: '', image: '', lang: 'ta', off: {}, sent: {}, q: '' };
-  var custQ = '', adminUser = null;
+  var custQ = '', adminUser = null, calRows = [];
   var tab = 'home'; // home | orders | bookings | people | stores | poojas | messages | settings
   var orderFilter = 'waiting_for_confirmation';
   var bookingFilter = 'soon';
@@ -50,6 +52,7 @@
     ['people', '🙏', 'வாத்தியார்கள் & சமையல்காரர்கள்', 'Priests & Cooks'],
     ['stores', '🏪', 'சாமான் கடைகள்', 'Pooja stores'],
     ['poojas', '🪔', 'பூஜை பட்டியல்', 'Pooja list'],
+    ['calendar', '🗓', 'பூஜை தேதிகள் (பஞ்சாங்கம்)', 'Pooja dates (calendar)'],
     ['customers', '👥', 'வாடிக்கையாளர்கள்', 'Customers'],
     ['offers', '🎁', 'ஆஃபர் / தொகுப்பு செய்தி அனுப்பு', 'Send offer / combo message'],
     ['messages', '💬', 'தானியங்கி செய்திகள் (4 வகை)', 'Automatic messages (4 kinds)'],
@@ -378,6 +381,39 @@
     return 'https://wa.me/' + n + '?text=' + encodeURIComponent(text || '');
   }
 
+
+  // ---------- Pooja dates (shown to customers: coming poojas and date search) ----------
+  function calendarSection(d) {
+    var opts = d.poojas.map(function (p) {
+      return '<option value="' + esc(p.slug) + '">' + esc(p.name_ta) + ' / ' + esc(p.name_en) + '</option>';
+    }).join('');
+    var by = {};
+    d.poojas.forEach(function (p) { by[p.slug] = p; });
+    var list = calRows.map(function (r) {
+      var p = by[r.slug] || {};
+      return '<article class="ad-card ad-row"><div><strong>' + esc(r.date) + '</strong> · ' + nameBi(p) +
+        (r.note_ta || r.note_en ? '<br><small>' + esc(r.note_ta || r.note_en) + '</small>' : '') + '</div>' +
+        '<button type="button" class="btn btn-outline ad-small" data-act="date-del" data-id="' + esc(r.id) + '">✕ ' + bi('நீக்கு', 'Remove') + '</button></article>';
+    }).join('');
+    return '<h1>' + bi('பூஜை தேதிகள்', 'Pooja dates') + '</h1>' +
+      '<ol class="ad-steps"><li>' + bi('பஞ்சாங்கத்தைப் பார்த்து தேதியைச் சேர்க்கவும் (எ.கா. பிரதோஷம், ஏகாதசி).', 'Look at your panchangam and add the date (for example Pradosham, Ekadashi).') + '</li>' +
+      '<li>' + bi('வாடிக்கையாளர்கள் "வரும் பூஜைகள்" பகுதியிலும் தேதி தேடலிலும் இதைப் பார்ப்பார்கள்.', 'Customers see these in "Coming poojas" and in the date search.') + '</li>' +
+      '<li>' + bi('இன்று முதல் உள்ள தேதிகள் மட்டும் காட்டப்படும்; கடந்தவை தானாக மறையும்.', 'Only dates from today are shown; past dates disappear by themselves.') + '</li></ol>' +
+      '<form id="dates-form" class="ad-card" novalidate>' +
+      '<label class="field"><span class="ta">பூஜை</span><span class="en">Pooja</span><select name="slug">' + opts + '</select></label>' +
+      '<label class="field"><span class="ta">தேதி (ஒன்று அல்லது பல; ஒவ்வொன்றையும் புதிய வரியில்)</span><span class="en">Date(s) - one or many, each on a new line</span>' +
+        '<textarea name="dates" rows="3" placeholder="2026-12-21&#10;2027-01-05"></textarea></label>' +
+      '<label class="field"><span class="ta">இன்றைய தேதி தேர்வு (ஒன்றை மட்டும் சேர்க்க)</span><span class="en">Or pick a single date</span><input name="one" type="date"></label>' +
+      '<label class="field"><span class="ta">குறிப்பு (விருப்பம், எ.கா. "சோம பிரதோஷம்")</span><span class="en">Note (optional)</span><input name="note" type="text" maxlength="100"></label>' +
+      '<button type="submit" class="btn">+ ' + bi('தேதிகளைச் சேர்', 'Add dates') + '</button></form>' +
+      '<h3>' + bi('சேர்க்கப்பட்ட வரும் தேதிகள்', 'Upcoming dates added') + '</h3>' +
+      (list || '<p class="ad-empty">' + bi('இன்னும் தேதிகள் இல்லை.', 'No dates yet.') + '</p>');
+  }
+
+  function loadCal() {
+    return DB.rpc('sa_admin_pooja_dates', { p_token: DB.token() }).then(function (r) { calRows = (r && r.rows) || []; });
+  }
+
   // ---------- Customers ----------
   function customersSection(d) {
     var optin = d.customers.filter(function (c) { return c.marketing_ok; }).length;
@@ -525,6 +561,7 @@
     if (tab === 'stores') return vendorsSection(d);
     if (tab === 'poojas') return poojasSection(d);
     if (tab === 'messages') return waSection(d);
+    if (tab === 'calendar') return calendarSection(d);
     if (tab === 'customers') return customersSection(d);
     if (tab === 'offers') return offersSection(d);
     if (tab === 'settings') return securityCards(d) + settingsSection();
@@ -548,7 +585,7 @@
         return;
       }
       adminUser = u;
-      return loadAll().then(function (d) {
+      return (tab === 'calendar' ? loadCal() : Promise.resolve()).then(loadAll).then(function (d) {
         if (!d.ok) {
           box.innerHTML = '<p>' + bi(NOTICE.not_admin[0], NOTICE.not_admin[1]) + '</p>';
           return;
@@ -782,6 +819,9 @@
       return;
     }
     if (act === 'offer-csv') return csvDownload();
+    if (act === 'date-del') {
+      return DB.rpc('sa_admin_delete_pooja_date', { p_token: DB.token(), p_id: id }).then(function () { return render(); });
+    }
     if (act === 'run-reminders') return runReminders();
     if (act === 'test-messages') return testMessages();
   });
@@ -791,6 +831,16 @@
       e.preventDefault();
       saveSettings(e.target);
       return;
+    }
+    if (e.target.id === 'dates-form') {
+      e.preventDefault();
+      var f = new FormData(e.target);
+      var all = String(f.get('dates') || '').split(/[\s,;]+/).concat([f.get('one') || '']).filter(function (x) { return /^\d{4}-\d{2}-\d{2}$/.test(x); });
+      if (!all.length) return showNotice(NOTICE.dates_bad[0], NOTICE.dates_bad[1], true);
+      return DB.rpc('sa_admin_add_pooja_dates', { p_token: DB.token(), p_slug: f.get('slug'), p_dates: all, p_note_ta: f.get('note') || '', p_note_en: f.get('note') || '' })
+        .then(function (r) { if (!r.ok) throw new Error(r.error); return render(); })
+        .then(function () { showNotice(NOTICE.dates_saved[0], NOTICE.dates_saved[1], false); })
+        .catch(function () { showNotice(NOTICE.dates_bad[0], NOTICE.dates_bad[1], true); });
     }
     if (e.target.id === 'upi-form') {
       e.preventDefault();
