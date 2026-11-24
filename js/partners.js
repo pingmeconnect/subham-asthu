@@ -201,6 +201,7 @@
   function route() {
     var parts = (location.hash || '').split('/');
     if (parts[0] !== '#bookings') return;
+    if (parts[1] === 'priest' || parts[1] === 'cook') { $('f-role').value = parts[1]; parts[1] = ''; }
     P.seed().then(function (rows) {
       visiblePoojas = rows;
       return PD.seed();

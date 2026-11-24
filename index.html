@@ -18,9 +18,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="css/style.css?v=6">
-  <link rel="stylesheet" href="css/admin.css?v=6">
-  <link rel="stylesheet" href="css/theme.css?v=6">
+  <link rel="stylesheet" href="css/style.css?v=7">
+  <link rel="stylesheet" href="css/admin.css?v=7">
+  <link rel="stylesheet" href="css/theme.css?v=7">
 </head>
 <body>
 
@@ -36,10 +36,8 @@
           <a href="#home" data-nav="home"><span class="ta">முகப்பு</span><span class="en">Home</span></a>
           <a href="#about" data-nav="about"><span class="ta">எங்களைப் பற்றி</span><span class="en">About Us</span></a>
           <a href="#poojas" data-nav="poojas"><span class="ta">பூஜைகள்</span><span class="en">Poojas</span></a>
-          <a href="#guides" data-nav="guides"><span class="ta">வழிகாட்டிகள்</span><span class="en">Guides</span></a>
           <a href="#bookings" data-nav="bookings"><span class="ta">புக்கிங்</span><span class="en">Bookings</span></a>
           <a href="#faq" data-nav="faq"><span class="ta">கேள்விகள்</span><span class="en">FAQ</span></a>
-          <a href="#disclaimers" data-nav="disclaimers"><span class="ta">பொறுப்புத் துறப்பு</span><span class="en">Disclaimers</span></a>
           <a href="#login" data-nav="login"><span class="ta">உள்நுழைவு</span><span class="en">Log in</span></a>
         </div>
       </nav>
@@ -92,21 +90,17 @@
 
       <!-- 2. Service quick links -->
       <div class="svc-strip">
-        <a class="svc-link" href="#bookings">
+        <a class="svc-link" href="#bookings/priest">
           <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="12" r="6"/><path d="M12 42c0-9 5-15 12-15s12 6 12 15"/><path d="M18 30l6 6 6-6M24 27v9"/></svg>
           <strong><span class="ta">வாத்தியார்கள்</span><span class="en">Priests</span></strong>
         </a>
-        <a class="svc-link" href="#bookings">
+        <a class="svc-link" href="#bookings/cook">
           <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 26a8 8 0 0 1 3-15 9 9 0 0 1 14 0 8 8 0 0 1 3 15z"/><path d="M15 26v13h18V26M15 33h18"/></svg>
           <strong><span class="ta">சமையல்காரர்கள்</span><span class="en">Cooks</span></strong>
         </a>
         <a class="svc-link" href="#poojas">
           <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 18l4-10h28l4 10"/><path d="M6 18c0 3 3 5 6 5s6-2 6-5c0 3 3 5 6 5s6-2 6-5c0 3 3 5 6 5s6-2 6-5"/><path d="M9 24v18h30V24M20 42V31h8v11"/></svg>
           <strong><span class="ta">பூஜைப் பொருட்கள் ஆர்டர்</span><span class="en">Order Pooja Samagri</span><small><span class="ta">பூஜையைத் தேர்ந்தெடுத்து ஆர்டர் செய்யுங்கள்</span><span class="en">Choose a pooja, then order</span></small></strong>
-        </a>
-        <a class="svc-link" href="#guides">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 12c-4-3-10-4-16-3v28c6-1 12 0 16 3 4-3 10-4 16-3V9c-6-1-12 0-16 3z"/><path d="M24 12v28"/></svg>
-          <strong><span class="ta">பூஜை வழிகாட்டிகள்</span><span class="en">Pooja Guides</span></strong>
         </a>
       </div>
 
@@ -115,19 +109,19 @@
         <div class="home-section panel">
           <h2 class="section-title"><span class="ta">எங்கள் சேவைகள்</span><span class="en">Our Services</span></h2>
           <div class="cat-grid">
-            <a class="cat-tile" href="#poojas">
+            <a class="cat-tile" href="#poojas/daily_monthly">
               <span class="cat-img ci-daily" role="img" aria-hidden="true"></span>
               <strong><span class="ta">தினசரி &amp; மாதாந்திர பூஜைகள்</span><span class="en">Daily &amp; Monthly Poojas</span></strong>
             </a>
-            <a class="cat-tile" href="#poojas">
+            <a class="cat-tile" href="#poojas/annual_vratam">
               <span class="cat-img ci-festival" role="img" aria-hidden="true"></span>
               <strong><span class="ta">வருடாந்திரப் பண்டிகைகள் &amp; விரதங்கள்</span><span class="en">Annual Festivals &amp; Vratams</span></strong>
             </a>
-            <a class="cat-tile" href="#poojas">
+            <a class="cat-tile" href="#poojas/home_subha_homa">
               <span class="cat-img ci-homa" role="img" aria-hidden="true"></span>
               <strong><span class="ta">வீட்டு சுப காரியங்கள் &amp; ஹோமங்கள்</span><span class="en">Home Subha Karyams &amp; Homas</span></strong>
             </a>
-            <a class="cat-tile" href="#poojas">
+            <a class="cat-tile" href="#poojas/samskara_pitru">
               <span class="cat-img ci-samskara" role="img" aria-hidden="true"></span>
               <strong><span class="ta">வாழ்வியல் சடங்குகள் &amp; பித்ரு காரியங்கள்</span><span class="en">Life Samskaras &amp; Pitru Karyams</span></strong>
             </a>
@@ -289,15 +283,6 @@
         <p class="ta">பூஜைப் பட்டியல் மற்றும் சாமான் விவரங்களை உள்நுழையாமலேயே பார்க்கலாம்.</p>
         <p class="en">Browse pooja lists and samagri details without logging in.</p>
         <div id="pooja-list"></div>
-      </div>
-    </section>
-
-    <section class="page" data-page="guides" hidden>
-      <div class="card">
-        <h1><span class="ta">பூஜை வழிகாட்டிகள்</span><span class="en">Pooja Guides</span></h1>
-        <p class="ta">ஒவ்வொரு பூஜையின் சாமான் பட்டியல் மற்றும் செய்முறையைப் படிக்கலாம்.</p>
-        <p class="en">Read the samagri list and step-by-step method for every pooja.</p>
-        <div id="guide-list"></div>
       </div>
     </section>
 
@@ -471,12 +456,6 @@
               </form>
             </details>
 
-            <div id="marketing-row" class="acct-box" hidden>
-              <label class="check-row"><input type="checkbox" id="marketing-toggle">
-                <span><span class="ta">சிறப்பு பூஜை தொகுப்புகள் / ஆஃபர்கள் பற்றி WhatsApp-இல் தகவல் பெற விரும்புகிறேன்.</span><span class="en">Send me offers and pooja packages on WhatsApp.</span></span></label>
-              <p class="form-msg" id="marketing-msg" role="status" aria-live="polite"></p>
-            </div>
-
             <details class="acct-box" id="delete-box">
               <summary><span class="ta">என் கணக்கை நீக்கு</span><span class="en">Delete my account</span></summary>
               <p class="soon"><span class="ta">உங்கள் பெயர், எண், மின்னஞ்சல் நீக்கப்படும். இதைத் திரும்பப் பெற முடியாது.</span><span class="en">Your name, number and email are erased. This cannot be undone.</span></p>
@@ -525,8 +504,6 @@
               <input name="pin2" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
             <label class="check-row"><input type="checkbox" name="consent" required>
               <span><span class="ta">என் விவரங்களைப் பயன்படுத்த <a href="#privacy">தனியுரிமை அறிவிப்பை</a> ஏற்கிறேன்.</span><span class="en">I accept the <a href="#privacy">Privacy Notice</a> for using my details.</span></span></label>
-            <label class="check-row"><input type="checkbox" name="marketing">
-              <span><span class="ta">(விருப்பம்) சிறப்பு பூஜை தொகுப்புகள் / ஆஃபர்கள் பற்றி WhatsApp-இல் தகவல் பெற விரும்புகிறேன் (வாடிக்கையாளர்களுக்கு மட்டும்).</span><span class="en">(Optional) Send me offers and pooja packages on WhatsApp (customers only).</span></span></label>
             <div class="hp-field" aria-hidden="true"><label>Website <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
             <button type="submit" class="btn"><span class="ta">பதிவு செய்</span><span class="en">Register</span></button>
             <p class="form-msg" role="status" aria-live="polite"></p>
@@ -626,24 +603,24 @@
     <a href="#login" data-nav="login"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span class="ta">கணக்கு</span><span class="en">Account</span></a>
   </nav>
 
-  <script src="js/config.js?v=6" defer></script>
-  <script src="js/db.js?v=6" defer></script>
-  <script src="js/settings.js?v=6" defer></script>
-  <script src="js/auth.js?v=6" defer></script>
-  <script src="js/account.js?v=6" defer></script>
-  <script src="js/poojas-data.js?v=6" defer></script>
-  <script src="js/self-poojas.js?v=6" defer></script>
-  <script src="js/pooja-info.js?v=6" defer></script>
-  <script src="js/order-items.js?v=6" defer></script>
-  <script src="js/order.js?v=6" defer></script>
-  <script src="js/pooja.js?v=6" defer></script>
-  <script src="js/partners-data.js?v=6" defer></script>
-  <script src="js/subscription.js?v=6" defer></script>
-  <script src="js/whatsapp.js?v=6" defer></script>
-  <script src="js/partners.js?v=6" defer></script>
-  <script src="js/partner-portal.js?v=6" defer></script>
-  <script src="js/admin.js?v=6" defer></script>
-  <script src="js/app.js?v=6" defer></script>
-  <script src="js/ui.js?v=6" defer></script>
+  <script src="js/config.js?v=7" defer></script>
+  <script src="js/db.js?v=7" defer></script>
+  <script src="js/settings.js?v=7" defer></script>
+  <script src="js/auth.js?v=7" defer></script>
+  <script src="js/account.js?v=7" defer></script>
+  <script src="js/poojas-data.js?v=7" defer></script>
+  <script src="js/self-poojas.js?v=7" defer></script>
+  <script src="js/pooja-info.js?v=7" defer></script>
+  <script src="js/order-items.js?v=7" defer></script>
+  <script src="js/order.js?v=7" defer></script>
+  <script src="js/pooja.js?v=7" defer></script>
+  <script src="js/partners-data.js?v=7" defer></script>
+  <script src="js/subscription.js?v=7" defer></script>
+  <script src="js/whatsapp.js?v=7" defer></script>
+  <script src="js/partners.js?v=7" defer></script>
+  <script src="js/partner-portal.js?v=7" defer></script>
+  <script src="js/admin.js?v=7" defer></script>
+  <script src="js/app.js?v=7" defer></script>
+  <script src="js/ui.js?v=7" defer></script>
 </body>
 </html>

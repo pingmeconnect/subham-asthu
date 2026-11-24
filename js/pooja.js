@@ -206,13 +206,13 @@
   }
 
   // ---------- List ----------
-  function renderList(guides) {
+  function renderList() {
     return Promise.all([P.seed(), loadDates()]).then(function (res) {
       var rows = res[0], dates = res[1];
       var t = todayStr();
       var next = {};
       dates.forEach(function (x) { if (x.date >= t && !next[x.slug]) next[x.slug] = x.date; });
-      var html = guides ? '' : '<div id="pooja-cal">' + calHtml(rows, dates) + '</div>';
+      var html = '<div id="pooja-cal">' + calHtml(rows, dates) + '</div>';
       Object.keys(P.CATEGORIES).forEach(function (cat) {
         var items = rows.filter(function (r) { return r.category === cat; });
         html += '<section class="pooja-group cat-' + cat + '" style="--cc:' + CAT_COLOR[cat] + '"><h2>' + bi(P.CATEGORIES[cat].ta, P.CATEGORIES[cat].en) + '</h2><div class="pooja-grid">';
@@ -225,7 +225,7 @@
         });
         html += '</div></section>';
       });
-      var box = $(guides ? 'guide-list' : 'pooja-list');
+      var box = $('pooja-list');
       box._rows = rows; box._dates = dates;
       box.innerHTML = html;
       if (!box.dataset.calBound) {
@@ -327,30 +327,25 @@
 
       // Mantra Rule: mantras are shown only in the PDF of self-done poojas; the page shows samagri, steps and timing.
       if (d.mantras.length) {
-        html += '<p class="pj-pdfnote">📿 ' + bi('இந்த பூஜைக்கான மந்திரங்கள் (தமிழ் எழுத்தில், பெரிய எழுத்தில்) மேலே உள்ள "மந்திரங்கள் PDF" பொத்தானில் மட்டும் உள்ளன.', 'The mantras for this pooja (Tamil script, large print) are only in the "Mantras PDF" above.') + '</p>';
+        html += '<p class="pj-pdfnote">📿 ' + bi('இந்த பூஜைக்கான மந்திரங்கள் (தமிழ் எழுத்தில், பெரிய எழுத்தில்) இந்த பக்கத்தின் மேலே உள்ள "நானே வாங்கிக் கொள்கிறேன்" PDF-இல் மட்டும் உள்ளன.', 'The mantras for this pooja (Tamil script, large print) are only in the downloadable PDF at the top of this page.') + '</p>';
       }
       html += '<div class="pj-boxes">' + boxesHtml(info, p.is_self_pooja) + '</div>';
       if (d.mantras.length) html += '<p class="soon disc">' + bi(DISC[0], DISC[1]) + '</p>';
       html += '</div>';
-      var hasPdf = !!(p.is_self_pooja && d.mantras.length);
       var actions =
         '<section class="pj-opt" id="pj-opt"><h2>🧺 ' + bi('பூஜை சாமான்கள்', 'Pooja samagri') + '</h2>' +
         '<p>' + bi('சாமான்களை எப்படிப் பெற விரும்புகிறீர்கள்?', 'How would you like to get the samagri?') + '</p>' +
         '<div class="action-row pj-actions">' +
-        '<button type="button" class="btn btn-wide btn-outline pj-opt-btn" id="btn-self"><span class="pj-opt-ico">🛍️</span><strong>' + bi('நானே வாங்கிக் கொள்கிறேன்', 'I will buy it myself') + '</strong><small>' + bi('பட்டியல் கீழே உள்ளது', 'The list is given below') + '</small></button>' +
+        '<button type="button" class="btn btn-wide btn-outline pj-opt-btn" id="btn-self"><span class="pj-opt-ico">🛍️</span><strong>' + bi('நானே வாங்கிக் கொள்கிறேன்', 'I will buy it myself') + '</strong><small>' + bi('PDF பதிவிறக்கம்', 'Download PDF') + '</small></button>' +
         '<button type="button" class="btn btn-wide pj-opt-btn" id="btn-order"><span class="pj-opt-ico">📦</span><strong>' + bi('ஆன்லைனில் ஆர்டர் செய்கிறேன்', 'I will order online') + '</strong><small>' + bi('சாமான்களைத் திருத்தி அனுப்பலாம்', 'Edit the items and send') + '</small></button>' +
         '</div></section>' +
-        (hasPdf ? '<section class="pj-opt pj-opt-pdf"><h2>📿 ' + bi('மந்திரங்கள் PDF', 'Mantras PDF') + '</h2>' +
-          '<p>' + bi('இந்த பூஜையைத் தொடக்கம் முதல் முடிவு வரை, மந்திரங்களுடன் படிப்படியாக.', 'This pooja from start to finish, step by step, with the mantras.') + '</p>' +
-          '<div class="action-row pj-actions"><button type="button" class="btn btn-wide pj-pdf-btn" id="btn-pdf">📄 ' + bi('மந்திரங்கள் PDF பதிவிறக்கம்', 'Download mantras PDF') + '</button></div>' +
-          '<p class="form-msg" id="pdf-msg" role="status" aria-live="polite"></p></section>' : '');
+        '<p class="form-msg" id="pdf-msg" role="status" aria-live="polite"></p>';
       html = html.replace('@@ACTIONS@@', actions);
       html = html.replace('@@ORDER@@', '');
       d.info = info;
 
       box.innerHTML = html;
       box.dataset.poojaId = p.id;
-      if ($('btn-pdf')) $('btn-pdf').addEventListener('click', function () { downloadPdf(p, d); });
       box.querySelectorAll('[data-mt-size]').forEach(function (b) {
         b.addEventListener('click', function () {
           mtSize = Math.max(1.1, Math.min(2.2, mtSize + 0.15 * Number(b.getAttribute('data-mt-size'))));
@@ -358,12 +353,7 @@
         });
       });
       $('btn-order').addEventListener('click', function () { location.hash = '#pooja/' + p.slug + '/order'; });
-      $('btn-self').addEventListener('click', function () {
-        var card = box.querySelector('.pj-samcard');
-        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        card.classList.add('is-flash');
-        setTimeout(function () { card.classList.remove('is-flash'); }, 2200);
-      });
+      $('btn-self').addEventListener('click', function () { downloadPdf(p, d); });
     });
   }
 
@@ -417,7 +407,7 @@
     var two = function (pair) { return bi(esc(pair[0]), esc(pair[1])); };
     var blocks = ['<h1>' + title + '</h1>' +
       (info.deity ? '<p class="pdf-deity">' + two(info.deity) + '</p>' : '') +
-      '<p class="pdf-time">' + bi('பூஜை முறை & மந்திரங்கள்', 'Pooja procedure & mantras') + (d.time ? ' · ⏱ ' + two(d.time) : '') + '</p>'];
+      '<p class="pdf-time">' + (d.mantras.length ? bi('சாமான்கள், பூஜை முறை & மந்திரங்கள்', 'Samagri, procedure & mantras') : bi('சாமான்கள் & பூஜை முறை', 'Samagri & procedure')) + (d.time ? ' · ⏱ ' + two(d.time) : '') + '</p>'];
 
     var facts = [];
     if (d.when) facts.push([['எப்போது', 'When'], d.when]);
@@ -428,7 +418,14 @@
         return '<div class="pdf-fact"><b>' + two(f[0]) + '</b><span>' + two(f[1]) + '</span></div>';
       }).join('') + '</div>');
     }
-    blocks.push('<div class="pdf-disc">' + two(DISC) + '</div>');
+    if (d.mantras.length) blocks.push('<div class="pdf-disc">' + two(DISC) + '</div>');
+
+    blocks.push('<h2>' + bi('தேவையான சாமான்கள்', 'What you need') + '</h2>');
+    d.samagri.forEach(function (it) {
+      blocks.push('<div class="pdf-step"><span class="pdf-n">&#9679;</span><div><strong>' + two([it.ta, it.en]) + '</strong>' +
+        (it.prep ? '<br><small>' + two(it.prep) + '</small>' : '') + '</div></div>');
+    });
+    if (!p.is_self_pooja) blocks.push('<div class="pdf-disc">' + two(INFO.PRIEST_NOTE) + '</div>');
 
     var mantraHtml = function (m, k) {
       return '<div class="pdf-mt"><h3>' + bi('மந்திரம்', 'Mantra') + ' ' + (k + 1) + ' · ' + two([m.ta, m.en]) + '</h3>' +
@@ -462,7 +459,7 @@
     var pbox = function (cls, ta, en, html) { return '<div class="pdf-box pdf-box-' + cls + '"><h3>' + bi(ta, en) + '</h3>' + html + '</div>'; };
     if (info.avoid) blocks.push(pbox('avoid', 'செய்யக் கூடாதவை / கவனிக்க', 'Things to avoid', '<p>' + two(info.avoid) + '</p>'));
     if (info.give) blocks.push(pbox('give', 'பூஜைக்குப் பின் தானமாகக் கொடுக்கலாம்', 'You may give after the pooja', '<p>' + two(info.give) + '</p>'));
-    blocks.push('<div class="pdf-disc">' + two(DISC) + '</div>');
+    if (d.mantras.length) blocks.push('<div class="pdf-disc">' + two(DISC) + '</div>');
     return { blocks: blocks, title: title };
   }
 
@@ -500,7 +497,7 @@
 
   function downloadPdf(p, d) {
     var out = $('pdf-msg');
-    var btn = $('btn-pdf');
+    var btn = $('btn-self');
     btn.disabled = true;
     setMsg(out, 'preparing', false);
     var root = null;
@@ -524,7 +521,7 @@
             doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 210, 297);
           });
         });
-        return chain.then(function () { doc.save('subham-astu-' + p.slug + '-mantras.pdf'); });
+        return chain.then(function () { doc.save('subham-astu-' + p.slug + '.pdf'); });
       });
     }).then(function () {
       out.innerHTML = '';
@@ -539,8 +536,13 @@
   // ---------- Routing ----------
   function route() {
     var hash = location.hash || '';
-    if (hash === '#poojas') return renderList(false);
-    if (hash === '#guides') return renderList(true);
+    if (hash === '#poojas' || hash.indexOf('#poojas/') === 0) {
+      var cat = hash.slice('#poojas/'.length);
+      return renderList().then(function () {
+        var g = cat && document.querySelector('.pooja-group.cat-' + cat);
+        if (g) g.scrollIntoView({ block: 'start' });
+      });
+    }
     if (hash.indexOf('#pooja/') === 0) {
       var rest = hash.slice('#pooja/'.length);
       if (/\/order$/.test(rest)) return renderOrder(rest.replace(/\/order$/, ''));

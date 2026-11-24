@@ -67,8 +67,6 @@
       $('account-out').hidden = !!u;
       if (u) {
         $('account-name').textContent = u.name;
-        $('marketing-toggle').checked = !!u.marketing_ok;
-        $('marketing-row').hidden = u.role !== 'customer';
         $('delete-box').hidden = u.role === 'admin';
       }
       $('partner-link').hidden = !(u && (u.role === 'priest' || u.role === 'cook'));
@@ -107,7 +105,7 @@
     A.register({
       name: d.get('name'), mobile: d.get('mobile'), email: d.get('email'),
       role: d.get('role'), pin: d.get('pin'), pin2: d.get('pin2'),
-      consent: d.get('consent') === 'on', marketing: d.get('marketing') === 'on', hp: d.get('website')
+      consent: d.get('consent') === 'on', marketing: false, hp: d.get('website')
     }).then(function (r) {
       if (!r.ok) return show(out, r.error, true);
       f.reset();
@@ -149,14 +147,6 @@
       f.reset();
       show(out, 'pin_changed', false);
     }).catch(function () { fail(out); });
-  });
-
-  $('marketing-toggle').addEventListener('change', function () {
-    var box = this, out = $('marketing-msg');
-    A.setMarketing(box.checked).then(function (r) {
-      if (!r.ok) { box.checked = !box.checked; return show(out, r.error, true); }
-      show(out, box.checked ? 'offers_on' : 'offers_off', false);
-    }).catch(function () { box.checked = !box.checked; fail(out); });
   });
 
   $('delete-form').addEventListener('submit', function (e) {
