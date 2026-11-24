@@ -752,3 +752,43 @@ textarea { width: 100%; font: inherit; padding: 10px 12px; border: 1.5px solid v
 .pdf-box-avoid { --bc: #B3261E; } .pdf-box-miss { --bc: #B7791F; } .pdf-box-give { --bc: #2E7D32; }
 .pdf-box-temples { --bc: #3F5BA9; } .pdf-box-tips { --bc: #7A1C1C; }
 .pdf-mt-text { font-weight: 500; }
+
+/* ---------- v3d: samagri options, mantras PDF button, online order page ---------- */
+.pj-head h1, .od-head h1 { font-size: clamp(1.8rem, 5.5vw, 2.7rem); line-height: 1.25; text-align: center; margin: 8px 0 6px; }
+.pj-opt { margin: 14px 0; padding: 16px; border: 2px solid var(--gold); border-radius: var(--radius); background: #FFFEFB; text-align: center; }
+.pj-opt h2 { margin: 0 0 4px; font-size: 1.3rem; color: var(--cc); border: 0; }
+.pj-opt > p { margin: 0 0 8px; }
+.pj-opt-btn { flex-direction: column; gap: 2px; border-radius: 16px; min-height: 84px; padding: 12px 16px; }
+.pj-opt-btn small { font-weight: 400; font-size: 0.95rem; opacity: 0.9; }
+.pj-opt-ico { font-size: 1.6rem; line-height: 1; }
+.pj-opt-pdf { border-color: var(--cc); background: color-mix(in srgb, var(--cc) 6%, #fff); }
+.pj-pdf-btn { background: var(--cc); border-color: var(--cc); }
+.pj-samcard.is-flash { box-shadow: 0 0 0 4px var(--gold); transition: box-shadow 0.4s; }
+
+.od-steps { list-style: none; display: flex; justify-content: center; gap: 8px; padding: 0; margin: 0 0 14px; flex-wrap: wrap; }
+.od-steps li { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: #F4ECDD; color: #5b4b3b; }
+.od-steps li b { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #fff; border: 1.5px solid var(--gold); }
+.od-steps li.is-now { background: var(--cc, var(--maroon)); color: #fff; font-weight: 700; }
+.od-steps li.is-done { background: #E7F1E4; }
+.od-help { margin: 0 0 10px; }
+.od-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.od-row { display: grid; grid-template-columns: 1fr auto; gap: 8px 10px; align-items: center; padding: 10px 12px; border: 1.5px solid #EFE2BE; border-radius: 12px; background: #fff; position: relative; }
+.od-row.is-off { opacity: 0.55; background: #F8F4EC; }
+.od-ck { display: flex; gap: 10px; align-items: center; cursor: pointer; }
+.od-ck input { width: 26px; height: 26px; flex: none; accent-color: var(--maroon); }
+.od-name small { display: block; color: #6b5b4b; }
+.od-qty { display: flex; align-items: center; gap: 6px; }
+.od-qty input { width: 78px; min-height: 46px; font: inherit; font-size: 1.1rem; text-align: center; border: 1.5px solid var(--gold); border-radius: 10px; }
+.od-b { width: 46px; height: 46px; font-size: 1.4rem; font-weight: 700; line-height: 1; border-radius: 50%; border: 1.5px solid var(--maroon); background: #fff; color: var(--maroon); cursor: pointer; }
+.od-unit { min-width: 64px; color: #5b4b3b; }
+.od-x { position: absolute; top: -8px; right: -6px; width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #B3202A; background: #fff; color: #B3202A; cursor: pointer; }
+@media (max-width: 560px) { .od-row { grid-template-columns: 1fr; } .od-qty { justify-content: flex-end; } }
+.od-add { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-top: 14px; padding-top: 12px; border-top: 1.5px dashed var(--gold); }
+.od-add .field { flex: 1 1 260px; margin: 0; }
+.od select, .od textarea, .od input[type="text"], .od input[type="date"] { font: inherit; font-size: 1.05rem; width: 100%; min-height: 46px; padding: 8px 10px; border: 1.5px solid var(--gold); border-radius: 10px; background: #fff; }
+.od-sum { list-style: none; padding: 0; margin: 0 0 10px; }
+.od-sum li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 4px; border-bottom: 1px dashed #E3D3A8; }
+.od-text { margin: 4px 0 10px; line-height: 1.7; }
+.od-nav { justify-content: center; margin: 14px 0; }
+.od-done { text-align: center; }
+.od-steps li b { color: #5b4b3b; }
