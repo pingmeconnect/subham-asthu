@@ -1,6 +1,6 @@
 /* Subham Asthu — small offline-friendly service worker.
    Caches the page shell so the app opens fast. It never caches or answers any database call. */
-var CACHE = 'subham-asthu-v3';
+var CACHE = 'subham-asthu-v4';
 var SHELL = ['./', 'index.html', 'css/style.css', 'css/admin.css', 'manifest.json', 'img/logo.png'];
 
 self.addEventListener('install', function (e) {
