@@ -1,5 +1,3 @@
-/* Subham Asthu — Admin Dashboard (Phase 5/6). Admin role only. The database returns the data
-   and masks phone numbers until an order is Confirmed / Dispatched; this file only renders it. */
 (function () {
   'use strict';
 
@@ -31,7 +29,22 @@
 
   var last = null;                 // last loaded dashboard data
   var pinFilter = { order: '', booking: '' };
-  var tab = 'overview'; // admin section: overview | catalog | settings
+  var tab = 'home'; // home | orders | bookings | people | stores | poojas | messages | settings
+  var orderFilter = 'waiting_for_confirmation';
+  var bookingFilter = 'soon';
+  var peopleFilter = 'approve';
+
+  // [key, icon, Tamil, English]
+  var SECTIONS = [
+    ['home', '🏠', 'முகப்பு', 'Home'],
+    ['orders', '📦', 'ஆர்டர்கள்', 'Orders'],
+    ['bookings', '📅', 'முன்பதிவுகள்', 'Bookings'],
+    ['people', '🙏', 'வாத்தியார் & சமையல்', 'Priests & Cooks'],
+    ['stores', '🏪', 'கடைகள்', 'Stores'],
+    ['poojas', '🪔', 'பூஜைகள்', 'Poojas'],
+    ['messages', '💬', 'WhatsApp செய்திகள்', 'WhatsApp messages'],
+    ['settings', '⚙', 'அமைப்புகள்', 'Settings']
+  ];
 
   function $(id) { return document.getElementById(id); }
 
@@ -66,46 +79,220 @@
     return DB.rpc('sa_admin_dashboard', { p_token: DB.token() });
   }
 
-  // ---------- Summary ----------
-  function summary(d) {
+  // ---------- Date helpers (browser date, India) ----------
+  function ymd(d) {
+    var m = d.getMonth() + 1, day = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day;
+  }
+  function dayStr(offset) { var d = new Date(); d.setDate(d.getDate() + offset); return ymd(d); }
+
+  // Confirmation prompt in the language the admin is reading.
+  function ask(ta, en) {
+    return window.confirm(document.documentElement.getAttribute('data-lang') === 'en' ? en : ta);
+  }
+
+  function realPartners(d) { return d.partners.filter(function (p) { return !p.is_sample; }); }
+  function waitingOrders(d) { return d.orders.filter(function (o) { return o.status === 'waiting_for_confirmation'; }); }
+  function soonBookings(d) {
+    var t = dayStr(0), n = dayStr(1);
+    return d.bookings.filter(function (b) {
+      return (b.event_date === t || b.event_date === n) && (b.status === 'requested' || b.status === 'accepted');
+    });
+  }
+  function toApprove(d) { return realPartners(d).filter(function (p) { return !p.is_approved; }); }
+  function feesDue(d) { return realPartners(d).filter(function (p) { return p.status === 'due' || p.status === 'hidden'; }); }
+
+  // ---------- Home: what needs the admin today ----------
+  function todoCard(n, ta, en, subTa, subEn, tabKey, filter, hot) {
+    return '<button type="button" class="ad-todo' + (hot && n ? ' is-hot' : '') + '" data-act="tab" data-tab="' + tabKey + '"' +
+      (filter ? ' data-filter="' + filter + '"' : '') + '>' +
+      '<span class="ad-num' + (n ? '' : ' is-zero') + '">' + n + '</span>' +
+      '<span class="ad-todo-text"><strong>' + bi(ta, en) + '</strong><small>' + bi(subTa, subEn) + '</small></span>' +
+      '<span class="ad-go" aria-hidden="true">›</span></button>';
+  }
+
+  function homeSection(d) {
     var tile = function (n, ta, en) {
       return '<div class="stat"><strong>' + n + '</strong><span>' + bi(ta, en) + '</span></div>';
     };
-    var buckets = { active: 0, free: 0, hidden: 0 };
-    d.partners.forEach(function (p) {
-      if (p.status === 'free') buckets.free++;
-      else if (p.status === 'hidden') buckets.hidden++;
-      else buckets.active++;
-    });
-    return '<h2>' + bi('சுருக்கம்', 'Summary') + '</h2>' +
+    return '<h1>' + bi('வணக்கம், நிர்வாகி', 'Welcome, Admin') + '</h1>' +
+      '<p class="ad-sub">' + bi('இன்று உங்கள் கவனம் தேவைப்படுவது:', 'What needs you today:') + '</p>' +
+      '<div class="ad-todo-grid">' +
+        todoCard(waitingOrders(d).length, 'காத்திருக்கும் ஆர்டர்கள்', 'Orders waiting', 'உறுதி செய்ய வேண்டும்', 'Confirm or mark unavailable', 'orders', 'waiting_for_confirmation', true) +
+        todoCard(soonBookings(d).length, 'இன்று / நாளை முன்பதிவுகள்', 'Bookings today / tomorrow', 'வாத்தியார் & சமையல்', 'Priests & cooks', 'bookings', 'soon', false) +
+        todoCard(toApprove(d).length, 'புதிய அங்கீகாரம்', 'New approvals', 'வாத்தியார் / சமையல்காரர்', 'Priests / cooks waiting', 'people', 'approve', true) +
+        todoCard(feesDue(d).length, 'கட்டணம் நிலுவை', 'Fees pending', 'இந்த மாதம்', 'This month', 'people', 'fees', false) +
+      '</div>' +
+      '<h2 class="ad-menu-h">' + bi('எல்லா பகுதிகள்', 'All sections') + '</h2>' +
+      '<div class="ad-menu">' + SECTIONS.slice(1).map(function (s) {
+        return '<button type="button" class="ad-menu-btn" data-act="tab" data-tab="' + s[0] + '"><span class="ad-ic" aria-hidden="true">' + s[1] + '</span>' + bi(s[2], s[3]) + '</button>';
+      }).join('') + '</div>' +
+      '<h2>' + bi('சுருக்கம்', 'Summary') + '</h2>' +
       '<div class="stat-grid">' +
         tile(d.counts.customers, 'வாடிக்கையாளர்கள்', 'Customers') +
         tile(d.counts.priests, 'வாத்தியார்கள்', 'Priests') +
         tile(d.counts.cooks, 'சமையல்காரர்கள்', 'Cooks') +
         tile(d.counts.stores, 'கடைகள்', 'Blind Tie-up Stores') +
-      '</div>' +
-      '<h3>' + bi('வாத்தியார் / சமையல்காரர் நிலை', 'Partner status') + '</h3>' +
-      '<div class="stat-grid">' +
-        tile(buckets.active, 'செயலில்', 'Active') +
-        tile(buckets.free, 'இலவசம்', 'Free-tier') +
-        tile(buckets.hidden, 'தானாக மறைக்கப்பட்டது', 'Auto-hidden') +
-      '</div>' +
-      '<p class="soon">' + bi('செயலில்: கட்டணம் செலுத்தியவர்கள் அல்லது கால அவகாசத்தில் உள்ளவர்கள்.', 'Active: paid, or still within the grace period.') + '</p>' +
-      partnersSection(d);
+      '</div>';
   }
 
-  // Fee tracking: the admin records payments (the app has no payment gateway).
-  function partnersSection(d) {
-    var rows = d.partners.filter(function (p) { return !p.is_sample && p.status !== 'free'; });
-    if (!rows.length) return '';
-    return '<h3>' + bi('கட்டணம் பதிவு செய்', 'Record subscription fees') + '</h3>' +
-      '<div class="pooja-grid">' + rows.map(function (p) {
-        return '<article class="pooja-card"><strong>' + nameBi(p) + '</strong>' +
-          '<div class="badges"><span class="badge">' + bi(PD.ROLE[p.role][0], PD.ROLE[p.role][1]) + '</span>' +
+  // ---------- Filter chips ----------
+  function chips(group, current, items) {
+    return '<div class="ad-chips" role="group">' + items.map(function (it) {
+      return '<button type="button" class="ad-chip' + (current === it[0] ? ' is-on' : '') + '" data-act="chip" data-group="' + group +
+        '" data-value="' + it[0] + '">' + bi(it[1], it[2]) + (it[3] != null ? ' (' + it[3] + ')' : '') + '</button>';
+    }).join('') + '</div>';
+  }
+
+  // ---------- Samagri orders ----------
+  function ordersSection(d) {
+    var n = function (s) { return d.orders.filter(function (o) { return o.status === s; }).length; };
+    return '<h1>' + bi('சாமான் ஆர்டர்கள்', 'Samagri orders') + '</h1>' +
+      chips('order', orderFilter, [
+        ['waiting_for_confirmation', 'காத்திருக்கும்', 'Waiting', n('waiting_for_confirmation')],
+        ['confirmed_dispatched', 'உறுதி', 'Confirmed', n('confirmed_dispatched')],
+        ['unavailable', 'கிடைக்கவில்லை', 'Unavailable', n('unavailable')],
+        ['all', 'எல்லாம்', 'All', d.orders.length]
+      ]) +
+      '<label class="field"><span class="ta">PIN குறியீடு மூலம் தேடு</span><span class="en">Search by PIN code</span>' +
+        '<input id="order-pin" type="text" inputmode="numeric" maxlength="6" placeholder="600126" value="' + esc(pinFilter.order) + '"></label>' +
+      '<div id="orders-list"></div>';
+  }
+
+  function orderCard(o, d) {
+    var st = ORDER_STATUS[o.status] || ['', ''];
+    var done = o.status === 'confirmed_dispatched';
+    var contact = done
+      ? '<p><strong>' + bi('வாடிக்கையாளர்', 'Customer') + ':</strong> ' + esc(o.customer_name) + ' · ' + phoneLine(o.customer_mobile) + '</p>' +
+        '<p><strong>' + bi('கடை', 'Store') + ':</strong> ' + esc(o.vendor_name || '') + ' · ' + phoneLine(o.vendor_phone) + '</p>'
+      : '<p class="ad-lock">🔒 ' + bi('தொடர்பு எண்கள் உறுதிப்படுத்திய பின் காட்டப்படும்.', 'Phone numbers show after confirming.') + '</p>';
+
+    var actions = '';
+    if (o.status === 'waiting_for_confirmation') {
+      var stores = d.vendors.filter(function (v) { return v.is_active && v.pin_code === o.pin_code; });
+      if (stores.length) {
+        actions = '<label class="field"><span class="ta">கடையைத் தேர்ந்தெடு</span><span class="en">Choose store</span>' +
+          '<select id="store-' + esc(o.id) + '">' + stores.map(function (v) {
+            return '<option value="' + esc(v.id) + '">' + esc(v.name) + ' · +91 ' + esc(v.phone) + '</option>';
+          }).join('') + '</select></label>' +
+          '<div class="ad-btns"><button type="button" class="btn ad-ok" data-act="confirm-order" data-id="' + esc(o.id) + '">✔ ' +
+          bi('உறுதி செய் / அனுப்பு', 'Confirm / Dispatch') + '</button>' +
+          '<button type="button" class="btn btn-outline" data-act="unavailable-order" data-id="' + esc(o.id) + '">' +
+          bi('கிடைக்கவில்லை', 'Unavailable') + '</button></div>';
+      } else {
+        actions = '<p class="ad-lock is-warn">⚠ ' + bi(NOTICE.no_store[0], NOTICE.no_store[1]) + '</p>' +
+          '<div class="ad-btns"><button type="button" class="btn btn-outline" data-act="tab" data-tab="stores">+ ' + bi('கடையைச் சேர்', 'Add store') + '</button>' +
+          '<button type="button" class="btn btn-outline" data-act="unavailable-order" data-id="' + esc(o.id) + '">' + bi('கிடைக்கவில்லை', 'Unavailable') + '</button></div>';
+      }
+    }
+
+    return '<article class="ad-card">' +
+      '<div class="ad-card-top"><h3>' + nameBi({ name_ta: o.pooja_ta, name_en: o.pooja_en }) + '</h3>' +
+        '<span class="badge' + (o.status === 'waiting_for_confirmation' ? ' ad-wait' : '') + '">' + bi(st[0], st[1]) + '</span></div>' +
+      '<div class="badges"><span class="badge">PIN ' + esc(o.pin_code || '—') + '</span>' +
+        '<span class="badge">' + esc((o.created_at || '').slice(0, 10)) + '</span></div>' +
+      contact + actions + '</article>';
+  }
+
+  function renderOrders(d) {
+    var rows = d.orders.filter(function (o) {
+      return (orderFilter === 'all' || o.status === orderFilter) &&
+        (!pinFilter.order || String(o.pin_code || '').indexOf(pinFilter.order) === 0);
+    });
+    $('orders-list').innerHTML = rows.length
+      ? rows.map(function (o) { return orderCard(o, d); }).join('')
+      : '<p class="ad-empty">' + bi('இந்தப் பட்டியலில் ஆர்டர்கள் இல்லை.', 'No orders in this list.') + '</p>';
+  }
+
+  // ---------- Priest / Cook bookings ----------
+  function bookingsSection(d) {
+    var t = dayStr(0), n = dayStr(1);
+    var cnt = function (f) { return d.bookings.filter(f).length; };
+    return '<h1>' + bi('முன்பதிவுகள்', 'Bookings') + '</h1>' +
+      chips('booking', bookingFilter, [
+        ['soon', 'இன்று / நாளை', 'Today / Tomorrow', cnt(function (b) { return b.event_date === t || b.event_date === n; })],
+        ['upcoming', 'வரவிருப்பவை', 'Upcoming', cnt(function (b) { return b.event_date > n; })],
+        ['past', 'முடிந்தவை', 'Past', cnt(function (b) { return b.event_date < t; })],
+        ['all', 'எல்லாம்', 'All', d.bookings.length]
+      ]) +
+      '<label class="field"><span class="ta">PIN குறியீடு மூலம் தேடு</span><span class="en">Search by PIN code</span>' +
+        '<input id="booking-pin" type="text" inputmode="numeric" maxlength="6" placeholder="600126" value="' + esc(pinFilter.booking) + '"></label>' +
+      '<div id="bookings-list"></div>';
+  }
+
+  function renderBookings(d) {
+    var t = dayStr(0), n = dayStr(1);
+    var rows = d.bookings.filter(function (b) {
+      var okDate = bookingFilter === 'all' ||
+        (bookingFilter === 'soon' && (b.event_date === t || b.event_date === n)) ||
+        (bookingFilter === 'upcoming' && b.event_date > n) ||
+        (bookingFilter === 'past' && b.event_date < t);
+      return okDate && (!pinFilter.booking || String(b.pin_code || '').indexOf(pinFilter.booking) === 0);
+    });
+    $('bookings-list').innerHTML = rows.length
+      ? rows.map(function (b) {
+          var st = PD.STATUS[b.status] || ['', ''];
+          return '<article class="ad-card">' +
+            '<div class="ad-card-top"><h3>' + esc(b.customer_name || '') + ' → ' + nameBi(b) + '</h3>' +
+              '<span class="badge' + (b.status === 'requested' ? ' ad-wait' : '') + '">' + bi(st[0], st[1]) + '</span></div>' +
+            '<div class="badges"><span class="badge">' + bi(PD.ROLE[b.service_type][0], PD.ROLE[b.service_type][1]) + '</span>' +
+              '<span class="badge">PIN ' + esc(b.pin_code || '—') + '</span>' +
+              '<span class="badge">' + esc(b.event_date) + '</span></div>' +
+            '<p>' + nameBi({ name_ta: b.pooja_ta, name_en: b.pooja_en }) + '</p></article>';
+        }).join('')
+      : '<p class="ad-empty">' + bi('இந்தப் பட்டியலில் முன்பதிவுகள் இல்லை.', 'No bookings in this list.') + '</p>';
+  }
+
+  // ---------- Priests & Cooks: approve, hide, record fees ----------
+  function peopleSection(d) {
+    var all = realPartners(d);
+    return '<h1>' + bi('வாத்தியார் & சமையல்காரர்', 'Priests & Cooks') + '</h1>' +
+      chips('people', peopleFilter, [
+        ['approve', 'அங்கீகாரம் நிலுவை', 'To approve', toApprove(d).length],
+        ['fees', 'கட்டணம்', 'Fees due', feesDue(d).length],
+        ['all', 'எல்லோரும்', 'All', all.length]
+      ]) +
+      '<p class="soon">' + bi('புதிய கூட்டாளர்கள் அங்கீகரிக்கப்படும் வரை தேடலில் காட்டப்பட மாட்டார்கள்.', 'New partners stay out of search until approved.') + '</p>' +
+      '<div id="people-list"></div>';
+  }
+
+  function renderPeople(d) {
+    var rows = realPartners(d).filter(function (p) {
+      if (peopleFilter === 'approve') return !p.is_approved;
+      if (peopleFilter === 'fees') return p.status === 'due' || p.status === 'hidden';
+      return true;
+    });
+    $('people-list').innerHTML = rows.length ? rows.map(function (p) {
+      return '<article class="ad-card"><div class="ad-card-top"><h3>' + nameBi(p) + '</h3>' +
+        '<span class="badge' + (p.is_approved ? '' : ' ad-wait') + '">' +
+          (p.is_approved ? bi('அங்கீகரிக்கப்பட்டது', 'Approved') : bi('அங்கீகாரம் நிலுவை', 'Awaiting approval')) + '</span></div>' +
+        '<div class="badges"><span class="badge">' + bi(PD.ROLE[p.role][0], PD.ROLE[p.role][1]) + '</span>' +
+          (p.is_hidden ? '<span class="badge">' + bi('மறைக்கப்பட்டது', 'Hidden') + '</span>' : '') +
           '<span class="badge">' + esc(p.status) + '</span></div>' +
-          '<div class="action-row"><button type="button" class="btn btn-outline" data-act="mark-paid" data-id="' + esc(p.id) + '">' +
-          bi('இந்த மாதம் செலுத்தப்பட்டது', 'Mark this month paid') + '</button></div></article>';
-      }).join('') + '</div>';
+        '<div class="ad-btns">' +
+          '<button type="button" class="btn ' + (p.is_approved ? 'btn-outline' : 'ad-ok') + '" data-act="partner-flags" data-id="' + esc(p.id) +
+            '" data-approved="' + (!p.is_approved) + '" data-hidden="' + !!p.is_hidden + '"' + (p.is_approved ? ' data-ask="unapprove"' : '') + '>' +
+            (p.is_approved ? bi('அங்கீகாரத்தை நீக்கு', 'Unapprove') : '✔ ' + bi('அங்கீகரி', 'Approve')) + '</button>' +
+          '<button type="button" class="btn btn-outline" data-act="partner-flags" data-id="' + esc(p.id) +
+            '" data-approved="' + !!p.is_approved + '" data-hidden="' + (!p.is_hidden) + '"' + (p.is_hidden ? '' : ' data-ask="hide"') + '>' +
+            (p.is_hidden ? bi('மீண்டும் காட்டு', 'Show again') : bi('மறை', 'Hide')) + '</button>' +
+          (p.status === 'due' || p.status === 'hidden'
+            ? '<button type="button" class="btn btn-outline" data-act="mark-paid" data-id="' + esc(p.id) + '">' + bi('இந்த மாதம் செலுத்தப்பட்டது', 'Mark this month paid') + '</button>' : '') +
+        '</div></article>';
+    }).join('') : '<p class="ad-empty">' + bi('இந்தப் பட்டியலில் யாரும் இல்லை.', 'Nobody in this list.') + '</p>';
+  }
+
+  // ---------- Poojas: show / hide ----------
+  function poojasSection(d) {
+    var poojas = d.poojas.map(function (p) {
+      return '<tr><td>' + esc(p.name_en) + '</td><td>' + esc(p.name_ta) + '</td><td>' + esc(p.category) + '</td>' +
+        '<td><button type="button" class="btn btn-outline" data-act="pooja-visible" data-id="' + esc(p.id) + '" data-visible="' + (!p.is_visible) + '">' +
+        (p.is_visible ? bi('மறை', 'Hide') : bi('காட்டு', 'Show')) + '</button></td></tr>';
+    }).join('');
+    return '<h1>' + bi('பூஜைகள்', 'Poojas') + '</h1>' +
+      '<p class="soon">' + bi('மறைக்கப்பட்ட பூஜைகள் வாடிக்கையாளர்களுக்குக் காட்டப்படாது.', 'Hidden poojas are not shown to customers.') + '</p>' +
+      '<div class="table-scroll"><table class="admin-table"><thead><tr><th>English</th><th>தமிழ்</th><th>' +
+        bi('பிரிவு', 'Category') + '</th><th></th></tr></thead><tbody>' + poojas + '</tbody></table></div>';
   }
 
   // ---------- Blind tie-up stores ----------
@@ -120,7 +307,7 @@
           (v.is_active ? bi('நிறுத்து', 'Pause') : bi('மீண்டும் இயக்கு', 'Reactivate')) + '</button></div>' +
         '</article>';
     }).join('');
-    return '<h2>' + bi('கடைகள் (Blind Tie-up)', 'Blind Tie-up Stores') + '</h2>' +
+    return '<h1>' + bi('கடைகள் (Blind Tie-up)', 'Blind Tie-up Stores') + '</h1>' +
       '<p class="soon">' + bi('கடைகளுக்கு உள்நுழைவு இல்லை. ஆர்டர்களை நிர்வாகமே கடைக்கு ஒதுக்கும்.', 'Stores have no login. Admin assigns each order to a store.') + '</p>' +
       '<form id="vendor-form" class="vendor-form" novalidate>' +
         '<label class="field"><span class="ta">கடையின் பெயர்</span><span class="en">Store name</span><input name="name" type="text" required></label>' +
@@ -130,82 +317,6 @@
       '</form>' +
       (d.vendors.length ? '<div class="pooja-grid">' + cards + '</div>'
         : '<p>' + bi('இன்னும் கடைகள் சேர்க்கப்படவில்லை.', 'No stores added yet.') + '</p>');
-  }
-
-  // ---------- Samagri orders ----------
-  function ordersSection() {
-    return '<h2>' + bi('சாமான் ஆர்டர்கள்', 'Samagri orders') + '</h2>' +
-      '<label class="field"><span class="ta">PIN குறியீடு மூலம் வடிகட்டு</span><span class="en">Filter by PIN code</span>' +
-        '<input id="order-pin" type="text" inputmode="numeric" maxlength="6" placeholder="600126" value="' + esc(pinFilter.order) + '"></label>' +
-      '<div id="orders-list" class="pooja-grid"></div>';
-  }
-
-  function orderCard(o, d) {
-    var st = ORDER_STATUS[o.status] || ['', ''];
-    var done = o.status === 'confirmed_dispatched';
-    var contact = done
-      ? '<p><strong>' + bi('வாடிக்கையாளர்', 'Customer') + ':</strong> ' + esc(o.customer_name) + ' · ' + phoneLine(o.customer_mobile) + '</p>' +
-        '<p><strong>' + bi('கடை', 'Store') + ':</strong> ' + esc(o.vendor_name || '') + ' · ' + phoneLine(o.vendor_phone) + '</p>'
-      : '<p class="soon">' + bi('தொடர்பு எண்கள் உறுதிப்படுத்திய பின் காட்டப்படும்.', 'Contact numbers appear once confirmed.') + '</p>';
-
-    var actions = '';
-    if (o.status === 'waiting_for_confirmation') {
-      var stores = d.vendors.filter(function (v) { return v.is_active && v.pin_code === o.pin_code; });
-      var pick = stores.length
-        ? '<label class="field"><span class="ta">கடையை ஒதுக்கு</span><span class="en">Assign store</span>' +
-          '<select id="store-' + esc(o.id) + '">' + stores.map(function (v) {
-            return '<option value="' + esc(v.id) + '">' + esc(v.name) + ' · +91 ' + esc(v.phone) + '</option>';
-          }).join('') + '</select></label>'
-        : '<p class="form-msg is-error">' + bi(NOTICE.no_store[0], NOTICE.no_store[1]) + '</p>';
-      actions = pick + '<div class="action-row">' +
-        (stores.length ? '<button type="button" class="btn" data-act="confirm-order" data-id="' + esc(o.id) + '">' +
-          bi('உறுதி செய் / அனுப்பு', 'Confirm / Dispatch') + '</button>' : '') +
-        '<button type="button" class="btn btn-outline" data-act="unavailable-order" data-id="' + esc(o.id) + '">' +
-          bi('கிடைக்கவில்லை', 'Unavailable') + '</button></div>';
-    }
-
-    return '<article class="pooja-card">' +
-      '<strong>' + nameBi({ name_ta: o.pooja_ta, name_en: o.pooja_en }) + '</strong>' +
-      '<div class="badges"><span class="badge">' + bi(st[0], st[1]) + '</span>' +
-        '<span class="badge">PIN ' + esc(o.pin_code || '—') + '</span></div>' +
-      '<p>' + esc((o.created_at || '').slice(0, 10)) + '</p>' +
-      contact + actions +
-      '</article>';
-  }
-
-  function renderOrders(d) {
-    var rows = d.orders.filter(function (o) {
-      return !pinFilter.order || String(o.pin_code || '').indexOf(pinFilter.order) === 0;
-    });
-    $('orders-list').innerHTML = rows.length
-      ? rows.map(function (o) { return orderCard(o, d); }).join('')
-      : '<p>' + bi('ஆர்டர்கள் இல்லை.', 'No orders match.') + '</p>';
-  }
-
-  // ---------- Priest / Cook bookings ----------
-  function bookingsSection() {
-    return '<h2>' + bi('வாத்தியார் / சமையல்காரர் முன்பதிவுகள்', 'Priest & cook bookings') + '</h2>' +
-      '<label class="field"><span class="ta">PIN குறியீடு மூலம் வடிகட்டு</span><span class="en">Filter by PIN code</span>' +
-        '<input id="booking-pin" type="text" inputmode="numeric" maxlength="6" placeholder="600126" value="' + esc(pinFilter.booking) + '"></label>' +
-      '<div id="bookings-list" class="pooja-grid"></div>';
-  }
-
-  function renderBookings(d) {
-    var rows = d.bookings.filter(function (b) {
-      return !pinFilter.booking || String(b.pin_code || '').indexOf(pinFilter.booking) === 0;
-    });
-    $('bookings-list').innerHTML = rows.length
-      ? rows.map(function (b) {
-          var st = PD.STATUS[b.status] || ['', ''];
-          return '<article class="pooja-card">' +
-            '<strong>' + esc(b.customer_name || '') + ' → ' + nameBi(b) + '</strong>' +
-            '<div class="badges"><span class="badge">' + bi(PD.ROLE[b.service_type][0], PD.ROLE[b.service_type][1]) + '</span>' +
-              '<span class="badge">' + bi(st[0], st[1]) + '</span>' +
-              '<span class="badge">PIN ' + esc(b.pin_code || '—') + '</span></div>' +
-            '<p>' + esc(b.event_date) + ' · ' + nameBi({ name_ta: b.pooja_ta, name_en: b.pooja_en }) + '</p>' +
-            '</article>';
-        }).join('')
-      : '<p>' + bi('முன்பதிவுகள் இல்லை.', 'No bookings match.') + '</p>';
   }
 
   // ---------- WhatsApp alerts ----------
@@ -220,7 +331,7 @@
       return '<tr><td>' + esc((m.created_at || '').slice(0, 16).replace('T', ' ')) + '</td>' +
         '<td>' + esc(m.template) + '</td><td>' + esc(m.to_addr) + '</td><td>' + esc(m.status) + '</td></tr>';
     }).join('');
-    return '<h2>' + bi('WhatsApp எச்சரிக்கைகள்', 'WhatsApp alerts') + '</h2>' +
+    return '<h1>' + bi('WhatsApp செய்திகள்', 'WhatsApp messages') + '</h1>' +
       '<p>' + bi('ஒவ்வொரு செய்தியும் "சுபம் அஸ்து:" என்ற முன்னொட்டுடன் தொடங்கும். நான்கு தூண்டுதல்கள் மட்டுமே உள்ளன.', 'Every message starts with "சுபம் அஸ்து:". There are exactly four triggers.') + '</p>' +
       '<div class="pooja-grid">' + previews + '</div>' +
       '<div class="action-row">' +
@@ -232,7 +343,26 @@
         : '<p>' + bi('இன்னும் செய்திகள் இல்லை.', 'No messages queued yet.') + '</p>');
   }
 
-  // ---------- Page ----------
+
+  // ---------- Page shell: sidebar (laptop) / back button (phone) + one section at a time ----------
+  function sectionBody(d) {
+    if (tab === 'orders') return ordersSection(d);
+    if (tab === 'bookings') return bookingsSection(d);
+    if (tab === 'people') return peopleSection(d);
+    if (tab === 'stores') return vendorsSection(d);
+    if (tab === 'poojas') return poojasSection(d);
+    if (tab === 'messages') return waSection(d);
+    if (tab === 'settings') return settingsSection();
+    return homeSection(d);
+  }
+
+  function sideNav() {
+    return '<nav class="ad-side" aria-label="Admin sections">' + SECTIONS.map(function (s) {
+      return '<button type="button" class="ad-side-btn' + (tab === s[0] ? ' is-on' : '') + '" data-act="tab" data-tab="' + s[0] + '">' +
+        '<span aria-hidden="true">' + s[1] + '</span>' + bi(s[2], s[3]) + '</button>';
+    }).join('') + '</nav>';
+  }
+
   function render() {
     var box = $('admin-box');
     return SASettings.ready().then(function () { return A.currentUser(); }).then(function (u) {
@@ -248,13 +378,13 @@
           return;
         }
         last = d;
-        box.innerHTML = '<h1>' + bi('நிர்வாக டாஷ்போர்டு', 'Admin Dashboard') + '</h1>' +
+        box.innerHTML = '<div class="ad-layout">' + sideNav() + '<div class="ad-main">' +
+          (tab === 'home' ? '' : '<button type="button" class="ad-back" data-act="tab" data-tab="home">‹ ' + bi('முகப்பு', 'Home') + '</button>') +
           '<div id="admin-notice" class="form-msg" role="status" hidden></div>' +
-          tabNav() + tabBody(d);
-        if (tab === 'overview') {
-          renderOrders(d);
-          renderBookings(d);
-        }
+          sectionBody(d) + '</div></div>';
+        if (tab === 'orders') renderOrders(d);
+        if (tab === 'bookings') renderBookings(d);
+        if (tab === 'people') renderPeople(d);
       });
     });
   }
@@ -297,54 +427,6 @@
     return after(DB.rpc('sa_admin_queue_test', { p_token: DB.token() }), NOTICE.test_sent[0], NOTICE.test_sent[1]);
   }
 
-  // ---------- Tabs ----------
-  function tabNav() {
-    var tabs = [
-      ['overview', 'கண்ணோட்டம்', 'Overview'],
-      ['catalog', 'பூஜைகள் & கூட்டாளர்கள்', 'Catalog & Partners'],
-      ['settings', 'விதிகள் & அமைப்புகள்', 'Settings & Rules']
-    ];
-    return '<nav class="admin-tabs" aria-label="Admin sections">' + tabs.map(function (t) {
-      return '<button type="button" class="btn ' + (tab === t[0] ? '' : 'btn-outline') + '" data-act="tab" data-tab="' + t[0] + '">' +
-        bi(t[1], t[2]) + '</button>';
-    }).join('') + '</nav>';
-  }
-
-  function tabBody(d) {
-    if (tab === 'catalog') return vendorsSection(d) + catalogSection(d);
-    if (tab === 'settings') return settingsSection();
-    return summary(d) + ordersSection() + bookingsSection() + waSection(d);
-  }
-
-  // ---------- Catalog & partners: show or hide poojas; approve or hide priests and cooks ----------
-  function catalogSection(d) {
-    var poojas = d.poojas.map(function (p) {
-      return '<tr><td>' + esc(p.name_en) + '</td><td>' + esc(p.name_ta) + '</td><td>' + esc(p.category) + '</td>' +
-        '<td><button type="button" class="btn btn-outline" data-act="pooja-visible" data-id="' + esc(p.id) + '" data-visible="' + (!p.is_visible) + '">' +
-        (p.is_visible ? bi('மறை', 'Hide') : bi('காட்டு', 'Show')) + '</button></td></tr>';
-    }).join('');
-    var partners = d.partners.filter(function (p) { return !p.is_sample; }).map(function (p) {
-      return '<article class="pooja-card"><strong>' + nameBi(p) + '</strong>' +
-        '<div class="badges"><span class="badge">' + bi(PD.ROLE[p.role][0], PD.ROLE[p.role][1]) + '</span>' +
-        '<span class="badge">' + (p.is_approved ? bi('அங்கீகரிக்கப்பட்டது', 'Approved') : bi('அங்கீகாரம் நிலுவை', 'Awaiting approval')) + '</span>' +
-        (p.is_hidden ? '<span class="badge">' + bi('மறைக்கப்பட்டது', 'Hidden') + '</span>' : '') +
-        '<span class="badge">' + esc(p.status) + '</span></div>' +
-        '<div class="action-row">' +
-        '<button type="button" class="btn" data-act="partner-flags" data-id="' + esc(p.id) + '" data-approved="' + (!p.is_approved) + '" data-hidden="' + !!p.is_hidden + '">' +
-          (p.is_approved ? bi('அங்கீகாரத்தை நீக்கு', 'Unapprove') : bi('அங்கீகரி', 'Approve')) + '</button>' +
-        '<button type="button" class="btn btn-outline" data-act="partner-flags" data-id="' + esc(p.id) + '" data-approved="' + !!p.is_approved + '" data-hidden="' + (!p.is_hidden) + '">' +
-          (p.is_hidden ? bi('மீண்டும் காட்டு', 'Show again') : bi('மறை', 'Hide')) + '</button>' +
-        '</div></article>';
-    }).join('');
-    return '<h2>' + bi('பூஜைகள்', 'Poojas') + '</h2>' +
-      '<p class="soon">' + bi('மறைக்கப்பட்ட பூஜைகள் வாடிக்கையாளர்களுக்குக் காட்டப்படாது.', 'Hidden poojas are not shown to customers.') + '</p>' +
-      '<div class="table-scroll"><table class="admin-table"><thead><tr><th>English</th><th>தமிழ்</th><th>' +
-        bi('பிரிவு', 'Category') + '</th><th></th></tr></thead><tbody>' + poojas + '</tbody></table></div>' +
-      '<h2>' + bi('வாத்தியார் / சமையல்காரர்', 'Priests & cooks') + '</h2>' +
-      '<p class="soon">' + bi('புதிய கூட்டாளர்கள் அங்கீகரிக்கப்படும் வரை தேடலில் காட்டப்பட மாட்டார்கள்.', 'New partners stay out of search until approved.') + '</p>' +
-      (partners || '<p>' + bi('இன்னும் கூட்டாளர்கள் இல்லை.', 'No partners yet.') + '</p>');
-  }
-
   // ---------- Settings & rules: every value below is saved to the database and read live by the app ----------
   var GROUP_TITLE = {
     subscription: ['சந்தா விதிகள்', 'Subscription rules'],
@@ -372,7 +454,7 @@
 
   function settingsSection() {
     var rows = SASettings.rows().filter(function (r) { return r.key !== 'wa_sample'; });
-    var out = '<h2>' + bi('விதிகள் & அமைப்புகள்', 'Settings & rules') + '</h2>' +
+    var out = '<h1>' + bi('அமைப்புகள்', 'Settings') + '</h1>' +
       '<p class="soon">' + bi('மாற்றங்கள் சேமித்த உடனே செயலிக்குள் நடைமுறைக்கு வரும்.', 'Changes take effect in the app as soon as you save.') + '</p>' +
       '<form id="settings-form" novalidate>';
     var lastGroup = null;
@@ -418,6 +500,15 @@
   // ---------- Events ----------
   var box = $('admin-box');
 
+  var ASK = {
+    unapprove: ['இந்த கூட்டாளரின் அங்கீகாரத்தை நீக்கவா?', 'Remove approval for this partner?'],
+    hide: ['இந்த கூட்டாளரை மறைக்கவா?', 'Hide this partner from customers?'],
+    poojaHide: ['இந்த பூஜையை வாடிக்கையாளர்களிடமிருந்து மறைக்கவா?', 'Hide this pooja from customers?'],
+    unavailable: ['இந்த ஆர்டரை "கிடைக்கவில்லை" எனக் குறிக்கவா? வாடிக்கையாளருக்குச் செய்தி செல்லும்.', 'Mark this order unavailable? The customer will get a message.'],
+    confirm: ['ஆர்டரை உறுதி செய்து கடைக்கு அனுப்பவா? வாடிக்கையாளருக்குச் செய்தி செல்லும்.', 'Confirm and dispatch this order? The customer will get a message.'],
+    vendor: ['இந்தக் கடையை நிறுத்தவா?', 'Pause this store?']
+  };
+
   box.addEventListener('click', function (e) {
     var b = e.target.closest('[data-act]');
     if (!b || !last) return;
@@ -425,27 +516,47 @@
     var id = b.getAttribute('data-id');
     if (act === 'tab') {
       tab = b.getAttribute('data-tab');
+      var f = b.getAttribute('data-filter');
+      if (f) {
+        if (tab === 'orders') orderFilter = f;
+        if (tab === 'bookings') bookingFilter = f;
+        if (tab === 'people') peopleFilter = f;
+      }
+      window.scrollTo(0, 0);
+      return render();
+    }
+    if (act === 'chip') {
+      var g = b.getAttribute('data-group'), v = b.getAttribute('data-value');
+      if (g === 'order') orderFilter = v;
+      if (g === 'booking') bookingFilter = v;
+      if (g === 'people') peopleFilter = v;
       return render();
     }
     if (act === 'pooja-visible') {
-      return after(DB.rpc('sa_admin_set_pooja_visible', { p_token: DB.token(), p_pooja: id, p_visible: b.getAttribute('data-visible') === 'true' }),
+      var show = b.getAttribute('data-visible') === 'true';
+      if (!show && !ask(ASK.poojaHide[0], ASK.poojaHide[1])) return;
+      return after(DB.rpc('sa_admin_set_pooja_visible', { p_token: DB.token(), p_pooja: id, p_visible: show }),
         NOTICE.saved[0], NOTICE.saved[1]);
     }
     if (act === 'partner-flags') {
+      var q = b.getAttribute('data-ask');
+      if (q && !ask(ASK[q][0], ASK[q][1])) return;
       return after(DB.rpc('sa_admin_set_partner_flags', {
         p_token: DB.token(), p_partner: id,
         p_approved: b.getAttribute('data-approved') === 'true', p_hidden: b.getAttribute('data-hidden') === 'true'
       }), NOTICE.saved[0], NOTICE.saved[1]);
     }
     if (act === 'toggle-vendor') {
-      return after(DB.rpc('sa_admin_set_vendor_active', { p_token: DB.token(), p_vendor: id, p_active: b.getAttribute('data-active') === 'true' }),
+      var on = b.getAttribute('data-active') === 'true';
+      if (!on && !ask(ASK.vendor[0], ASK.vendor[1])) return;
+      return after(DB.rpc('sa_admin_set_vendor_active', { p_token: DB.token(), p_vendor: id, p_active: on }),
         NOTICE.saved[0], NOTICE.saved[1]);
     }
     if (act === 'mark-paid') {
       return after(DB.rpc('sa_admin_mark_paid', { p_token: DB.token(), p_partner: id }), NOTICE.paid[0], NOTICE.paid[1]);
     }
-    if (act === 'confirm-order') return confirmOrder(id);
-    if (act === 'unavailable-order') return markUnavailable(id);
+    if (act === 'confirm-order') { if (ask(ASK.confirm[0], ASK.confirm[1])) return confirmOrder(id); return; }
+    if (act === 'unavailable-order') { if (ask(ASK.unavailable[0], ASK.unavailable[1])) return markUnavailable(id); return; }
     if (act === 'run-reminders') return runReminders();
     if (act === 'test-messages') return testMessages();
   });
