@@ -454,3 +454,50 @@ html[data-lang="en"] .pooja-card strong { font-family: var(--font-en); }
 .photo-prev { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
 .combo-card { border-left-color: var(--gold); }
 .combo-img { width: 100%; max-height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+
+/* Phase 3: feedback, badges */
+.fb{margin-top:.6rem;padding-top:.6rem;border-top:1px dashed var(--gold,#C59B27)}
+.fb-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin:.4rem 0}
+.fb-report{margin:.5rem 0}.fb-report textarea{width:100%;font:inherit;font-size:1rem;padding:.6rem;border:1px solid var(--gold,#C59B27);border-radius:8px;box-sizing:border-box}
+.linkbtn{background:none;border:0;color:#7A1C1C;text-decoration:underline;font:inherit;font-size:1rem;padding:.5rem 0;cursor:pointer;min-height:44px}
+.badge-ok{background:#E8F2E4;border-color:#6B8F5B;color:#2F5A22}
+
+/* ---- Pooja browser (categories left, details right) ---- */
+.pj-caldet { margin: 0 0 14px; border: 1.5px solid var(--border); border-radius: var(--radius); background: #fff; padding: 4px 14px; }
+.pj-caldet > summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; font-weight: 600; color: var(--maroon); }
+.pj-browser { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
+.pj-tree { display: block; }
+.pj-pane { display: none; min-width: 0; }
+.pj-browser.has-sel .pj-tree { display: none; }
+.pj-browser.has-sel .pj-pane { display: block; }
+.pj-cat { border: 1.5px solid var(--border); border-left: 5px solid var(--cc, var(--gold)); border-radius: 12px; background: #fff; margin: 0 0 10px; }
+.pj-cat > summary { min-height: 56px; padding: 8px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 700; color: var(--maroon); list-style: none; }
+.pj-cat > summary::-webkit-details-marker { display: none; }
+.pj-cat > summary::after { content: '▾'; margin-left: auto; color: var(--gold); }
+.pj-cat[open] > summary::after { content: '▴'; }
+.pj-count { font-size: .85rem; color: var(--muted); font-weight: 500; }
+.pj-item { display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; min-height: 48px; border-top: 1px solid var(--border); color: var(--ink); text-decoration: none; }
+.pj-item:hover { background: var(--parchment); }
+.pj-item.is-active { background: var(--parchment); color: var(--maroon); font-weight: 700; box-shadow: inset 4px 0 0 var(--gold); }
+.pj-item.is-active > span::before { content: '🪔 '; }
+.pj-item small { color: var(--muted); font-size: .88rem; }
+.pj-empty { text-align: center; padding: 40px 16px; color: var(--muted); border: 1.5px dashed var(--border); border-radius: var(--radius); }
+.pj-pts { margin: 6px 0; padding-left: 22px; }
+.pj-pts li { margin: 4px 0; }
+.pj-need { margin-top: 10px; }
+.pj-back { display: inline-block; margin-bottom: 8px; }
+@media (min-width: 900px) {
+  .pj-browser { grid-template-columns: 340px 1fr; }
+  .pj-pane, .pj-browser.has-sel .pj-pane { display: block; }
+  .pj-browser.has-sel .pj-tree { display: block; }
+  .pj-tree { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow: auto; }
+  .pj-back { display: none; }
+}
+
+/* ---- Home hero: Subham Asthu logo instead of the lamp photo ---- */
+.hero::before { background-image: url("../img/subham-astu-emblem.png"); background-size: contain; background-position: 50% 50%; background-repeat: no-repeat;
+  -webkit-mask-image: none; mask-image: none; width: 30%; }
+@media (max-width: 767px) {
+  .hero::before { display: block; left: 0; right: 0; top: 14px; bottom: auto; width: auto; height: 170px; }
+  .hero::after { display: none; }
+}

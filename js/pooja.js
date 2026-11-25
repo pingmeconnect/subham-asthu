@@ -22,6 +22,7 @@
   var DB = window.SADB;
   var P = window.SAPoojas;
   var A = window.SAAuth;
+  var C = window.SAContent;
 
   // [Tamil, English]
   var MSG = {
@@ -34,7 +35,8 @@
     address_bad: ['டெலிவரி முகவரியை முழுமையாக (குறைந்தது 10 எழுத்துகள்) உள்ளிடவும்.', 'Enter the full delivery address (at least 10 characters).'],
     date_bad: ['இன்றோ அதற்குப் பின்னரோ உள்ள தேதியைத் தேர்ந்தெடுக்கவும்.', 'Choose a date today or later.'],
     notes_bad: ['குறிப்பு 300 எழுத்துகளுக்குள் இருக்க வேண்டும்.', 'Notes must be within 300 characters.'],
-    not_found: ['பூஜை கிடைக்கவில்லை.', 'Pooja not found.']
+    not_found: ['பூஜை கிடைக்கவில்லை.', 'Pooja not found.'],
+    mantra_login: ['மந்திரங்களுடன் கூடிய PDF-ஐப் பதிவிறக்க, இலவசமாகப் பதிவு செய்யவும் அல்லது உள்நுழையவும்.', 'To download the mantra PDF, please register free or log in.']
   };
 
   function bi(ta, en) {
@@ -185,14 +187,14 @@
         '<div class="cal-dl">' + dateLabel(d) + (d === t ? ' · <b>' + bi('இன்று', 'Today') + '</b>' : '') + '</div>' +
         groups[d].map(function (x) {
           var r = by[x.slug];
-          return '<a class="cal-item" style="--cc:' + (CAT_COLOR[r.category] || '#702C35') + '" href="#pooja/' + esc(r.slug) + '"><span>' + bi(esc(r.name_ta), esc(r.name_en)) + '</span>' +
+          return '<a class="cal-item" style="--cc:' + (CAT_COLOR[r.category] || '#702C35') + '" href="#poojas/' + esc(r.slug) + '"><span>' + bi(esc(r.name_ta), esc(r.name_en)) + '</span>' +
             (x.note_ta || x.note_en ? '<small>' + bi(esc(x.note_ta || x.note_en), esc(x.note_en || x.note_ta)) + '</small>' : '') + '</a>';
         }).join('') + '</div></div>';
     }).join('');
     if (!body) {
       var nxt = cal.mode === 'date' ? dates.filter(function (x) { return x.date > from && by[x.slug]; })[0] : null;
       body = '<p class="ad-empty">' + bi('இந்தக் காலத்தில் பதிவு செய்யப்பட்ட விசேஷங்கள் இல்லை.', 'No special poojas listed for this period.') + '</p>' +
-        (nxt ? '<p>' + bi('அடுத்த விசேஷம்: ', 'Next one: ') + '<a href="#pooja/' + esc(nxt.slug) + '">' + bi(esc(by[nxt.slug].name_ta), esc(by[nxt.slug].name_en)) + '</a> - ' + dateLabel(nxt.date) + '</p>' : '');
+        (nxt ? '<p>' + bi('அடுத்த விசேஷம்: ', 'Next one: ') + '<a href="#poojas/' + esc(nxt.slug) + '">' + bi(esc(by[nxt.slug].name_ta), esc(by[nxt.slug].name_en)) + '</a> - ' + dateLabel(nxt.date) + '</p>' : '');
     }
     var legend = Object.keys(P.CATEGORIES).map(function (c) {
       return '<span class="cal-leg"><i style="background:' + CAT_COLOR[c] + '"></i>' + bi(P.CATEGORIES[c].ta, P.CATEGORIES[c].en) + '</span>';
@@ -206,44 +208,90 @@
       '<p class="soon">' + bi('தேதிகள் பஞ்சாங்கம் மற்றும் ஊரைப் பொறுத்து மாறலாம். உங்கள் வாத்தியாருடன் உறுதி செய்து கொள்ளவும்.', 'Dates may vary by panchangam and place. Please confirm with your priest.') + '</p></div>';
   }
 
-  // ---------- List ----------
-  function renderList() {
+  // ---------- Browser: categories (left) + details (right) ----------
+  function itemHtml(r, next) {
+    return '<a class="pj-item" data-sel="' + esc(r.slug) + '" href="#poojas/' + esc(r.slug) + '" data-q="' + esc((r.name_en + ' ' + r.name_ta).toLowerCase()) + '">' +
+      '<span>' + bi(esc(r.name_ta), esc(r.name_en)) + '</span>' +
+      (next[r.slug] ? '<small>' + bi('அடுத்து', 'Next') + ': ' + dateLabel(next[r.slug]) + '</small>' : '') + '</a>';
+  }
+
+  function renderList(sel) {
     return Promise.all([P.seed(), loadDates()]).then(function (res) {
       var rows = res[0], dates = res[1];
-      var t = todayStr();
-      var next = {};
-      dates.forEach(function (x) { if (x.date >= t && !next[x.slug]) next[x.slug] = x.date; });
-      var html = '<div id="pooja-cal">' + calHtml(rows, dates) + '</div>';
-      Object.keys(P.CATEGORIES).forEach(function (cat) {
-        var items = rows.filter(function (r) { return r.category === cat; });
-        html += '<section class="pooja-group cat-' + cat + '" style="--cc:' + CAT_COLOR[cat] + '"><h2>' + bi(P.CATEGORIES[cat].ta, P.CATEGORIES[cat].en) + '</h2><div class="pooja-grid">';
-        items.forEach(function (r) {
-          html += '<a class="pooja-card" style="--cc:' + CAT_COLOR[cat] + '" href="#pooja/' + r.slug + '">' +
-            '<strong>' + bi(esc(r.name_ta), esc(r.name_en)) + '</strong>' +
-            (next[r.slug] ? '<span class="badge cal-next">' + bi('அடுத்து', 'Next') + ': ' + dateLabel(next[r.slug]) + '</span>' : '') +
-            (r.has_cook_option ? '<span class="badge">' + bi('சமையல்காரர் வசதி', 'Cook option') + '</span>' : '') +
-            '</a>';
-        });
-        html += '</div></section>';
-      });
       var box = $('pooja-list');
       box._rows = rows; box._dates = dates;
-      box.innerHTML = html;
-      if (!box.dataset.calBound) {
+      var selRow = rows.filter(function (r) { return r.slug === sel; })[0];
+      var openCat = P.CATEGORIES[sel] ? sel : (selRow ? selRow.category : (box._open || Object.keys(P.CATEGORIES)[0]));
+      box._open = openCat;
+      if (!box.dataset.built) {
+        var t = todayStr(), next = {};
+        dates.forEach(function (x) { if (x.date >= t && !next[x.slug]) next[x.slug] = x.date; });
+        var tree = '';
+        Object.keys(P.CATEGORIES).forEach(function (cat) {
+          var items = rows.filter(function (r) { return r.category === cat; });
+          tree += '<details class="pj-cat" data-cat="' + cat + '" style="--cc:' + CAT_COLOR[cat] + '"><summary>' + bi(P.CATEGORIES[cat].ta, P.CATEGORIES[cat].en) +
+            ' <span class="pj-count">' + items.length + '</span></summary>' + items.map(function (r) { return itemHtml(r, next); }).join('') + '</details>';
+        });
+        box.innerHTML =
+          '<details class="pj-caldet"><summary>🗓 ' + bi('தேதி வாரியாகத் தேட / வரும் பூஜைகள்', 'Find by date / coming poojas') + '</summary><div id="pooja-cal">' + calHtml(rows, dates) + '</div></details>' +
+          '<div class="pj-browser" id="pj-browser"><nav class="pj-tree" aria-label="Poojas">' +
+          '<input type="search" id="pj-search" class="od-pick-search" placeholder="' + (document.documentElement.getAttribute('data-lang') === 'en' ? 'Search pooja…' : 'பூஜையைத் தேடுக…') + '">' + tree +
+          '<p class="soon pj-nomatch" hidden>' + bi('பொருத்தமான பூஜை இல்லை.', 'No matching pooja.') + '</p></nav>' +
+          '<div class="pj-pane" id="pooja-pane"></div></div>';
+        box.dataset.built = '1';
         box.dataset.calBound = '1';
         box.addEventListener('click', function (e) {
           var b = e.target.closest('[data-cal]');
-          if (!b) return;
-          cal.mode = b.getAttribute('data-cal'); cal.date = '';
-          $('pooja-cal').innerHTML = calHtml(box._rows, box._dates);
+          if (b) { cal.mode = b.getAttribute('data-cal'); cal.date = ''; $('pooja-cal').innerHTML = calHtml(box._rows, box._dates); return; }
+          var it = e.target.closest('[data-sel]');
+          if (it) { e.preventDefault(); history.replaceState(null, '', '#poojas/' + it.getAttribute('data-sel')); return showPooja(it.getAttribute('data-sel')); }
+          if (e.target.closest('[data-back]')) {
+            e.preventDefault(); history.replaceState(null, '', '#poojas');
+            $('pj-browser').classList.remove('has-sel');
+            $('pooja-pane').innerHTML = emptyPane();
+          }
         });
         box.addEventListener('change', function (e) {
           if (e.target.id !== 'cal-date') return;
           cal.date = e.target.value; cal.mode = cal.date ? 'date' : '30';
           $('pooja-cal').innerHTML = calHtml(box._rows, box._dates);
         });
+        box.addEventListener('input', function (e) {
+          if (e.target.id !== 'pj-search') return;
+          var q = e.target.value.trim().toLowerCase(), any = false;
+          box.querySelectorAll('.pj-cat').forEach(function (d) {
+            var n = 0;
+            d.querySelectorAll('.pj-item').forEach(function (a) { var ok = !q || a.getAttribute('data-q').indexOf(q) !== -1; a.hidden = !ok; if (ok) n++; });
+            d.hidden = !n; if (q && n) d.open = true; if (n) any = true;
+          });
+          box.querySelector('.pj-nomatch').hidden = any;
+        });
+        box.addEventListener('toggle', function (e) {   // one category open at a time
+          var d = e.target;
+          if (!d.classList || !d.classList.contains('pj-cat') || !d.open || $('pj-search').value) return;
+          box.querySelectorAll('.pj-cat').forEach(function (o) { if (o !== d) o.open = false; });
+        }, true);
       }
-      box._rows = rows; box._dates = dates;
+      box.querySelectorAll('.pj-cat').forEach(function (d) { d.open = d.getAttribute('data-cat') === openCat; });
+      if (selRow) return showPooja(sel);
+      $('pj-browser').classList.remove('has-sel');
+      $('pooja-pane').innerHTML = emptyPane();
+      var g = P.CATEGORIES[sel] && box.querySelector('.pj-cat[data-cat="' + sel + '"]');
+      if (g) g.scrollIntoView({ block: 'start' });
+    });
+  }
+
+  function emptyPane() {
+    return '<div class="pj-empty"><img src="img/kolam-corner.svg" alt="" width="96" height="96"><p>' +
+      bi('இடப்பக்கம் உள்ள பிரிவைத் திறந்து, ஒரு பூஜையைத் தேர்ந்தெடுக்கவும். விவரங்கள் இங்கே தெரியும்.', 'Open a category on the left and choose a pooja. Its details will show here.') + '</p></div>';
+  }
+
+  function showPooja(slug) {
+    var box = $('pooja-list'), pane = $('pooja-pane');
+    box.querySelectorAll('.pj-item').forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('data-sel') === slug); });
+    $('pj-browser').classList.add('has-sel');
+    return renderDetail(slug, pane, true).then(function () {
+      if (window.matchMedia('(max-width: 899px)').matches) pane.scrollIntoView({ block: 'start' });
     });
   }
 
@@ -266,13 +314,12 @@
         (it.prep ? '<small>' + bi(esc(it.prep[0]), esc(it.prep[1])) + '</small>' : '') + '</div></li>';
     }).join('') + '</ul>';
   }
-  function boxesHtml(info, self) {
+  function boxesHtml(m, self) {
     var out = '';
-    if (info.avoid) out += box('avoid', '⚠️', 'செய்யக் கூடாதவை / கவனிக்க', 'Things to avoid', pv(info.avoid));
-    if (info.miss) out += box('miss', '💛', 'செய்ய இயலவில்லை என்றால்', 'If you cannot do it', pv(info.miss));
-    if (info.give) out += box('give', '🤲', 'பூஜைக்குப் பின் தானமாகக் கொடுக்கலாம்', 'You may give after the pooja', pv(info.give));
-    if (info.temples) out += box('temples', '🛕', 'இந்த நாளில் புகழ் பெற்ற கோயில்கள்', 'Famous temples for this day', pv(info.temples));
-    if (info.tips && info.tips.length) out += box('tips', '✨', 'கூடுதல் குறிப்புகள்', 'Extra tips', tipList(info.tips));
+    [['avoid', 'avoid'], ['miss', 'miss'], ['give', 'give'], ['temples', 'temples'], ['tips', 'tips']].forEach(function (x) {
+      var k = C.KEYS.filter(function (c) { return c[0] === x[0]; })[0];
+      if (C.has(m[x[0]])) out += box(x[1], k[1], k[2], k[3], C.html(m[x[0]]));
+    });
     if (self) out += box('custom', '🏠', 'உங்கள் குடும்ப வழக்கம்', 'Your family custom', pv(INFO.OLD));
     out += '<p class="soon">' + bi('சடங்கு முறைகள் குடும்ப மரபு, ஊர் மற்றும் வாத்தியாரைப் பொறுத்து மாறலாம். இது வழிகாட்டுதலுக்கு மட்டுமே; உங்கள் வாத்தியாரின் முடிவே இறுதி.', 'Procedures vary by family tradition, place and priest. This is guidance only; your priest\'s decision is final.') + '</p>';
     return out;
@@ -288,14 +335,17 @@
         mine.map(function (x) { return '<span class="badge cal-next">' + dateLabel(x.date) + '</span>'; }).join('') + '</div>' : '') + '</div>';
   }
 
-  function renderDetail(slug) {
-    var box = $('pooja-detail');
-    return Promise.all([P.seed(), loadDates()]).then(function (res) {
+  function renderDetail(slug, target, embedded) {
+    var box = target || $('pooja-detail');
+    return Promise.all([P.seed(), loadDates(), C.load()]).then(function (res) {
       var rows = res[0], dates = res[1];
       var p = rows.filter(function (r) { return r.slug === slug; })[0] || null;
       if (!p) { box.innerHTML = '<p>' + bi(MSG.not_found[0], MSG.not_found[1]) + '</p>'; return; }
       var d = sheetData(p);
-      var info = infoFor(p) || {};
+      var info0 = infoFor(p) || {};
+      var m = C.merged(slug, info0);
+      var info = C.flat(m);
+      if (info0.deity) info.deity = info0.deity;
       var cc = CAT_COLOR[p.category] || '#702C35';
       var t0 = todayStr();
       var mine = dates.filter(function (x) { return x.slug === slug && x.date >= t0; }).slice(0, 3);
@@ -303,11 +353,11 @@
         (mine.length ? '<div class="badges">' + mine.map(function (x) { return '<span class="badge cal-next">' + dateLabel(x.date) + '</span>'; }).join('') + '</div>' : '');
       var tiles = '';
       if (whenVal) tiles += tile('🗓', 'எப்போது', 'When', whenVal);
-      if (info.start) tiles += tile('⏰', 'தொடங்க நேரம்', 'Best time to start', bi(esc(info.start[0]), esc(info.start[1])));
-      if (info.who) tiles += tile('👪', 'யார் செய்யலாம்', 'Who can do it', bi(esc(info.who[0]), esc(info.who[1])));
-      if (info.naiv) tiles += tile('🍚', 'நைவேத்தியம்', 'Naivedyam', bi(esc(info.naiv[0]), esc(info.naiv[1])));
+      if (C.has(m.start)) tiles += tile('⏰', 'தொடங்க நேரம்', 'Best time to start', C.html(m.start));
+      if (C.has(m.who)) tiles += tile('👪', 'யார் செய்யலாம்', 'Who can do it', C.html(m.who));
+      if (C.has(m.naiv)) tiles += tile('🍚', 'நைவேத்தியம்', 'Naivedyam', C.html(m.naiv));
       var html = '<div class="pj" style="--cc:' + cc + '">' +
-        '<a class="back" href="#poojas">' + bi('← பூஜைப் பட்டியல்', '← Pooja list') + '</a>' +
+        '<a class="back' + (embedded ? ' pj-back' : '') + '" href="#poojas"' + (embedded ? ' data-back="1"' : '') + '>' + bi('← பூஜைப் பட்டியல்', '← Pooja list') + '</a>' +
         '<header class="pj-head"><span class="pj-cat">' + bi(P.CATEGORIES[p.category].ta, P.CATEGORIES[p.category].en) + '</span>' +
         '<h1>' + bi(esc(p.name_ta), esc(p.name_en)) + '</h1>' +
         (info.deity ? '<p class="pj-deity">🙏 ' + bi(esc(info.deity[0]), esc(info.deity[1])) + '</p>' : '') +
@@ -321,24 +371,25 @@
         '@@ORDER@@' +
         (tiles ? '<div class="pj-facts">' + tiles + '</div>' : '') +
         '<div class="pj-cols"><section class="pj-card pj-samcard" id="pj-samagri"><h2>🧺 ' + bi('தேவையான சாமான்கள் & தயார் செய்யும் முறை', 'What you need & how to prepare') + '</h2>' + samList(d.samagri) +
+        (C.has(m.need) ? '<div class="pj-need">' + C.html(m.need) + '</div>' : '') +
         (p.is_self_pooja ? '' : '<p class="pj-note">' + bi(esc(INFO.PRIEST_NOTE[0]), esc(INFO.PRIEST_NOTE[1])) + '</p>') + '</section>' +
-        (info.story ? '<section class="pj-card pj-storycard"><h2>📖 ' + bi('ஏன் செய்கிறோம்? (கதை)', 'Why we do it (story)') + '</h2>' + pv(info.story) +
-          (info.why ? '<h3>🌸 ' + bi('செய்தால் கிடைக்கும் பலன்', 'Benefits (traditional belief)') + '</h3>' + pv(info.why) : '') + '</section>' : '') +
+        (C.has(m.story) || C.has(m.why) ? '<section class="pj-card pj-storycard"><h2>📖 ' + bi('ஏன் செய்கிறோம்?', 'Why we do it') + '</h2>' + C.html(m.story) +
+          (C.has(m.why) ? '<h3>🌸 ' + bi('செய்தால் கிடைக்கும் பலன்', 'Benefits (traditional belief)') + '</h3>' + C.html(m.why) : '') + '</section>' : '') +
         '</div>' +
         '<section class="pj-card"><h2>🪔 ' + bi('செய்முறை (படிப்படியாக)', 'Step by step') + '</h2>' + stepCards(d.steps) + '</section>';
 
       // Mantra Rule: mantras are shown only in the PDF of self-done poojas; the page shows samagri, steps and timing.
       if (d.mantras.length) {
-        html += '<p class="pj-pdfnote">📿 ' + bi('இந்த பூஜைக்கான மந்திரங்கள் (தமிழ் எழுத்தில், பெரிய எழுத்தில்) இந்த பக்கத்தின் மேலே உள்ள "நானே வாங்கிக் கொள்கிறேன்" PDF-இல் மட்டும் உள்ளன.', 'The mantras for this pooja (Tamil script, large print) are only in the downloadable PDF at the top of this page.') + '</p>';
+        html += '<p class="pj-pdfnote">📿 ' + bi('இந்த பூஜைக்கான மந்திரங்கள் (தமிழ் எழுத்தில், பெரிய எழுத்தில்) மேலே உள்ள PDF-இல் மட்டும் உள்ளன. PDF பதிவிறக்கம் பதிவு செய்த பயனர்களுக்கு மட்டும்.', 'The mantras for this pooja (Tamil script, large print) are only in the PDF at the top. The PDF is for registered users only.') + '</p>';
       }
-      html += '<div class="pj-boxes">' + boxesHtml(info, p.is_self_pooja) + '</div>';
+      html += '<div class="pj-boxes">' + boxesHtml(m, p.is_self_pooja) + '</div>';
       if (d.mantras.length) html += '<p class="soon disc">' + bi(DISC[0], DISC[1]) + '</p>';
       html += '</div>';
       var actions =
         '<section class="pj-opt" id="pj-opt"><h2>🧺 ' + bi('பூஜை சாமான்கள்', 'Pooja samagri') + '</h2>' +
         '<p>' + bi('சாமான்களை எப்படிப் பெற விரும்புகிறீர்கள்?', 'How would you like to get the samagri?') + '</p>' +
         '<div class="action-row pj-actions">' +
-        '<button type="button" class="btn btn-wide btn-outline pj-opt-btn" id="btn-self"><span class="pj-opt-ico">🛍️</span><strong>' + bi('நானே வாங்கிக் கொள்கிறேன்', 'I will buy it myself') + '</strong><small>' + bi('PDF பதிவிறக்கம்', 'Download PDF') + '</small></button>' +
+        '<button type="button" class="btn btn-wide btn-outline pj-opt-btn" id="btn-self"><span class="pj-opt-ico">🛍️</span><strong>' + bi('நானே வாங்கிக் கொள்கிறேன்', 'I will buy it myself') + '</strong><small>' + (d.mantras.length ? '🔒 ' + bi('பதிவு செய்தவர்களுக்கு: PDF + மந்திரங்கள்', 'Registered users: PDF + mantras') : bi('PDF பதிவிறக்கம்', 'Download PDF')) + '</small></button>' +
         '<button type="button" class="btn btn-wide pj-opt-btn" id="btn-order"><span class="pj-opt-ico">📦</span><strong>' + bi('ஆன்லைனில் ஆர்டர் செய்கிறேன்', 'I will order online') + '</strong><small>' + bi('சாமான்களைத் திருத்தி அனுப்பலாம்', 'Edit the items and send') + '</small></button>' +
         '</div></section>' +
         '<p class="form-msg" id="pdf-msg" role="status" aria-live="polite"></p>';
@@ -355,7 +406,17 @@
         });
       });
       $('btn-order').addEventListener('click', function () { location.hash = '#pooja/' + p.slug + '/order'; });
-      $('btn-self').addEventListener('click', function () { downloadPdf(p, d); });
+      $('btn-self').addEventListener('click', function () {
+        if (!d.mantras.length) return downloadPdf(p, d);
+        // Mantra PDFs are for registered users; the samagri list and steps stay public.
+        A.currentUser().then(function (u) {
+          if (u) return downloadPdf(p, d);
+          try { localStorage.setItem(RETURN_KEY, '#poojas/' + p.slug); } catch (e) { /* session only */ }
+          var out = $('pdf-msg');
+          out.innerHTML = bi(MSG.mantra_login[0], MSG.mantra_login[1]) + ' <a class="btn btn-outline" href="#login">' + bi('உள்நுழை / பதிவு செய்', 'Log in / Register') + '</a>';
+          out.classList.remove('is-ok'); out.classList.add('is-error');
+        }).catch(function () { downloadPdf(p, d); });
+      });
     });
   }
 
@@ -611,11 +672,7 @@
     var hash = location.hash || '';
     if (hash === '#order') return renderOrderPick();
     if (hash === '#poojas' || hash.indexOf('#poojas/') === 0) {
-      var cat = hash.slice('#poojas/'.length);
-      return renderList().then(function () {
-        var g = cat && document.querySelector('.pooja-group.cat-' + cat);
-        if (g) g.scrollIntoView({ block: 'start' });
-      });
+      return renderList(hash.slice('#poojas/'.length));
     }
     if (hash.indexOf('#pooja/') === 0) {
       var rest = hash.slice('#pooja/'.length);

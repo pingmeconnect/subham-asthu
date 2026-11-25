@@ -166,3 +166,8 @@ a.btn.ad-ok { background: #2E7D32; color: #fff; border-color: #2E7D32; }
 .ad-img-prev { max-width: 100%; max-height: 220px; border-radius: 10px; border: 1.5px solid var(--gold); margin: 8px 0; }
 .wa-text { white-space: pre-wrap; word-break: break-word; font-family: inherit; background: #FFFEFB; border: 1px solid var(--gold-soft, #E6D3A0); border-radius: 10px; padding: 10px 12px; }
 .ad-items { margin: 6px 0 8px; padding-left: 22px; line-height: 1.7; }
+
+.ad-langtabs { margin: 12px 0; display: flex; gap: 8px; }
+.pc-sec { border: 1.5px solid var(--border); border-radius: 12px; margin: 12px 0; padding: 8px 12px; background: #fff; }
+.pc-sec legend { font-weight: 700; color: var(--maroon); padding: 0 6px; }
+.pc-sec textarea { width: 100%; font: inherit; font-size: 1rem; padding: 10px; border: 1.5px solid var(--border); border-radius: 10px; box-sizing: border-box; }

@@ -6,6 +6,8 @@
   var WA = window.SAWA;
   var PD = window.SAPartners;
   var bi = PD.bi, esc = PD.esc;
+  var C = window.SAContent;
+  var pcSlug = '', pcLang = 'ta';
 
   var ORDER_STATUS = {
     waiting_for_confirmation: ['உறுதிப்படுத்தலுக்காகக் காத்திருக்கிறது', 'Waiting for Confirmation'],
@@ -56,6 +58,7 @@
     ['addpeople', '➕', 'வாத்தியார் / சமையல்காரர் சேர்', 'Add priest / cook'],
     ['stores', '🏪', 'சாமான் கடைகள்', 'Pooja stores'],
     ['poojas', '🪔', 'பூஜை பட்டியல்', 'Pooja list'],
+    ['poojacontent', '📝', 'பூஜை விவரங்கள் (திருத்த)', 'Pooja content (edit)'],
     ['calendar', '🗓', 'பூஜை தேதிகள் (பஞ்சாங்கம்)', 'Pooja dates (calendar)'],
     ['customers', '👥', 'வாடிக்கையாளர்கள்', 'Customers'],
     ['combos', '🎁', 'சிறப்பு நாள் தொகுப்புகள் (Combos)', 'Special-day combos'],
@@ -823,6 +826,35 @@
     return saveRow('sa_admin_save_offer', row).then(function (ok) { if (!ok) { editOffer = was; offerImage = img; } });
   }
 
+  // ---------- Pooja content: every point of every section, Tamil and English apart ----------
+  function poojaContentSection(d) {
+    var cats = window.SAPoojas.CATEGORIES, opts = '<option value="">— ' + bi('பூஜையைத் தேர்ந்தெடுக்கவும்', 'Choose a pooja') + ' —</option>';
+    Object.keys(cats).forEach(function (c) {
+      opts += '<optgroup label="' + esc(cats[c].en + ' · ' + cats[c].ta) + '">' + d.poojas.filter(function (p) { return p.category === c; }).map(function (p) {
+        return '<option value="' + esc(p.slug) + '"' + (p.slug === pcSlug ? ' selected' : '') + '>' + esc(p.name_en) + ' · ' + esc(p.name_ta) + '</option>';
+      }).join('') + '</optgroup>';
+    });
+    var out = '<h1>' + bi('பூஜை விவரங்கள்', 'Pooja content') + '</h1>' +
+      '<p class="soon">' + bi('ஒரு பூஜையைத் தேர்ந்தெடுத்து, ஒவ்வொரு தலைப்பிலும் உள்ள குறிப்புகளை (ஒரு வரிக்கு ஒரு குறிப்பு) தமிழிலும் ஆங்கிலத்திலும் தனித்தனியாகத் திருத்தலாம். காலியாக விட்டால் உள்ளமைந்த உரை காட்டப்படும்.',
+        'Choose a pooja, then edit the points in each section (one point per line), Tamil and English separately. Leave a section empty to show the built-in text.') + '</p>' +
+      '<label class="field"><span class="ta">பூஜை</span><span class="en">Pooja</span><select id="pc-slug">' + opts + '</select></label>';
+    if (!pcSlug) return out;
+    var I = window.SAInfo, info = (I.get(pcSlug) || I.priest(pcSlug) || {});
+    var m = C.merged(pcSlug, info);
+    out += '<div class="ad-langtabs" role="tablist"><button type="button" class="btn ' + (pcLang === 'ta' ? '' : 'btn-outline') + '" data-act="pc-lang" data-lang="ta">தமிழ்</button> ' +
+      '<button type="button" class="btn ' + (pcLang === 'en' ? '' : 'btn-outline') + '" data-act="pc-lang" data-lang="en">English</button></div>' +
+      '<form id="pc-form" class="ad-form">';
+    C.KEYS.forEach(function (k) {
+      out += '<fieldset class="pc-sec"><legend>' + k[1] + ' ' + bi(k[2], k[3]) + '</legend>' +
+        ['ta', 'en'].map(function (l) {
+          return '<textarea name="' + l + '_' + k[0] + '" rows="4" data-pclang="' + l + '"' + (l === pcLang ? '' : ' hidden') + ' placeholder="' + (l === 'ta' ? 'ஒரு வரிக்கு ஒரு குறிப்பு' : 'One point per line') + '">' + esc(m[k[0]][l].join('\n')) + '</textarea>';
+        }).join('') + '</fieldset>';
+    });
+    return out + '<div class="action-row"><button type="submit" class="btn">' + bi('சேமி', 'Save') + '</button> ' +
+      '<button type="button" class="btn btn-outline" data-act="pc-reset">' + bi('உள்ளமைந்த உரைக்கு மாற்று', 'Reset to built-in text') + '</button></div></form>';
+  }
+
+
   // ---------- Page shell: sidebar (laptop) / back button (phone) + one section at a time ----------
   function sectionBody(d) {
     if (tab === 'orders') return ordersSection(d);
@@ -833,6 +865,7 @@
     if (tab === 'addpeople') return addPeopleSection();
     if (tab === 'combos') return combosSection(d);
     if (tab === 'poojas') return poojasSection(d);
+    if (tab === 'poojacontent') return poojaContentSection(d);
     if (tab === 'messages') return waSection(d);
     if (tab === 'calendar') return calendarSection(d);
     if (tab === 'customers') return customersSection(d);
@@ -858,7 +891,7 @@
         return;
       }
       adminUser = u;
-      return (tab === 'calendar' ? loadCal() : Promise.resolve()).then(loadAll).then(function (d) {
+      return (tab === 'calendar' ? loadCal() : tab === 'poojacontent' ? C.load(true) : Promise.resolve()).then(loadAll).then(function (d) {
         if (!d.ok) {
           box.innerHTML = '<p>' + bi(NOTICE.not_admin[0], NOTICE.not_admin[1]) + '</p>';
           return;
@@ -1034,6 +1067,16 @@
       if (st === 'accepted' && !ask('இந்த முன்பதிவை ஏற்கவா? வாடிக்கையாளருக்கு WhatsApp செய்தி செல்லும்.', 'Accept this booking? The customer gets a WhatsApp message.')) return;
       return after(DB.rpc('sa_admin_set_booking_status', { p_token: DB.token(), p_booking: id, p_status: st }), NOTICE.saved[0], NOTICE.saved[1]);
     }
+    if (act === 'pc-lang') {
+      pcLang = b.getAttribute('data-lang');
+      box.querySelectorAll('[data-pclang]').forEach(function (t) { t.hidden = t.getAttribute('data-pclang') !== pcLang; });
+      box.querySelectorAll('[data-act="pc-lang"]').forEach(function (x) { x.classList.toggle('btn-outline', x.getAttribute('data-lang') !== pcLang); });
+      return;
+    }
+    if (act === 'pc-reset') {
+      if (!pcSlug || !ask('இந்த பூஜையின் திருத்தங்களை நீக்கி உள்ளமைந்த உரைக்குத் திரும்பவா?', 'Remove your edits for this pooja and go back to the built-in text?')) return;
+      return after(DB.rpc('sa_admin_reset_pooja_content', { p_token: DB.token(), p_slug: pcSlug }), NOTICE.saved[0], NOTICE.saved[1]);
+    }
     if (act === 'pooja-visible') {
       var show = b.getAttribute('data-visible') === 'true';
       if (!show && !ask(ASK.poojaHide[0], ASK.poojaHide[1])) return;
@@ -1111,7 +1154,22 @@
     if (act === 'test-messages') return testMessages();
   });
 
+  box.addEventListener('change', function (e) {
+    if (e.target.id !== 'pc-slug') return;
+    pcSlug = e.target.value;
+    return render();
+  });
+
   box.addEventListener('submit', function (e) {
+    if (e.target.id === 'pc-form') {
+      e.preventDefault();
+      var fd0 = new FormData(e.target), content = {};
+      C.KEYS.forEach(function (k) {
+        var split = function (v) { return C.clean(String(v || '').split(/\r?\n/)); };
+        content[k[0]] = { ta: split(fd0.get('ta_' + k[0])), en: split(fd0.get('en_' + k[0])) };
+      });
+      return after(DB.rpc('sa_admin_save_pooja_content', { p_token: DB.token(), p_slug: pcSlug, p_content: content }), NOTICE.saved[0], NOTICE.saved[1]);
+    }
     if (e.target.id === 'settings-form') {
       e.preventDefault();
       saveSettings(e.target);
