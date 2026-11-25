@@ -10,12 +10,28 @@
   };
   var SAMP = {
     Vadagalai: ['வடகலை', 'Vadagalai'], Thenkalai: ['தென்கலை', 'Thenkalai'],
-    Smartha: ['ஸ்மார்த்தம்', 'Smartha'], Madhva: ['மாத்வ', 'Madhva']
+    Smartha: ['ஸ்மார்த்தம்', 'Smartha'], Madhva: ['மாத்வ', 'Madhva'],
+    Saiva: ['சைவம் (குருக்கள் / சிவாச்சாரியார்)', 'Saiva (Gurukkal)'],
+    Amman: ['அம்மன் / கிராம தெய்வ பூசாரி', 'Amman / village-deity poosari'],
+    TamilArchanai: ['தமிழ் அர்ச்சனை', 'Tamil archanai'],
+    General: ['பொது (எந்த மரபும்)', 'General (any tradition)']
   };
   var COOK = {
     iyer_veg: ['சைவ சமையல் (ஐயர்)', 'Vegetarian (Iyer style)'],
     iyengar_veg: ['சைவ சமையல் (ஐயங்கார்)', 'Vegetarian (Iyengar style)'],
+    general_veg: ['சைவ சமையல் (பொது)', 'Vegetarian (general)'],
+    chettinad_veg: ['செட்டிநாடு சைவ சமையல்', 'Chettinad vegetarian'],
+    kongu_veg: ['கொங்கு சைவ சமையல்', 'Kongu vegetarian'],
     festival_sweets: ['பண்டிகை இனிப்புகள்', 'Festival sweets']
+  };
+  var MEAL = {
+    tiffin: ['டிபன்', 'Tiffin'], lunch: ['மதிய உணவு', 'Lunch'],
+    feast: ['முழு விருந்து', 'Full feast'], snacks: ['சிற்றுண்டி / இனிப்பு', 'Snacks & sweets']
+  };
+  var VERIFY = {
+    1: ['தொலைபேசி சரிபார்க்கப்பட்டது', 'Phone verified'],
+    2: ['வீடியோ மூலம் சரிபார்க்கப்பட்டது', 'Video verified'],
+    3: ['பரிந்துரை சரிபார்க்கப்பட்டது', 'Reference verified']
   };
   var ROLE = { priest: ['வாத்தியார்', 'Priest'], cook: ['சமையல்காரர்', 'Cook'] };
   var STATUS = {
@@ -42,7 +58,7 @@
   }
 
   window.SAPartners = {
-    LANGS: LANGS, SAMP: SAMP, COOK: COOK, ROLE: ROLE, STATUS: STATUS,
+    LANGS: LANGS, SAMP: SAMP, COOK: COOK, MEAL: MEAL, VERIFY: VERIFY, ROLE: ROLE, STATUS: STATUS,
     seed: seed, bi: bi, esc: esc
   };
 })();

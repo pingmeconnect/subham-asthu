@@ -18,9 +18,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="css/style.css?v=8">
-  <link rel="stylesheet" href="css/admin.css?v=8">
-  <link rel="stylesheet" href="css/theme.css?v=8">
+  <link rel="stylesheet" href="css/style.css?v=13">
+  <link rel="stylesheet" href="css/admin.css?v=13">
+  <link rel="stylesheet" href="css/theme.css?v=13">
 </head>
 <body>
 
@@ -324,9 +324,31 @@
               <option value="Thenkalai">தென்கலை · Thenkalai</option>
               <option value="Smartha">ஸ்மார்த்தம் · Smartha</option>
             </select></label>
+          <label class="field"><span class="ta">குடும்ப மரபு / சமையல் வகை (விருப்பம்)</span><span class="en">Family tradition / cooking style (optional)</span>
+            <select id="f-trad">
+              <option value="">எதுவும் · Any</option>
+              <optgroup label="வாத்தியார் · Priest">
+                <option value="Smartha">ஸ்மார்த்தம் · Smartha</option>
+                <option value="Vadagalai">வடகலை · Vadagalai</option>
+                <option value="Thenkalai">தென்கலை · Thenkalai</option>
+                <option value="Madhva">மாத்வ · Madhva</option>
+                <option value="Saiva">சைவம் · Saiva</option>
+                <option value="Amman">அம்மன் / கிராம தெய்வம் · Amman / village deity</option>
+                <option value="TamilArchanai">தமிழ் அர்ச்சனை · Tamil archanai</option>
+              </optgroup>
+              <optgroup label="சமையல்காரர் · Cook (pure vegetarian)">
+                <option value="iyer_veg">ஐயர் பாணி · Iyer style</option>
+                <option value="iyengar_veg">ஐயங்கார் பாணி · Iyengar style</option>
+                <option value="general_veg">பொது · General</option>
+                <option value="chettinad_veg">செட்டிநாடு · Chettinad</option>
+                <option value="kongu_veg">கொங்கு · Kongu</option>
+                <option value="festival_sweets">பண்டிகை இனிப்புகள் · Festival sweets</option>
+              </optgroup>
+            </select></label>
           <label class="field"><span class="ta">PIN குறியீடு</span><span class="en">PIN code</span>
             <input id="f-pin" type="text" inputmode="numeric" maxlength="6" placeholder="600126"></label>
         </div>
+        <p class="soon"><span class="ta">சுபம் அஸ்து உங்களிடம் ஒருபோதும் பணம் கேட்காது. அனைத்து சமையல்காரர்களும் சுத்த சைவ உணவு மட்டுமே சமைப்பார்கள்.</span><span class="en">Subham Asthu never asks you for money. All cooks cook pure vegetarian food only.</span></p>
         <div id="partner-list" class="pooja-grid"></div>
         <p id="partner-empty" class="form-msg" role="status" hidden></p>
       </div>
@@ -432,9 +454,44 @@
 
         <h2><span class="ta">வாடிக்கையாளர் அறிவிப்பு</span><span class="en">Customer Disclaimer</span></h2>
         <div data-setting="text_disclaimer_customer"></div>
+        <h3><span class="ta">பணம் & பாதுகாப்பு</span><span class="en">Money & safety</span></h3>
+        <ul>
+          <li><span class="ta">சுபம் அஸ்து உங்களிடம் ஒருபோதும் பணம் கேட்காது. இந்தத் தளத்தில் ஆன்லைன் பணம் செலுத்தும் வசதி இல்லை; சுபம் அஸ்து உங்களிடம் எந்தக் கட்டணமும் வசூலிக்காது.</span><span class="en">Subham Asthu never asks you for money. There is no online payment on this site, and Subham Asthu never charges you anything.</span></li>
+          <li><span class="ta">தட்சிணை, சமையல் கட்டணம் மற்றும் முன்பணத்தை வாத்தியார் / சமையல்காரருடன் நேரடியாகப் பேசி முடிவு செய்யவும். முன்பணம் கேட்டால், உங்கள் முன்பதிவு ஏற்கப்பட்ட பின் மட்டுமே, சரிபார்க்கப்பட்ட நபருக்கு மட்டும் கொடுக்கவும்.</span><span class="en">Agree dakshina, cooking charges and any advance directly with the priest or cook. If an advance is asked for, pay it only after your booking is accepted and only to a verified person.</span></li>
+          <li><span class="ta">"சரிபார்க்கப்பட்டது" குறியீடு, நாங்கள் செய்த சரிபார்ப்பைக் காட்டுகிறது; அது சேவையின் தரத்திற்கான உத்தரவாதம் அல்ல.</span><span class="en">A "Verified" badge shows the checks we have done; it is not a guarantee of the quality of service.</span></li>
+          <li><span class="ta">ஏதேனும் பிரச்சனை இருந்தால், "பிரச்சனையைத் தெரிவிக்க" பொத்தானைப் பயன்படுத்தவும். நியாயமாகப் பரிசீலிப்போம்; தீர்வு அல்லது இழப்பீட்டிற்கு உத்தரவாதம் இல்லை.</span><span class="en">If something goes wrong, use the "Report a problem" button. We will look into it in good faith, but we cannot promise a remedy or compensation.</span></li>
+        </ul>
+        <h3><span class="ta">பூஜை சாமான்கள் (கடைகள்)</span><span class="en">Pooja items (stores)</span></h3>
+        <ul>
+          <li><span class="ta">பொருட்களின் விலை, தரம், கிடைக்கும் தன்மை மற்றும் டெலிவரி கட்டணம் அந்தந்தக் கடையைப் பொறுத்தது. குறைந்தபட்ச ஆர்டர் மதிப்பு ₹1000.</span><span class="en">Price, quality, availability and delivery charges depend on the store. Minimum order value is ₹1000.</span></li>
+          <li><span class="ta">உங்கள் ஆர்டர் கடையால் உறுதி செய்யப்படும் வரை கடை விவரங்கள் காட்டப்படாது. உறுதியான பின் உங்கள் எண்ணும் கடையின் எண்ணும் பகிரப்படும்.</span><span class="en">Store details stay hidden until the store confirms. After confirmation, your number and the store's number are shared.</span></li>
+          <li><span class="ta">பொருட்கள் உங்கள் வீட்டு வாசலில் வந்த பின் மட்டுமே பணம் செலுத்தவும். பொருட்கள் படங்கள் மாதிரிக்காக மட்டுமே.</span><span class="en">Pay only after the goods reach your doorstep. Item pictures are for identification only.</span></li>
+        </ul>
+        <h3><span class="ta">சடங்குகள், தேதிகள் & உணவு</span><span class="en">Rituals, dates & food</span></h3>
+        <ul>
+          <li><span class="ta">சடங்கு முறைகள் குடும்ப மரபு, ஊர் மற்றும் வாத்தியாரைப் பொறுத்து மாறுபடலாம். இங்குள்ள பட்டியல்கள் வழிகாட்டுதலுக்கு மட்டுமே; உங்கள் வாத்தியாரின் முடிவே இறுதி.</span><span class="en">Procedures vary by family tradition, place and priest. The lists here are guidance only; your priest's decision is final.</span></li>
+          <li><span class="ta">காலண்டர் தேதிகள் பஞ்சாங்கம் மற்றும் ஊரைப் பொறுத்து மாறலாம்; உங்கள் வாத்தியாருடன் உறுதி செய்து கொள்ளவும்.</span><span class="en">Calendar dates may vary by panchangam and place; please confirm with your priest.</span></li>
+          <li><span class="ta">இங்குள்ள அனைத்து சமையல்காரர்களும் சுத்த சைவ உணவு மட்டுமே சமைப்பார்கள். ஒவ்வாமை அல்லது உணவுக் கட்டுப்பாடு இருந்தால் முன்பே சமையல்காரரிடம் தெரிவிக்கவும்.</span><span class="en">All cooks here prepare pure vegetarian food only. If anyone has an allergy or dietary restriction, tell the cook beforehand.</span></li>
+          <li><span class="ta">வாத்தியார் அல்லது சமையல்காரர் எதிர்பாராத காரணத்தால் வர இயலாமல் போகலாம்; மாற்று ஏற்பாட்டுக்கு உதவுவோம், ஆனால் உத்தரவாதம் இல்லை. முன்பதிவை மாற்ற / ரத்து செய்ய, சம்பந்தப்பட்டவருக்கு முன்கூட்டியே தெரிவிக்கவும்.</span><span class="en">A priest or cook may be unable to come for unforeseen reasons; we will help find an alternative but cannot guarantee one. To change or cancel a booking, tell the person as early as you can.</span></li>
+        </ul>
+        <h3><span class="ta">PDF & பிராந்தியம்</span><span class="en">PDF & region</span></h3>
+        <ul>
+          <li><span class="ta">பூஜை PDF தனிப்பட்ட பயன்பாட்டிற்கு மட்டுமே; மறுவிற்பனை அல்லது மறுபகிர்வு கூடாது.</span><span class="en">Pooja PDFs are for personal use only; do not resell or redistribute them.</span></li>
+          <li><span class="ta">தற்போது தமிழ்நாடு மற்றும் புதுச்சேரியில் மட்டுமே சேவை.</span><span class="en">Service is currently available only in Tamil Nadu and Puducherry.</span></li>
+        </ul>
+
 
         <h2><span class="ta">வாத்தியார் / சமையல்காரர் &amp; கடைக்காரர் வழிகாட்டுதல்</span><span class="en">Partner &amp; Vendor Guidelines</span></h2>
         <div data-setting="text_disclaimer_partner"></div>
+        <h3><span class="ta">சேவை வழங்குநர்கள் (வாத்தியார், சமையல்காரர், கடை)</span><span class="en">Service providers (priests, cooks, stores)</span></h3>
+        <ul>
+          <li><span class="ta">நீங்கள் சுயமாகச் செயல்படும் சேவை வழங்குநர்; சுபம் அஸ்துவின் ஊழியர் அல்லது முகவர் அல்ல. உங்கள் சேவையின் தரம், நடத்தை மற்றும் நேரந்தவறாமைக்கு நீங்களே பொறுப்பு.</span><span class="en">You are an independent provider, not an employee or agent of Subham Asthu. You are responsible for the quality, conduct and punctuality of your service.</span></li>
+          <li><span class="ta">தகவல்களைச் சரியாகவும் உண்மையாகவும் கொடுக்கவும். சட்டப்படி தேவையான உரிமங்கள், வரிகள் மற்றும் உணவுப் பாதுகாப்பு விதிகளைப் பின்பற்றுவது உங்கள் பொறுப்பு.</span><span class="en">Give true and correct details. Following any licences, taxes and food-safety rules required by law is your responsibility.</span></li>
+          <li><span class="ta">வாடிக்கையாளரின் எண் மற்றும் முகவரியை அந்த முன்பதிவு / ஆர்டருக்கு மட்டுமே பயன்படுத்தவும்; விளம்பரம் அல்லது பிறருடன் பகிர்தல் கூடாது.</span><span class="en">Use a customer's number and address only for that booking or order; no advertising or sharing with others.</span></li>
+          <li><span class="ta">அனைத்து சமூகத்தினரையும் மரியாதையுடன் நடத்தவும். தட்சிணை மற்றும் கட்டணத்தை வாடிக்கையாளருடன் நேரடியாகப் பேசி முடிவு செய்யவும்; சுபம் அஸ்து அதில் தலையிடாது.</span><span class="en">Treat people of every community with respect. Agree your fees directly with the customer; Subham Asthu does not mediate them.</span></li>
+          <li><span class="ta">தவறான தகவல், வாடிக்கையாளரிடம் மோசமான நடத்தை அல்லது புகார்கள் இருந்தால் உங்கள் பட்டியலை நீக்கும் உரிமை சுபம் அஸ்துவுக்கு உண்டு.</span><span class="en">Subham Asthu may remove a listing for false information, poor conduct towards customers, or repeated complaints.</span></li>
+        </ul>
+
       </div>
     </section>
 
@@ -511,7 +568,7 @@
             <label class="field"><span class="ta">PIN-ஐ மீண்டும் உள்ளிடவும்</span><span class="en">Confirm PIN</span>
               <input name="pin2" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
             <label class="check-row"><input type="checkbox" name="consent" required>
-              <span><span class="ta">என் விவரங்களைப் பயன்படுத்த <a href="#privacy">தனியுரிமை அறிவிப்பை</a> ஏற்கிறேன்.</span><span class="en">I accept the <a href="#privacy">Privacy Notice</a> for using my details.</span></span></label>
+              <span><span class="ta">என் விவரங்களைப் பயன்படுத்த <a href="#privacy">தனியுரிமை அறிவிப்பையும்</a> <a href="#disclaimers">பொறுப்புத் துறப்பையும்</a> ஏற்கிறேன்.</span><span class="en">I accept the <a href="#privacy">Privacy Notice</a> and the <a href="#disclaimers">Disclaimers</a>.</span></span></label>
             <div class="hp-field" aria-hidden="true"><label>Website <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
             <button type="submit" class="btn"><span class="ta">பதிவு செய்</span><span class="en">Register</span></button>
             <p class="form-msg" role="status" aria-live="polite"></p>
@@ -611,25 +668,25 @@
     <a href="#login" data-nav="login"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span class="ta">கணக்கு</span><span class="en">Account</span></a>
   </nav>
 
-  <script src="js/config.js?v=8" defer></script>
-  <script src="js/db.js?v=8" defer></script>
-  <script src="js/extras.js?v=8" defer></script>
-  <script src="js/settings.js?v=8" defer></script>
-  <script src="js/auth.js?v=8" defer></script>
-  <script src="js/account.js?v=8" defer></script>
-  <script src="js/poojas-data.js?v=8" defer></script>
-  <script src="js/self-poojas.js?v=8" defer></script>
-  <script src="js/pooja-info.js?v=8" defer></script>
-  <script src="js/order-items.js?v=8" defer></script>
-  <script src="js/order.js?v=8" defer></script>
-  <script src="js/pooja.js?v=8" defer></script>
-  <script src="js/partners-data.js?v=8" defer></script>
-  <script src="js/subscription.js?v=8" defer></script>
-  <script src="js/whatsapp.js?v=8" defer></script>
-  <script src="js/partners.js?v=8" defer></script>
-  <script src="js/partner-portal.js?v=8" defer></script>
-  <script src="js/admin.js?v=8" defer></script>
-  <script src="js/app.js?v=8" defer></script>
-  <script src="js/ui.js?v=8" defer></script>
+  <script src="js/config.js?v=13" defer></script>
+  <script src="js/db.js?v=13" defer></script>
+  <script src="js/extras.js?v=13" defer></script>
+  <script src="js/settings.js?v=13" defer></script>
+  <script src="js/auth.js?v=13" defer></script>
+  <script src="js/account.js?v=13" defer></script>
+  <script src="js/poojas-data.js?v=13" defer></script>
+  <script src="js/self-poojas.js?v=13" defer></script>
+  <script src="js/pooja-info.js?v=13" defer></script>
+  <script src="js/order-items.js?v=13" defer></script>
+  <script src="js/order.js?v=13" defer></script>
+  <script src="js/pooja.js?v=13" defer></script>
+  <script src="js/partners-data.js?v=13" defer></script>
+  <script src="js/subscription.js?v=13" defer></script>
+  <script src="js/whatsapp.js?v=13" defer></script>
+  <script src="js/partners.js?v=13" defer></script>
+  <script src="js/partner-portal.js?v=13" defer></script>
+  <script src="js/admin.js?v=13" defer></script>
+  <script src="js/app.js?v=13" defer></script>
+  <script src="js/ui.js?v=13" defer></script>
 </body>
 </html>

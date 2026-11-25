@@ -202,7 +202,8 @@
       (tamilMonth(t) ? chip('tamil', 'இந்த தமிழ் மாதம்', 'This Tamil month') : '') + chip('3m', 'அடுத்த 3 மாதம்', 'Next 3 months') + '</div>' +
       '<label class="field cal-pick"><span class="ta">ஒரு தேதியைத் தேர்ந்தெடுத்து அன்றைய விசேஷங்களைப் பாருங்கள்</span><span class="en">Pick a date to see what is special that day</span>' +
       '<input type="date" id="cal-date" min="' + t + '" value="' + esc(cal.date) + '"></label>' +
-      '<div class="cal-legend">' + legend + '</div>' + body + '</div>';
+      '<div class="cal-legend">' + legend + '</div>' + body +
+      '<p class="soon">' + bi('தேதிகள் பஞ்சாங்கம் மற்றும் ஊரைப் பொறுத்து மாறலாம். உங்கள் வாத்தியாருடன் உறுதி செய்து கொள்ளவும்.', 'Dates may vary by panchangam and place. Please confirm with your priest.') + '</p></div>';
   }
 
   // ---------- List ----------
@@ -273,6 +274,7 @@
     if (info.temples) out += box('temples', '🛕', 'இந்த நாளில் புகழ் பெற்ற கோயில்கள்', 'Famous temples for this day', pv(info.temples));
     if (info.tips && info.tips.length) out += box('tips', '✨', 'கூடுதல் குறிப்புகள்', 'Extra tips', tipList(info.tips));
     if (self) out += box('custom', '🏠', 'உங்கள் குடும்ப வழக்கம்', 'Your family custom', pv(INFO.OLD));
+    out += '<p class="soon">' + bi('சடங்கு முறைகள் குடும்ப மரபு, ஊர் மற்றும் வாத்தியாரைப் பொறுத்து மாறலாம். இது வழிகாட்டுதலுக்கு மட்டுமே; உங்கள் வாத்தியாரின் முடிவே இறுதி.', 'Procedures vary by family tradition, place and priest. This is guidance only; your priest\'s decision is final.') + '</p>';
     return out;
   }
 
@@ -533,6 +535,30 @@
     });
   }
 
+  // ---------- My orders: status, store details once confirmed, feedback ----------
+  var ORDER_ST = {
+    waiting_for_confirmation: ['உறுதிப்படுத்தலுக்காகக் காத்திருக்கிறது', 'Waiting for Confirmation'],
+    confirmed_dispatched: ['உறுதி செய்யப்பட்டது / அனுப்பப்பட்டது', 'Confirmed / Dispatched'],
+    unavailable: ['கிடைக்கவில்லை', 'Unavailable']
+  };
+  function loadMyOrders() {
+    var el = $('my-orders');
+    if (!el) return;
+    return DB.rpc('sa_my_orders', { p_token: DB.token() }).then(function (r) {
+      var rows = (r && r.orders) || [];
+      if (!rows.length) { el.innerHTML = ''; return; }
+      el.innerHTML = '<h2>' + bi('என் ஆர்டர்கள்', 'My orders') + '</h2><div class="pooja-grid">' + rows.map(function (o) {
+        var st = ORDER_ST[o.status] || ['', ''];
+        var shop = o.shop_name ? '<p><strong>' + bi('கடை', 'Store') + ':</strong> ' + esc(o.shop_name) + (o.shop_phone ? ' · <a href="tel:+91' + esc(o.shop_phone) + '">+91 ' + esc(o.shop_phone) + '</a>' : '') + '</p>' +
+          '<p class="soon">' + bi('பொருட்கள் வந்த பின் நேரில் பணம் செலுத்தவும்.', 'Pay only after the goods are delivered.') + '</p>' : '';
+        return '<article class="pooja-card"><strong>' + bi(esc(o.pooja_ta), esc(o.pooja_en)) + '</strong>' +
+          '<div class="badges"><span class="badge">' + bi(st[0], st[1]) + '</span>' + (o.needed_by ? '<span class="badge">📅 ' + esc(o.needed_by) + '</span>' : '') + '</div>' +
+          shop + window.SAExtras.feedbackHtml('order', o.id, o.status === 'confirmed_dispatched', o.feedback) + '</article>';
+      }).join('') + '</div><hr>';
+      window.SAExtras.bindFeedback(el, loadMyOrders);
+    }).catch(function () { /* list is optional */ });
+  }
+
   // ---------- Order Samagri entry: login first, then choose the pooja ----------
   function renderOrderPick() {
     var box = $('order-pick');
@@ -545,7 +571,8 @@
           '<div class="action-row"><a class="btn btn-wide" href="#login">' + bi('உள்நுழை / பதிவு செய்', 'Log in / Register') + '</a></div>';
         return;
       }
-      var html = '<p>' + bi('எந்த பூஜைக்குச் சாமான்கள் வேண்டும்? பூஜையைத் தேர்ந்தெடுங்கள்; அடுத்த பக்கத்தில் பட்டியலை மாற்றலாம்.',
+      var html = '<p class="soon">' + bi('சுபம் அஸ்து உங்களிடம் ஒருபோதும் பணம் கேட்காது. பொருட்கள் வீட்டு வாசலில் வந்த பின் மட்டுமே பணம் செலுத்தவும்.', 'Subham Asthu never asks you for money. Pay only after the goods reach your doorstep.') + '</p>' +
+        '<div id="my-orders"></div><p>' + bi('எந்த பூஜைக்குச் சாமான்கள் வேண்டும்? பூஜையைத் தேர்ந்தெடுங்கள்; அடுத்த பக்கத்தில் பட்டியலை மாற்றலாம்.',
         'Which pooja do you need samagri for? Choose it; you can edit the list on the next page.') + '</p>' +
         '<input type="search" id="od-pick-q" class="od-pick-search" placeholder="' + (document.documentElement.getAttribute('data-lang') === 'en' ? 'Search pooja…' : 'பூஜையைத் தேடுக…') + '">';
       if (offers.length) {
@@ -570,6 +597,7 @@
         html += '</div></section>';
       });
       box.innerHTML = html;
+      loadMyOrders();
       $('od-pick-q').addEventListener('input', function () {
         var q = this.value.trim().toLowerCase();
         box.querySelectorAll('.pooja-card[data-q]').forEach(function (a) { a.hidden = q && a.getAttribute('data-q').indexOf(q) === -1; });

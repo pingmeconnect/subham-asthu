@@ -17,6 +17,7 @@
     saved: ['விவரங்கள் சேமிக்கப்பட்டன.', 'Details saved.'],
     phone2_bad: ['இரண்டாவது மொபைல் எண் (10 இலக்கம், முதல் எண்ணிலிருந்து வேறுபட்டது) கட்டாயம்.', 'A second mobile number (10 digits, different from your login number) is required.'],
     areas_bad: ['சேவை வழங்கும் குறைந்தது ஒரு PIN குறியீட்டை (தமிழ்நாடு / புதுச்சேரி) உள்ளிடவும்.', 'Enter at least one Tamil Nadu / Puducherry PIN code you serve.'],
+    trad_bad: ['குறைந்தது ஒரு மரபையாவது தேர்ந்தெடுக்கவும்.', 'Choose at least one tradition.'],
     photo_bad: ['படத்தைச் சேர்க்க முடியவில்லை. வேறு படத்தை முயற்சிக்கவும்.', 'Could not use that photo. Try another one.'],
     pin_bad: ['சரியான 6 இலக்க PIN குறியீட்டை உள்ளிடவும்.', 'Enter a valid 6-digit PIN code.'],
     lang_bad: ['குறைந்தது ஒரு மொழியைத் தேர்ந்தெடுக்கவும்.', 'Choose at least one language.'],
@@ -67,7 +68,13 @@
     }).join('');
     var options = role === 'priest' ? PD.SAMP : PD.COOK;
     var current = p ? (role === 'priest' ? p.sampradayam : p.cook_specialty) : null;
-    var specialty = '<label class="field"><span class="ta">' + (role === 'priest' ? 'சம்பிரதாயம்' : 'சமையல் வகை') +
+    var trads = (p && p.traditions && p.traditions.length) ? p.traditions : (p && p.sampradayam ? [p.sampradayam] : []);
+    var specialty = role === 'priest'
+      ? '<fieldset class="check-group"><legend>' + bi('நீங்கள் செய்யும் மரபுகள் (ஒன்றுக்கு மேல் தேர்ந்தெடுக்கலாம்)', 'Traditions you perform (choose one or more)') + '</legend>' +
+        Object.keys(PD.SAMP).map(function (k) {
+          return '<label class="check-row"><input type="checkbox" name="trad" value="' + k + '"' + (trads.indexOf(k) !== -1 ? ' checked' : '') + '> ' + bi(PD.SAMP[k][0], PD.SAMP[k][1]) + '</label>';
+        }).join('') + '</fieldset>'
+      : '<label class="field"><span class="ta">' + (role === 'priest' ? 'சம்பிரதாயம்' : 'சமையல் வகை') +
       '</span><span class="en">' + (role === 'priest' ? 'Sampradayam' : 'Cooking style') + '</span>' +
       '<select name="spec">' + Object.keys(options).map(function (k) {
         return '<option value="' + k + '"' + (current === k ? ' selected' : '') + '>' + options[k][0] + ' · ' + options[k][1] + '</option>';
@@ -128,6 +135,15 @@
       '<p class="soon">' + bi('செலுத்திய பின் நிர்வாகம் பதிவு செய்தவுடன் மீண்டும் காட்டப்படும்.', 'Once you pay, the admin records it and your profile returns.') + '</p></div>';
   }
 
+  function prefsText(pf) {
+    var out = [];
+    if (pf.tradition) out.push(bi('மரபு: ', 'Tradition: ') + bi(PD.SAMP[pf.tradition][0], PD.SAMP[pf.tradition][1]));
+    if (pf.guests) out.push(bi('நபர்கள்: ', 'Guests: ') + esc(pf.guests));
+    if (pf.meal && PD.MEAL[pf.meal]) out.push(bi(PD.MEAL[pf.meal][0], PD.MEAL[pf.meal][1]));
+    if (pf.guests) out.push(pf.kitchen ? bi('சமையலறை உள்ளது', 'Kitchen available') : bi('சமையலறை இல்லை', 'No kitchen at venue'));
+    return out.join(' · ');
+  }
+
   function bookingRow(b) {
     var st = PD.STATUS[b.status];
     var actions = '';
@@ -143,8 +159,12 @@
       '<div class="badges"><span class="badge">' + bi(st[0], st[1]) + '</span>' +
         (b.cook_addon ? '<span class="badge">' + bi('சமையல்காரர் கூடுதல்', 'Cook add-on') + '</span>' : '') + '</div>' +
       '<p>' + esc(b.event_date) + (b.event_time ? ' · ' + esc(b.event_time) : '') + ' · ' + esc(b.pooja_en || '') + ' · PIN ' + esc(b.pin_code) + '</p>' +
-      (b.venue_address ? '<p>📍 <strong>' + bi('இடம்', 'Venue') + ':</strong> ' + esc(b.venue_address) + '</p>'
-        : (b.status === 'requested' ? '<p class="soon">' + bi('இடத்தின் முகவரி ஏற்ற பின் காட்டப்படும்.', 'The venue address shows after you accept.') + '</p>' : '')) +
+      (b.prefs && b.prefs.area ? '<p>📍 <strong>' + bi('பகுதி', 'Area') + ':</strong> ' + esc(b.prefs.area) + '</p>' : '') +
+      (b.venue_address ? '<p>🏠 <strong>' + bi('முழு முகவரி', 'Full address') + ':</strong> ' + esc(b.venue_address) + '</p>'
+        : (b.status === 'requested' ? '<p class="soon">' + bi('முழு முகவரி மற்றும் தொலைபேசி எண் ஏற்ற பின் காட்டப்படும்.', 'The full address and phone number show after you accept.') + '</p>' : '')) +
+      (b.customer_mobile ? '<p>📞 <strong>' + bi('வாடிக்கையாளர்', 'Customer') + ':</strong> ' + esc(b.customer_name || '') + ' · <a href="tel:+91' + esc(b.customer_mobile) + '">+91 ' + esc(b.customer_mobile) + '</a></p>'
+        : '') +
+      (b.prefs ? '<p class="soon"><strong>' + bi('வாடிக்கையாளர் விருப்பம்:', 'Customer wants:') + '</strong> ' + prefsText(b.prefs) + '</p>' : '') +
       (b.notes ? '<p>📝 ' + esc(b.notes) + '</p>' : '') +
       (actions ? '<div class="action-row">' + actions + '</div>' : '') +
       '</article>';
@@ -238,12 +258,14 @@
     if (!areas.length || !areas.every(function (a) { return window.SARegion.okPin(a.pin); })) return showMsg(out, 'areas_bad', true);
     if (!langs.length) return showMsg(out, 'lang_bad', true);
 
-    DB.rpc('sa_save_profile_v2', {
-      p_token: DB.token(), p_spec: String(d.get('spec') || ''),
+    var trads = d.getAll('trad');
+    if (ctx && ctx.role === 'priest' && !trads.length) return showMsg(out, 'trad_bad', true);
+    DB.rpc('sa_save_profile_v3', {
+      p_token: DB.token(), p_spec: String(d.get('spec') || ''), p_traditions: trads,
       p_years: parseInt(d.get('years'), 10) || 0, p_langs: langs,
       p_phone2: phone2, p_areas: areas, p_photo: photo.value
     }).then(function (r) {
-      if (!r.ok) return showMsg(out, ['phone2_bad', 'areas_bad', 'photo_bad', 'lang_bad'].indexOf(r.error) !== -1 ? r.error : 'fail', true);
+      if (!r.ok) return showMsg(out, ['phone2_bad', 'areas_bad', 'photo_bad', 'lang_bad', 'trad_bad'].indexOf(r.error) !== -1 ? r.error : 'fail', true);
       return render();
     }).catch(function () { showMsg(out, 'fail', true); });
   });
