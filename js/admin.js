@@ -32,6 +32,7 @@
     copied: ['நகலெடுக்கப்பட்டது.', 'Copied.'],
     fees_queued: ['கட்டண நினைவூட்டல் மின்னஞ்சல்கள் அனுப்பப்படுகின்றன.', 'Fee reminder emails are being sent.'],
     upi_saved: ['UPI விவரங்கள் சேமிக்கப்பட்டன.', 'UPI details saved.'],
+    bulk_done: ['பதிவேற்றம் முடிந்தது.', 'Upload finished.'],
     fail: ['சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.', 'Could not save. Please try again.']
   };
 
@@ -39,6 +40,7 @@
   var pinFilter = { order: '', booking: '' };
   var offer = { id: null, title: '', ta: '', en: '', image: '', lang: 'ta', off: {}, sent: {}, q: '' };
   var custQ = '', adminUser = null, calRows = [];
+  var fullP = {}, offersList = [], editVendor = null, editOffer = null, offerImage = null, partnerPhoto = null;
   var tab = 'home'; // home | orders | bookings | people | stores | poojas | messages | settings
   var orderFilter = 'waiting_for_confirmation';
   var bookingFilter = 'soon';
@@ -50,11 +52,12 @@
     ['orders', '📦', 'பூஜை சாமான் ஆர்டர்கள்', 'Samagri orders'],
     ['bookings', '📅', 'வாத்தியார் / சமையல் முன்பதிவுகள்', 'Priest & cook bookings'],
     ['people', '🙏', 'வாத்தியார்கள் & சமையல்காரர்கள்', 'Priests & Cooks'],
+    ['addpeople', '➕', 'வாத்தியார் / சமையல்காரர் சேர்', 'Add priest / cook'],
     ['stores', '🏪', 'சாமான் கடைகள்', 'Pooja stores'],
     ['poojas', '🪔', 'பூஜை பட்டியல்', 'Pooja list'],
     ['calendar', '🗓', 'பூஜை தேதிகள் (பஞ்சாங்கம்)', 'Pooja dates (calendar)'],
     ['customers', '👥', 'வாடிக்கையாளர்கள்', 'Customers'],
-    ['offers', '🎁', 'ஆஃபர் / தொகுப்பு செய்தி அனுப்பு', 'Send offer / combo message'],
+    ['combos', '🎁', 'சிறப்பு நாள் தொகுப்புகள் (Combos)', 'Special-day combos'],
     ['messages', '💬', 'தானியங்கி செய்திகள் (4 வகை)', 'Automatic messages (4 kinds)'],
     ['settings', '⚙', 'அமைப்புகள்', 'Settings']
   ];
@@ -89,7 +92,18 @@
   }
 
   function loadAll() {
-    return DB.rpc('sa_admin_dashboard', { p_token: DB.token() });
+    var t = DB.token();
+    // The new lists come from the v4 database functions; if they are not installed yet, the older screens still work.
+    var soft = function (name) { return DB.rpc(name, { p_token: t }).catch(function () { return null; }); };
+    return Promise.all([DB.rpc('sa_admin_dashboard', { p_token: t }), soft('sa_admin_list_vendors_full'), soft('sa_admin_list_partners_full'),
+      tab === 'combos' ? soft('sa_admin_list_offers') : Promise.resolve(null)]).then(function (res) {
+      var d = res[0];
+      if (d && d.ok && res[1] && res[1].ok) d.vendors = res[1].vendors;
+      fullP = {};
+      if (res[2] && res[2].ok) res[2].partners.forEach(function (x) { fullP[x.id] = x; });
+      offersList = res[3] && res[3].ok ? res[3].offers : [];
+      return d;
+    });
   }
 
   // ---------- Date helpers (browser date, India) ----------
@@ -183,7 +197,7 @@
 
     var actions = '';
     if (o.status === 'waiting_for_confirmation') {
-      var stores = d.vendors.filter(function (v) { return v.is_active && v.pin_code === o.pin_code; });
+      var stores = d.vendors.filter(function (v) { return v.is_active && (v.pin_code === o.pin_code || (v.deliver_nearby && (v.service_pins || []).indexOf(o.pin_code) !== -1)); });
       if (stores.length) {
         actions = '<label class="field"><span class="ta">கடையைத் தேர்ந்தெடு</span><span class="en">Choose store</span>' +
           '<select id="store-' + esc(o.id) + '">' + stores.map(function (v) {
@@ -260,7 +274,11 @@
               '<span class="badge">' + esc(b.event_date) + '</span></div>' +
             '<p>' + nameBi({ name_ta: b.pooja_ta, name_en: b.pooja_en }) + (b.event_time ? ' · 🕐 ' + esc(b.event_time) : '') + '</p>' +
             (b.venue_address ? '<p>📍 ' + esc(b.venue_address) + '</p>' : '') +
-            (b.notes ? '<p>📝 ' + esc(b.notes) + '</p>' : '') + '</article>';
+            (b.notes ? '<p>📝 ' + esc(b.notes) + '</p>' : '') +
+            (b.status === 'requested' ? '<div class="ad-btns"><button type="button" class="btn ad-ok" data-act="booking-status" data-status="accepted" data-id="' + esc(b.id) + '">✔ ' + bi('ஏற்கிறேன்', 'Accept') + '</button>' +
+              '<button type="button" class="btn btn-outline" data-act="booking-status" data-status="declined" data-id="' + esc(b.id) + '">' + bi('நிராகரி', 'Decline') + '</button></div>'
+            : b.status === 'accepted' ? '<div class="ad-btns"><button type="button" class="btn btn-outline" data-act="booking-status" data-status="completed" data-id="' + esc(b.id) + '">' + bi('முடிந்தது', 'Completed') + '</button>' +
+              '<button type="button" class="btn btn-outline" data-act="booking-status" data-status="cancelled" data-id="' + esc(b.id) + '">' + bi('ரத்து', 'Cancel') + '</button></div>' : '') + '</article>';
         }).join('')
       : '<p class="ad-empty">' + bi('இந்தப் பட்டியலில் முன்பதிவுகள் இல்லை.', 'No bookings in this list.') + '</p>';
   }
@@ -290,6 +308,8 @@
       return '<article class="ad-card"><div class="ad-card-top"><h3>' + nameBi(p) + '</h3>' +
         '<span class="badge' + (p.is_approved ? '' : ' ad-wait') + '">' +
           (p.is_approved ? bi('அங்கீகரிக்கப்பட்டது', 'Approved') : bi('அங்கீகாரம் நிலுவை', 'Awaiting approval')) + '</span></div>' +
+        (fullP[p.id] ? '<p>📞 ' + phoneLine(fullP[p.id].phone) + (fullP[p.id].phone2 ? ' · ' + phoneLine(fullP[p.id].phone2) : '') + '</p>' +
+          '<p>📍 ' + areasText(fullP[p.id].areas) + '</p>' : '') +
         '<div class="badges"><span class="badge">' + bi(PD.ROLE[p.role][0], PD.ROLE[p.role][1]) + '</span>' +
           (p.is_hidden ? '<span class="badge">' + bi('மறைக்கப்பட்டது', 'Hidden') + '</span>' : '') +
           '<span class="badge">' + esc(p.status) + '</span></div>' +
@@ -317,30 +337,6 @@
       '<p class="soon">' + bi('மறைக்கப்பட்ட பூஜைகள் வாடிக்கையாளர்களுக்குக் காட்டப்படாது.', 'Hidden poojas are not shown to customers.') + '</p>' +
       '<div class="table-scroll"><table class="admin-table"><thead><tr><th>English</th><th>தமிழ்</th><th>' +
         bi('பிரிவு', 'Category') + '</th><th></th></tr></thead><tbody>' + poojas + '</tbody></table></div>';
-  }
-
-  // ---------- Blind tie-up stores ----------
-  function vendorsSection(d) {
-    var cards = d.vendors.map(function (v) {
-      return '<article class="pooja-card">' +
-        '<strong>' + esc(v.name) + '</strong>' +
-        '<div class="badges"><span class="badge">' + phoneLine(v.phone) + '</span>' +
-          '<span class="badge">PIN ' + esc(v.pin_code) + '</span>' +
-          '<span class="badge">' + (v.is_active ? bi('செயலில்', 'Active') : bi('நிறுத்தப்பட்டது', 'Paused')) + '</span></div>' +
-        '<div class="action-row"><button type="button" class="btn btn-outline" data-act="toggle-vendor" data-id="' + esc(v.id) + '" data-active="' + (!v.is_active) + '">' +
-          (v.is_active ? bi('நிறுத்து', 'Pause') : bi('மீண்டும் இயக்கு', 'Reactivate')) + '</button></div>' +
-        '</article>';
-    }).join('');
-    return '<h1>' + bi('கடைகள் (Blind Tie-up)', 'Blind Tie-up Stores') + '</h1>' +
-      '<p class="soon">' + bi('கடைகளுக்கு உள்நுழைவு இல்லை. ஆர்டர்களை நிர்வாகமே கடைக்கு ஒதுக்கும்.', 'Stores have no login. Admin assigns each order to a store.') + '</p>' +
-      '<form id="vendor-form" class="vendor-form" novalidate>' +
-        '<label class="field"><span class="ta">கடையின் பெயர்</span><span class="en">Store name</span><input name="name" type="text" required></label>' +
-        '<label class="field"><span class="ta">மொபைல் எண் (10 இலக்கம்)</span><span class="en">Mobile (10 digits)</span><input name="phone" type="tel" inputmode="numeric" maxlength="14" required></label>' +
-        '<label class="field"><span class="ta">PIN குறியீடு (6 இலக்கம்)</span><span class="en">PIN code (6 digits)</span><input name="pin" type="text" inputmode="numeric" maxlength="6" required></label>' +
-        '<button type="submit" class="btn">' + bi('கடையைச் சேர்', 'Add store') + '</button>' +
-      '</form>' +
-      (d.vendors.length ? '<div class="pooja-grid">' + cards + '</div>'
-        : '<p>' + bi('இன்னும் கடைகள் சேர்க்கப்படவில்லை.', 'No stores added yet.') + '</p>');
   }
 
   // ---------- WhatsApp alerts ----------
@@ -556,12 +552,242 @@
       '<button type="submit" class="btn">' + bi('சேமி', 'Save') + '</button></form>';
   }
 
+  // ---------- v4 helpers ----------
+  var ERR = {
+    name_bad: ['பெயரை உள்ளிடவும்.', 'Enter the name.'],
+    phone_bad: ['சரியான 10 இலக்க மொபைல் எண்ணை உள்ளிடவும்.', 'Enter a valid 10-digit mobile number.'],
+    phone2_bad: ['இரண்டாவது மொபைல் எண் தேவை (முதல் எண்ணிலிருந்து வேறுபட்டது).', 'A second mobile number is needed (different from the first).'],
+    areas_bad: ['சேவைப் பகுதிகள்: தமிழ்நாடு / புதுச்சேரி PIN குறியீடு (எ.கா. 600126 Chromepet).', 'Service areas: Tamil Nadu / Puducherry PIN codes (e.g. 600126 Chromepet).'],
+    spec_bad: ['சம்பிரதாயம் / சமையல் வகையைச் சரியாகத் தேர்ந்தெடுக்கவும்.', 'Choose a valid sampradayam / cooking style.'],
+    lang_bad: ['குறைந்தது ஒரு மொழி தேவை.', 'At least one language is needed.'],
+    photo_bad: ['படம் சரியில்லை (சிறிய படம் அல்லது https இணைப்பு).', 'Photo not accepted (use a small photo or an https link).'],
+    duplicate: ['இந்த மொபைல் எண் ஏற்கெனவே உள்ளது.', 'This mobile number already exists.'],
+    pin_bad: ['தமிழ்நாடு / புதுச்சேரி PIN குறியீடு தேவை.', 'A Tamil Nadu / Puducherry PIN code is required.'],
+    address_bad: ['முழு முகவரி தேவை (குறைந்தது 10 எழுத்துகள்).', 'A full address is needed (at least 10 characters).'],
+    pins_bad: ['அருகிலுள்ள பகுதிகளின் PIN குறியீடுகள் சரியில்லை.', 'The nearby PIN codes are not valid.'],
+    title_bad: ['தமிழ் மற்றும் ஆங்கிலத் தலைப்பு தேவை.', 'A Tamil and an English title are needed.'],
+    role_bad: ['வகை (வாத்தியார் / சமையல்காரர்) தேவை.', 'Role (priest / cook) is needed.'],
+    rows_bad: ['கோப்பில் வரிசைகள் இல்லை அல்லது 500-க்கு மேல் உள்ளன.', 'The file has no rows, or more than 500.']
+  };
+  function errNotice(code) {
+    var m = ERR[code] || NOTICE.fail;
+    showNotice(m[0], m[1], true);
+  }
+  function saveRow(rpcName, row) {
+    return DB.rpc(rpcName, { p_token: DB.token(), p_row: row }).then(function (r) {
+      if (r && r.ok === false) { errNotice(r.error); return false; }
+      return render().then(function () { showNotice(NOTICE.saved[0], NOTICE.saved[1], false); return true; });
+    }).catch(function () { showNotice(NOTICE.fail[0], NOTICE.fail[1], true); return false; });
+  }
+  function digits10(v) { return String(v || '').replace(/\D/g, '').slice(-10); }
+  function areasText(list) {
+    return (list || []).map(function (a) { return esc(a.pin) + (a.place ? ' ' + esc(a.place) : ''); }).join(' · ');
+  }
+  // Reads a cell by the start of its header text, ignoring case.
+  function cell(row, start) {
+    var k = Object.keys(row).filter(function (h) { return h.trim().toLowerCase().indexOf(start) === 0; })[0];
+    return k === undefined ? '' : String(row[k]).trim();
+  }
+  function pickKey(val, keys) {
+    var v = String(val || '').trim().toLowerCase();
+    return keys.filter(function (k) { return k.toLowerCase() === v; })[0] || '';
+  }
+  var LANG_KEYS = ['Tamil', 'Sanskrit', 'Telugu', 'Kannada', 'Malayalam', 'English'];
+  function langsFrom(text) {
+    return String(text || '').split(/[,;]+/).map(function (x) { return pickKey(x, LANG_KEYS); }).filter(Boolean).join(',');
+  }
+  function partnerRowFromSheet(role, r) {
+    var specKeys = role === 'priest' ? Object.keys(PD.SAMP) : Object.keys(PD.COOK);
+    return {
+      role: role, name_en: cell(r, 'name (e'), name_ta: cell(r, 'name (t'),
+      phone: digits10(cell(r, 'mobile')), phone2: digits10(cell(r, 'second')),
+      spec: pickKey(cell(r, role === 'priest' ? 'sampradayam' : 'cooking'), specKeys),
+      languages: langsFrom(cell(r, 'languages')), years: cell(r, 'experience'),
+      areas: window.SAExtras.parseAreas(cell(r, 'service')), photo: cell(r, 'photo')
+    };
+  }
+  function vendorRowFromSheet(r) {
+    var near = /^(y|yes|ஆம்)/i.test(cell(r, 'deliver nearby'));
+    return {
+      name: cell(r, 'shop'), phone: digits10(cell(r, 'main')), phone2: digits10(cell(r, 'second')),
+      pin: cell(r, 'pincode'), area: cell(r, 'area'), address: cell(r, 'full address'),
+      landmark: cell(r, 'landmark'), location: cell(r, 'map'), nearby: near, service_pins: cell(r, 'nearby pin')
+    };
+  }
+  function bulkReport(r) {
+    var el = $('bulk-msg');
+    if (!el) return;
+    var bad = (r.failed || []).map(function (f) {
+      var m = ERR[f.error] || NOTICE.fail;
+      return '<li>' + bi('வரிசை ', 'Row ') + f.row + ': ' + bi(m[0], m[1]) + '</li>';
+    }).join('');
+    el.innerHTML = '<p class="form-msg is-ok">' + bi('சேர்க்கப்பட்டவை: ', 'Added: ') + '<strong>' + (r.added || 0) + '</strong></p>' +
+      (bad ? '<p class="form-msg is-error">' + bi('இந்த வரிசைகள் சேர்க்கப்படவில்லை (திருத்தி மீண்டும் பதிவேற்றவும்):', 'These rows were not added (fix and upload again):') + '</p><ul>' + bad + '</ul>' : '');
+  }
+  function bulkUpload(file, kind) {
+    var el = $('bulk-msg');
+    if (el) el.innerHTML = '<p class="form-msg">…</p>';
+    return window.SAExtras.readSheet(file).then(function (rows) {
+      rows = rows.filter(function (r) { return Object.keys(r).some(function (k) { return String(r[k]).trim() !== ''; }); });
+      if (!rows.length) { errNotice('rows_bad'); return; }
+      var rpcName = kind === 'shops' ? 'sa_admin_bulk_vendors' : 'sa_admin_bulk_partners';
+      var payload = kind === 'shops' ? rows.map(vendorRowFromSheet) : rows.map(function (r) { return partnerRowFromSheet(kind === 'priests' ? 'priest' : 'cook', r); });
+      return DB.rpc(rpcName, { p_token: DB.token(), p_rows: payload }).then(function (r) {
+        if (!r || r.ok === false) return errNotice(r && r.error);
+        return render().then(function () { bulkReport(r); showNotice(NOTICE.bulk_done[0], NOTICE.bulk_done[1], false); });
+      });
+    }).catch(function () { showNotice(NOTICE.fail[0], NOTICE.fail[1], true); });
+  }
+  function bulkCard(kind, ta, en) {
+    return '<div class="ad-card"><h3>📥 ' + bi(ta, en) + '</h3>' +
+      '<p><a class="btn btn-outline" href="templates/' + kind + '-template.xlsx" download>⬇ ' + bi('Excel டெம்ப்ளேட் பதிவிறக்கு', 'Download Excel template') + '</a></p>' +
+      '<p class="soon">' + bi('டெம்ப்ளேட்டை நிரப்பி (.xlsx அல்லது .csv) இங்கே பதிவேற்றவும். ஒரு கோப்பில் அதிகபட்சம் 500 வரிசைகள்.', 'Fill the template and upload it here (.xlsx or .csv). Up to 500 rows per file.') + '</p>' +
+      '<input type="file" id="bulk-' + kind + '" accept=".xlsx,.xls,.csv"></div>';
+  }
+
+  // ---------- Add priest / cook ----------
+  function specOptions(role) {
+    var o = role === 'cook' ? PD.COOK : PD.SAMP;
+    return Object.keys(o).map(function (k) { return '<option value="' + k + '">' + esc(o[k][0] + ' · ' + o[k][1]) + '</option>'; }).join('');
+  }
+  function addPeopleSection() {
+    var langs = Object.keys(PD.LANGS).map(function (k) {
+      return '<label class="check-row"><input type="checkbox" name="lang" value="' + k + '"' + (k === 'Tamil' ? ' checked' : '') + '> ' + bi(PD.LANGS[k][0], PD.LANGS[k][1]) + '</label>';
+    }).join('');
+    return '<h1>' + bi('வாத்தியார் / சமையல்காரர் சேர்', 'Add priest / cook') + '</h1>' +
+      '<p class="soon">' + bi('நிர்வாகம் சேர்ப்பவர்கள் உடனே அங்கீகரிக்கப்படுவார்கள். இவர்களுக்கு உள்நுழைவு இல்லை; முன்பதிவுகளை நிர்வாகம் "முன்பதிவுகள்" பகுதியில் ஏற்கும்.',
+        'People added by admin are approved at once. They have no login; admin accepts their bookings in the Bookings section.') + '</p>' +
+      '<form id="partner-form" class="vendor-form" novalidate>' +
+        '<label class="field"><span class="ta">வகை</span><span class="en">Role</span><select name="role" id="ap-role"><option value="priest">வாத்தியார் · Priest</option><option value="cook">சமையல்காரர் · Cook</option></select></label>' +
+        '<label class="field"><span class="ta">பெயர் (ஆங்கிலம்)</span><span class="en">Name (English)</span><input name="name_en" type="text" maxlength="80"></label>' +
+        '<label class="field"><span class="ta">பெயர் (தமிழ்)</span><span class="en">Name (Tamil)</span><input name="name_ta" type="text" maxlength="80"></label>' +
+        '<label class="field"><span class="ta">மொபைல் எண்</span><span class="en">Mobile number</span><input name="phone" type="tel" inputmode="numeric" maxlength="14" required></label>' +
+        '<label class="field"><span class="ta">இரண்டாவது மொபைல் எண் (கட்டாயம்)</span><span class="en">Second mobile number (required)</span><input name="phone2" type="tel" inputmode="numeric" maxlength="14" required></label>' +
+        '<label class="field"><span class="ta">சம்பிரதாயம் / சமையல் வகை</span><span class="en">Sampradayam / cooking style</span><select name="spec" id="ap-spec">' + specOptions('priest') + '</select></label>' +
+        '<fieldset class="check-group"><legend>' + bi('மொழிகள்', 'Languages') + '</legend>' + langs + '</fieldset>' +
+        '<label class="field"><span class="ta">அனுபவம் (ஆண்டுகள்)</span><span class="en">Experience (years)</span><input name="years" type="number" min="0" max="80" value="0"></label>' +
+        '<label class="field"><span class="ta">சேவை வழங்கும் பகுதிகள் — ஒரு வரிக்கு ஒன்று: PIN + இடம்</span><span class="en">Areas served — one per line: PIN + place</span>' +
+          '<textarea name="areas" rows="4" placeholder="600126 Chromepet&#10;600044 Pallavaram" required></textarea></label>' +
+        '<label class="field"><span class="ta">புகைப்படம் (விருப்பம்)</span><span class="en">Photo (optional)</span><input type="file" id="ap-photo" accept="image/*"></label>' +
+        '<button type="submit" class="btn">' + bi('சேர்', 'Add') + '</button>' +
+      '</form>' +
+      bulkCard('priests', 'வாத்தியார்கள் — Excel மூலம் பலரைச் சேர்', 'Priests — bulk upload from Excel') +
+      bulkCard('cooks', 'சமையல்காரர்கள் — Excel மூலம் பலரைச் சேர்', 'Cooks — bulk upload from Excel') +
+      '<div id="bulk-msg"></div>';
+  }
+  function submitPartner(form) {
+    var d = new FormData(form);
+    var row = {
+      role: d.get('role'), name_en: d.get('name_en'), name_ta: d.get('name_ta'),
+      phone: digits10(d.get('phone')), phone2: digits10(d.get('phone2')), spec: d.get('spec'),
+      languages: d.getAll('lang').join(','), years: d.get('years'),
+      areas: window.SAExtras.parseAreas(d.get('areas')), photo: partnerPhoto || ''
+    };
+    var img = partnerPhoto; partnerPhoto = null;
+    return saveRow('sa_admin_add_partner', row).then(function (ok) { if (!ok) partnerPhoto = img; });
+  }
+
+  // ---------- Stores (shops): full details, edit, bulk upload ----------
+  function vendorsSection(d) {
+    var e = editVendor ? d.vendors.filter(function (v) { return v.id === editVendor; })[0] : null;
+    var val = function (k) { return e && e[k] != null ? esc(e[k]) : ''; };
+    var cards = d.vendors.map(function (v) {
+      return '<article class="pooja-card">' +
+        '<strong>' + esc(v.name) + '</strong>' +
+        '<div class="badges"><span class="badge">' + phoneLine(v.phone) + '</span>' +
+          (v.phone2 ? '<span class="badge">' + phoneLine(v.phone2) + '</span>' : '') +
+          '<span class="badge">PIN ' + esc(v.pin_code) + '</span>' +
+          (v.deliver_nearby ? '<span class="badge">' + bi('அருகிலுள்ள பகுதிகளுக்கும்', 'Delivers nearby') + (v.service_pins && v.service_pins.length ? ': ' + esc(v.service_pins.join(', ')) : '') + '</span>' : '') +
+          '<span class="badge">' + (v.is_active ? bi('செயலில்', 'Active') : bi('நிறுத்தப்பட்டது', 'Paused')) + '</span></div>' +
+        (v.address ? '<p>📍 ' + esc(v.area_name ? v.area_name + ', ' : '') + esc(v.address) + (v.landmark ? ' (' + esc(v.landmark) + ')' : '') + '</p>' : '') +
+        (v.location_url ? '<p><a href="' + esc(v.location_url) + '" target="_blank" rel="noopener">🗺 ' + bi('வரைபடம்', 'Map') + '</a></p>' : '') +
+        '<div class="action-row"><button type="button" class="btn btn-outline" data-act="edit-vendor" data-id="' + esc(v.id) + '">' + bi('திருத்து', 'Edit') + '</button> ' +
+          '<button type="button" class="btn btn-outline" data-act="toggle-vendor" data-id="' + esc(v.id) + '" data-active="' + (!v.is_active) + '">' +
+          (v.is_active ? bi('நிறுத்து', 'Pause') : bi('மீண்டும் இயக்கு', 'Reactivate')) + '</button></div>' +
+        '</article>';
+    }).join('');
+    return '<h1>' + bi('கடைகள் (Blind Tie-up)', 'Blind Tie-up Stores') + '</h1>' +
+      '<p class="soon">' + bi('கடைகளுக்கு உள்நுழைவு இல்லை. ஆர்டர் வந்ததும் நிர்வாகம் கடையிடம் உறுதி கேட்டு, ஆர்டரை ஒதுக்கும்.', 'Stores have no login. When an order arrives, admin checks with the shop and then assigns it.') + '</p>' +
+      '<form id="vendor-form" class="vendor-form" novalidate>' + (e ? '<input type="hidden" name="id" value="' + esc(e.id) + '">' : '') +
+        '<h3>' + (e ? bi('கடையைத் திருத்து', 'Edit store') : bi('புதிய கடை', 'New store')) + '</h3>' +
+        '<label class="field"><span class="ta">கடையின் பெயர்</span><span class="en">Shop name</span><input name="name" type="text" value="' + val('name') + '" required></label>' +
+        '<label class="field"><span class="ta">முதன்மை / WhatsApp எண்</span><span class="en">Main / WhatsApp number</span><input name="phone" type="tel" inputmode="numeric" maxlength="14" value="' + val('phone') + '" required></label>' +
+        '<label class="field"><span class="ta">இரண்டாவது எண் (விருப்பம் — காப்பு)</span><span class="en">Second number (optional — backup)</span><input name="phone2" type="tel" inputmode="numeric" maxlength="14" value="' + val('phone2') + '"></label>' +
+        '<label class="field"><span class="ta">PIN குறியீடு</span><span class="en">PIN code</span><input name="pin" type="text" inputmode="numeric" maxlength="6" value="' + val('pin_code') + '" required></label>' +
+        '<label class="field"><span class="ta">பகுதி / ஊர்</span><span class="en">Area / locality</span><input name="area" type="text" maxlength="80" value="' + val('area_name') + '"></label>' +
+        '<label class="field"><span class="ta">முழு முகவரி</span><span class="en">Full address</span><textarea name="address" rows="3" maxlength="300" required>' + val('address') + '</textarea></label>' +
+        '<label class="field"><span class="ta">அடையாளம் (Landmark)</span><span class="en">Landmark</span><input name="landmark" type="text" maxlength="120" value="' + val('landmark') + '"></label>' +
+        '<label class="field"><span class="ta">Google Maps இணைப்பு (விருப்பம்)</span><span class="en">Google Maps link (optional)</span><input name="location" type="url" maxlength="300" value="' + val('location_url') + '"></label>' +
+        '<label class="check-row"><input type="checkbox" name="nearby"' + (e && e.deliver_nearby ? ' checked' : '') + '> ' + bi('அருகிலுள்ள பகுதிகளுக்கும் டெலிவரி செய்வார்கள் (விருப்பம்)', 'Can also deliver to nearby areas (optional)') + '</label>' +
+        '<label class="field"><span class="ta">அருகிலுள்ள PIN குறியீடுகள் (கமாவால் பிரிக்கவும்)</span><span class="en">Nearby PIN codes (comma separated)</span><input name="service_pins" type="text" value="' + (e && e.service_pins ? esc(e.service_pins.join(', ')) : '') + '"></label>' +
+        '<button type="submit" class="btn">' + (e ? bi('சேமி', 'Save') : bi('கடையைச் சேர்', 'Add store')) + '</button>' +
+        (e ? ' <button type="button" class="btn btn-outline" data-act="cancel-edit-vendor">' + bi('ரத்து', 'Cancel') + '</button>' : '') +
+      '</form>' +
+      bulkCard('shops', 'கடைகள் — Excel மூலம் பலவற்றைச் சேர்', 'Shops — bulk upload from Excel') + '<div id="bulk-msg"></div>' +
+      (d.vendors.length ? '<div class="pooja-grid">' + cards + '</div>'
+        : '<p>' + bi('இன்னும் கடைகள் சேர்க்கப்படவில்லை.', 'No stores added yet.') + '</p>');
+  }
+  function addVendor(form) {
+    var d = new FormData(form);
+    var row = {
+      id: d.get('id') || '', name: d.get('name'), phone: digits10(d.get('phone')), phone2: digits10(d.get('phone2')),
+      pin: String(d.get('pin') || '').trim(), area: d.get('area'), address: d.get('address'), landmark: d.get('landmark'),
+      location: d.get('location'), nearby: d.get('nearby') === 'on', service_pins: d.get('service_pins')
+    };
+    var was = editVendor; editVendor = null;
+    return saveRow('sa_admin_save_vendor', row).then(function (ok) { if (!ok) editVendor = was; });
+  }
+
+  // ---------- Special-day combos (shown on the Order page; text only, no prices) ----------
+  function combosSection(d) {
+    var e = editOffer ? offersList.filter(function (o) { return o.id === editOffer; })[0] : null;
+    var val = function (k) { return e && e[k] != null ? esc(e[k]) : ''; };
+    var opts = '<option value="">— ' + bi('பூஜை இணைப்பு இல்லை', 'no pooja link') + ' —</option>' + d.poojas.map(function (p) {
+      return '<option value="' + esc(p.slug) + '"' + (e && e.pooja_slug === p.slug ? ' selected' : '') + '>' + esc(p.name_en) + ' · ' + esc(p.name_ta) + '</option>';
+    }).join('');
+    var list = offersList.map(function (o) {
+      return '<article class="ad-card"><div class="ad-card-top"><h3>' + bi(esc(o.title_ta), esc(o.title_en)) + '</h3>' +
+        '<span class="badge' + (o.is_active ? '' : ' ad-wait') + '">' + (o.is_active ? bi('காட்டப்படுகிறது', 'Showing') : bi('மறைக்கப்பட்டது', 'Hidden')) + '</span></div>' +
+        (o.valid_from || o.valid_to ? '<p>📅 ' + esc(o.valid_from || '…') + ' → ' + esc(o.valid_to || '…') + '</p>' : '') +
+        '<div class="ad-btns"><button type="button" class="btn btn-outline" data-act="edit-offer" data-id="' + esc(o.id) + '">' + bi('திருத்து', 'Edit') + '</button>' +
+        '<button type="button" class="btn btn-outline" data-act="del-offer" data-id="' + esc(o.id) + '">' + bi('நீக்கு', 'Delete') + '</button></div></article>';
+    }).join('');
+    return '<h1>' + bi('சிறப்பு நாள் தொகுப்புகள்', 'Special-day combos') + '</h1>' +
+      '<p class="soon">' + bi('கோகுலாஷ்டமி, வரலட்சுமி போன்ற முக்கிய நாட்களுக்கான தொகுப்புகள் "பூஜை சாமான் ஆர்டர்" பக்கத்தில் வழக்கமான பட்டியலுக்கு மேலே தனியாகக் காட்டப்படும். விலை எதுவும் குறிப்பிட வேண்டாம்.',
+        'Combos for major days (Gokulashtami, Varalakshmi…) show on the Order page above the regular list. Do not write any price.') + '</p>' +
+      '<form id="combo-form" class="vendor-form" novalidate>' + (e ? '<input type="hidden" name="id" value="' + esc(e.id) + '">' : '') +
+        '<label class="field"><span class="ta">தலைப்பு (தமிழ்)</span><span class="en">Title (Tamil)</span><input name="title_ta" type="text" maxlength="100" value="' + val('title_ta') + '" required></label>' +
+        '<label class="field"><span class="ta">தலைப்பு (ஆங்கிலம்)</span><span class="en">Title (English)</span><input name="title_en" type="text" maxlength="100" value="' + val('title_en') + '" required></label>' +
+        '<label class="field"><span class="ta">விவரம் (தமிழ்)</span><span class="en">Details (Tamil)</span><textarea name="text_ta" rows="3" maxlength="400">' + val('text_ta') + '</textarea></label>' +
+        '<label class="field"><span class="ta">விவரம் (ஆங்கிலம்)</span><span class="en">Details (English)</span><textarea name="text_en" rows="3" maxlength="400">' + val('text_en') + '</textarea></label>' +
+        '<label class="field"><span class="ta">இணைக்கும் பூஜை (ஆர்டர் பக்கத்துக்குச் செல்ல)</span><span class="en">Linked pooja (opens its order page)</span><select name="pooja_slug">' + opts + '</select></label>' +
+        '<label class="field"><span class="ta">படம் (விருப்பம்)</span><span class="en">Picture (optional)</span><input type="file" id="combo-image" accept="image/*"></label>' +
+        '<label class="field"><span class="ta">தொடக்கத் தேதி</span><span class="en">Show from</span><input name="valid_from" type="date" value="' + val('valid_from') + '"></label>' +
+        '<label class="field"><span class="ta">முடிவுத் தேதி</span><span class="en">Show until</span><input name="valid_to" type="date" value="' + val('valid_to') + '"></label>' +
+        '<label class="check-row"><input type="checkbox" name="is_active"' + (!e || e.is_active ? ' checked' : '') + '> ' + bi('வாடிக்கையாளர்களுக்குக் காட்டு', 'Show to customers') + '</label>' +
+        '<button type="submit" class="btn">' + bi('சேமி', 'Save') + '</button>' +
+        (e ? ' <button type="button" class="btn btn-outline" data-act="cancel-edit-offer">' + bi('ரத்து', 'Cancel') + '</button>' : '') +
+      '</form>' + (list || '<p>' + bi('இன்னும் தொகுப்புகள் இல்லை.', 'No combos yet.') + '</p>');
+  }
+  function submitCombo(form) {
+    var d = new FormData(form);
+    var row = {
+      id: d.get('id') || '', title_ta: d.get('title_ta'), title_en: d.get('title_en'), text_ta: d.get('text_ta'), text_en: d.get('text_en'),
+      pooja_slug: d.get('pooja_slug'), valid_from: d.get('valid_from') || '', valid_to: d.get('valid_to') || '',
+      is_active: d.get('is_active') === 'on', image: offerImage
+    };
+    var was = editOffer, img = offerImage; editOffer = null; offerImage = null;
+    return saveRow('sa_admin_save_offer', row).then(function (ok) { if (!ok) { editOffer = was; offerImage = img; } });
+  }
+
   // ---------- Page shell: sidebar (laptop) / back button (phone) + one section at a time ----------
   function sectionBody(d) {
     if (tab === 'orders') return ordersSection(d);
     if (tab === 'bookings') return bookingsSection(d);
     if (tab === 'people') return peopleSection(d);
     if (tab === 'stores') return vendorsSection(d);
+    if (tab === 'addpeople') return addPeopleSection();
+    if (tab === 'combos') return combosSection(d);
     if (tab === 'poojas') return poojasSection(d);
     if (tab === 'messages') return waSection(d);
     if (tab === 'calendar') return calendarSection(d);
@@ -610,13 +836,6 @@
   // ---------- Actions (each runs on the server, which checks the admin role) ----------
   function findOrder(id) {
     return last.orders.filter(function (o) { return o.id === id; })[0] || null;
-  }
-
-  function addVendor(form) {
-    var d = new FormData(form);
-    return after(DB.rpc('sa_admin_add_vendor', {
-      p_token: DB.token(), p_name: d.get('name'), p_phone: d.get('phone'), p_pin: d.get('pin')
-    }), NOTICE.saved[0], NOTICE.saved[1]);
   }
 
   // Trigger 2a: store confirms and dispatches.
@@ -752,6 +971,19 @@
       if (g === 'people') peopleFilter = v;
       return render();
     }
+    if (act === 'edit-vendor') { editVendor = id; return render(); }
+    if (act === 'cancel-edit-vendor') { editVendor = null; return render(); }
+    if (act === 'edit-offer') { editOffer = id; offerImage = null; return render(); }
+    if (act === 'cancel-edit-offer') { editOffer = null; offerImage = null; return render(); }
+    if (act === 'del-offer') {
+      if (!ask('இந்தத் தொகுப்பை நீக்கவா?', 'Delete this combo?')) return;
+      return after(DB.rpc('sa_admin_delete_offer', { p_token: DB.token(), p_id: id }), NOTICE.saved[0], NOTICE.saved[1]);
+    }
+    if (act === 'booking-status') {
+      var st = b.getAttribute('data-status');
+      if (st === 'accepted' && !ask('இந்த முன்பதிவை ஏற்கவா? வாடிக்கையாளருக்கு WhatsApp செய்தி செல்லும்.', 'Accept this booking? The customer gets a WhatsApp message.')) return;
+      return after(DB.rpc('sa_admin_set_booking_status', { p_token: DB.token(), p_booking: id, p_status: st }), NOTICE.saved[0], NOTICE.saved[1]);
+    }
     if (act === 'pooja-visible') {
       var show = b.getAttribute('data-visible') === 'true';
       if (!show && !ask(ASK.poojaHide[0], ASK.poojaHide[1])) return;
@@ -851,9 +1083,24 @@
       return after(DB.rpc('sa_admin_update_settings', { p_token: DB.token(), p_values: { upi_id: String(fd.get('upi_id') || '').trim(), upi_name: String(fd.get('upi_name') || '').trim() } })
         .then(function (r) { return SASettings.reload().then(function () { return r; }); }), NOTICE.upi_saved[0], NOTICE.upi_saved[1]);
     }
+    if (e.target.id === 'partner-form') { e.preventDefault(); return submitPartner(e.target); }
+    if (e.target.id === 'combo-form') { e.preventDefault(); return submitCombo(e.target); }
     if (e.target.id !== 'vendor-form') return;
     e.preventDefault();
     addVendor(e.target);
+  });
+
+  box.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.id === 'ap-role') { $('ap-spec').innerHTML = specOptions(t.value); return; }
+    if (t.id === 'ap-photo' && t.files[0]) {
+      return window.SAExtras.toDataUrl(t.files[0], 240).then(function (u) { partnerPhoto = u; }).catch(function () { errNotice('photo_bad'); });
+    }
+    if (t.id === 'combo-image' && t.files[0]) {
+      return window.SAExtras.toDataUrl(t.files[0], 480).then(function (u) { offerImage = u; }).catch(function () { errNotice('photo_bad'); });
+    }
+    var m = /^bulk-(priests|cooks|shops)$/.exec(t.id || '');
+    if (m && t.files[0]) { var f = t.files[0]; t.value = ''; return bulkUpload(f, m[1]); }
   });
 
   box.addEventListener('input', function (e) {

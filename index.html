@@ -18,9 +18,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="css/style.css?v=7">
-  <link rel="stylesheet" href="css/admin.css?v=7">
-  <link rel="stylesheet" href="css/theme.css?v=7">
+  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="stylesheet" href="css/admin.css?v=8">
+  <link rel="stylesheet" href="css/theme.css?v=8">
 </head>
 <body>
 
@@ -98,7 +98,7 @@
           <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 26a8 8 0 0 1 3-15 9 9 0 0 1 14 0 8 8 0 0 1 3 15z"/><path d="M15 26v13h18V26M15 33h18"/></svg>
           <strong><span class="ta">சமையல்காரர்கள்</span><span class="en">Cooks</span></strong>
         </a>
-        <a class="svc-link" href="#poojas">
+        <a class="svc-link" href="#order">
           <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 18l4-10h28l4 10"/><path d="M6 18c0 3 3 5 6 5s6-2 6-5c0 3 3 5 6 5s6-2 6-5c0 3 3 5 6 5s6-2 6-5"/><path d="M9 24v18h30V24M20 42V31h8v11"/></svg>
           <strong><span class="ta">பூஜைப் பொருட்கள் ஆர்டர்</span><span class="en">Order Pooja Samagri</span><small><span class="ta">பூஜையைத் தேர்ந்தெடுத்து ஆர்டர் செய்யுங்கள்</span><span class="en">Choose a pooja, then order</span></small></strong>
         </a>
@@ -283,6 +283,14 @@
         <p class="ta">பூஜைப் பட்டியல் மற்றும் சாமான் விவரங்களை உள்நுழையாமலேயே பார்க்கலாம்.</p>
         <p class="en">Browse pooja lists and samagri details without logging in.</p>
         <div id="pooja-list"></div>
+      </div>
+    </section>
+
+    <!-- ORDER SAMAGRI: login first, then choose the pooja -->
+    <section class="page" data-page="order" hidden>
+      <div class="card">
+        <h1><span class="ta">பூஜை சாமான்கள் ஆர்டர்</span><span class="en">Order Pooja Samagri</span></h1>
+        <div id="order-pick"></div>
       </div>
     </section>
 
@@ -603,24 +611,25 @@
     <a href="#login" data-nav="login"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span class="ta">கணக்கு</span><span class="en">Account</span></a>
   </nav>
 
-  <script src="js/config.js?v=7" defer></script>
-  <script src="js/db.js?v=7" defer></script>
-  <script src="js/settings.js?v=7" defer></script>
-  <script src="js/auth.js?v=7" defer></script>
-  <script src="js/account.js?v=7" defer></script>
-  <script src="js/poojas-data.js?v=7" defer></script>
-  <script src="js/self-poojas.js?v=7" defer></script>
-  <script src="js/pooja-info.js?v=7" defer></script>
-  <script src="js/order-items.js?v=7" defer></script>
-  <script src="js/order.js?v=7" defer></script>
-  <script src="js/pooja.js?v=7" defer></script>
-  <script src="js/partners-data.js?v=7" defer></script>
-  <script src="js/subscription.js?v=7" defer></script>
-  <script src="js/whatsapp.js?v=7" defer></script>
-  <script src="js/partners.js?v=7" defer></script>
-  <script src="js/partner-portal.js?v=7" defer></script>
-  <script src="js/admin.js?v=7" defer></script>
-  <script src="js/app.js?v=7" defer></script>
-  <script src="js/ui.js?v=7" defer></script>
+  <script src="js/config.js?v=8" defer></script>
+  <script src="js/db.js?v=8" defer></script>
+  <script src="js/extras.js?v=8" defer></script>
+  <script src="js/settings.js?v=8" defer></script>
+  <script src="js/auth.js?v=8" defer></script>
+  <script src="js/account.js?v=8" defer></script>
+  <script src="js/poojas-data.js?v=8" defer></script>
+  <script src="js/self-poojas.js?v=8" defer></script>
+  <script src="js/pooja-info.js?v=8" defer></script>
+  <script src="js/order-items.js?v=8" defer></script>
+  <script src="js/order.js?v=8" defer></script>
+  <script src="js/pooja.js?v=8" defer></script>
+  <script src="js/partners-data.js?v=8" defer></script>
+  <script src="js/subscription.js?v=8" defer></script>
+  <script src="js/whatsapp.js?v=8" defer></script>
+  <script src="js/partners.js?v=8" defer></script>
+  <script src="js/partner-portal.js?v=8" defer></script>
+  <script src="js/admin.js?v=8" defer></script>
+  <script src="js/app.js?v=8" defer></script>
+  <script src="js/ui.js?v=8" defer></script>
 </body>
 </html>

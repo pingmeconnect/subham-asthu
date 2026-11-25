@@ -8,12 +8,13 @@
 
   var T = {
     login: ['ஆர்டர் செய்ய முதலில் உள்நுழையவும்.', 'Please log in first to place an order.'],
-    pin_bad: ['சரியான 6 இலக்க PIN குறியீட்டை உள்ளிடவும்.', 'Enter a valid 6-digit PIN code.'],
+    pin_bad: ['தமிழ்நாடு / புதுச்சேரியின் சரியான 6 இலக்க PIN குறியீட்டை உள்ளிடவும்.', 'Enter a valid 6-digit Tamil Nadu / Puducherry PIN code.'],
     address_bad: ['டெலிவரி முகவரியை முழுமையாக (குறைந்தது 10 எழுத்துகள்) உள்ளிடவும்.', 'Enter the full delivery address (at least 10 characters).'],
     date_bad: ['இன்றோ அதற்குப் பின்னரோ உள்ள தேதியைத் தேர்ந்தெடுக்கவும்.', 'Choose a date today or later.'],
-    notes_bad: ['கருத்து 500 எழுத்துகளுக்குள் இருக்க வேண்டும்.', 'Comments must be within 500 characters.'],
+    notes_bad: ['கருத்து 480 எழுத்துகளுக்குள் இருக்க வேண்டும்.', 'Comments must be within 480 characters.'],
     items_none: ['குறைந்தது ஒரு சாமானையாவது தேர்ந்தெடுக்கவும்.', 'Tick at least one item.'],
     store_none: ['இந்த PIN குறியீட்டுப் பகுதியில் இப்போது கூட்டாளர் கடை இல்லை.', 'No partner store is available for this PIN code right now.'],
+    time_bad: ['டெலிவரி நேரத்தைத் தேர்ந்தெடுக்கவும்.', 'Choose a delivery time.'],
     fail: ['ஆர்டர் அனுப்ப முடியவில்லை. இணைய இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.', 'Could not send the order. Check your connection and try again.']
   };
 
@@ -27,6 +28,18 @@
   function unitOf(it) { return O.UNIT[it.unit]; }
   function qtyText(it, q) { var u = unitOf(it); return bi(q + ' ' + u[0], q + ' ' + u[1]); }
   function fmt(n) { return String(Math.round(n * 100) / 100); }
+
+  var TIMES = [['காலை 8 – 12', 'Morning 8 AM – 12 PM'], ['மதியம் 12 – 4', 'Afternoon 12 – 4 PM'], ['மாலை 4 – 8', 'Evening 4 – 8 PM']];
+
+  function noticeHtml() {
+    return '<ul class="od-notes">' +
+      '<li>' + bi('பொருட்கள் உங்கள் வீட்டு வாசலில் டெலிவரி ஆன பிறகு மட்டும் பணம் செலுத்தவும் (ரொக்கமாக அல்லது ஆன்லைனில்). சுபம் அஸ்து எந்தப் பணமும் வசூலிப்பதில்லை.',
+        'Please pay only after the goods are delivered at your doorstep, in cash or online. Subham Asthu does not collect any payment.') + '</li>' +
+      '<li>' + bi('குறைந்தபட்ச ஆர்டர் மதிப்பு ₹1000. டெலிவரி கட்டணம் இருந்தால் அது கடையின் விதிப்படி; டெலிவரியின் போது கடையிடம் சரிபார்த்துக் கொள்ளவும்.',
+        'Minimum order value is ₹1000. Any delivery charge is as per the shop; please confirm it with the shop at the time of delivery.') + '</li>' +
+      '<li>' + bi('கடை உறுதி செய்த பின், டெலிவரிக்கு முன் உங்களை அழைப்பார்கள்.', 'The shop will call you once before delivering, after it confirms.') + '</li>' +
+      '<li>' + bi('இரவு 9 மணிக்குப் பின் அனுப்பும் ஆர்டர்கள் மறுநாள் காலை உறுதி செய்யப்படும்.', 'Orders sent after 9 PM are confirmed the next morning.') + '</li></ul>';
+  }
 
   function stepper(n) {
     var labels = [['சாமான்கள்', 'Items'], ['சரிபார்', 'Review'], ['முடிந்தது', 'Done']];
@@ -77,14 +90,17 @@
       '<section class="pj-card"><h2>2. ' + bi('கூடுதல் கருத்துகள்', 'Additional comments') + '</h2>' +
       '<label class="field"><span class="ta">வேறு ஏதேனும் தேவை / சிறப்பு அறிவுறுத்தல் இருந்தால் எழுதவும் (விருப்பம்)</span>' +
       '<span class="en">Anything else you need or any special instruction (optional)</span>' +
-      '<textarea id="od-notes" rows="4" maxlength="500">' + esc(st.notes) + '</textarea></label></section>' +
+      '<textarea id="od-notes" rows="4" maxlength="480">' + esc(st.notes) + '</textarea></label></section>' +
       '<section class="pj-card"><h2>3. ' + bi('டெலிவரி விவரங்கள்', 'Delivery details') + '</h2>' +
       '<label class="field"><span class="ta">டெலிவரி PIN குறியீடு (6 இலக்கம்)</span><span class="en">Delivery PIN code (6 digits)</span>' +
       '<input id="od-pin" type="text" inputmode="numeric" maxlength="6" value="' + esc(st.pin) + '"></label>' +
       '<label class="field"><span class="ta">டெலிவரி முகவரி</span><span class="en">Delivery address</span>' +
       '<textarea id="od-addr" rows="3" maxlength="300">' + esc(st.address) + '</textarea></label>' +
       '<label class="field"><span class="ta">எப்போது தேவை (தேதி)</span><span class="en">Needed by (date)</span>' +
-      '<input id="od-date" type="date" min="' + todayStr() + '" value="' + esc(st.needed) + '"></label></section>' +
+      '<input id="od-date" type="date" min="' + todayStr() + '" value="' + esc(st.needed) + '"></label>' +
+      '<label class="field"><span class="ta">டெலிவரி நேரம்</span><span class="en">Preferred delivery time</span>' +
+      '<select id="od-time"><option value="">—</option>' + TIMES.map(function (t, i) { return '<option value="' + i + '"' + (String(st.time) === String(i) ? ' selected' : '') + '>' + esc(document.documentElement.getAttribute('data-lang') === 'en' ? t[1] : t[0]) + '</option>'; }).join('') + '</select></label>' +
+      noticeHtml() + '</section>' +
       '<p class="form-msg" id="od-msg" role="status" aria-live="polite"></p>' +
       '<div class="action-row od-nav"><button type="button" class="btn btn-wide" id="od-next">' + bi('அடுத்து — சரிபார்க்க →', 'Next — review →') + '</button></div></div>';
     fillPick();
@@ -110,6 +126,7 @@
     st.pin = document.getElementById('od-pin').value.trim();
     st.address = document.getElementById('od-addr').value.trim();
     st.needed = document.getElementById('od-date').value;
+    st.time = document.getElementById('od-time').value;
   }
 
   function wireEdit(box, p) {
@@ -151,10 +168,11 @@
       var chosen = st.rows.filter(function (r) { return r.on && r.qty > 0; });
       var bad = null;
       if (!chosen.length) bad = 'items_none';
-      else if (!/^\d{6}$/.test(st.pin)) bad = 'pin_bad';
+      else if (!window.SARegion.okPin(st.pin)) bad = 'pin_bad';
       else if (st.address.length < 10) bad = 'address_bad';
       else if (!/^\d{4}-\d{2}-\d{2}$/.test(st.needed) || st.needed < todayStr()) bad = 'date_bad';
-      else if (st.notes.length > 500) bad = 'notes_bad';
+      else if (st.time === '') bad = 'time_bad';
+      else if (st.notes.length > 480) bad = 'notes_bad';
       if (bad) { out.innerHTML = msg(bad); out.className = 'form-msg is-error'; out.scrollIntoView({ block: 'center' }); return; }
       review(box, p);
     });
@@ -171,9 +189,8 @@
       }).join('') + '</ul>' +
       (st.notes.trim() ? '<h3>📝 ' + bi('உங்கள் கருத்துகள்', 'Your comments') + '</h3><p class="od-text">' + esc(st.notes) + '</p>' : '') +
       '<h3>📍 ' + bi('டெலிவரி', 'Delivery') + '</h3>' +
-      '<p class="od-text">PIN ' + esc(st.pin) + '<br>' + esc(st.address).replace(/\n/g, '<br>') + '<br>📅 ' + esc(st.needed) + '</p>' +
-      '<p class="soon">' + bi('விலை, கட்டணம் பற்றி இங்கு எதுவும் இல்லை. கடை உறுதி செய்த பின் தொலைபேசியில் நேரடியாகப் பேசி முடிவு செய்யலாம்.',
-        'No price or payment is handled here. Once the store confirms, you settle it directly by phone.') + '</p></section>' +
+      '<p class="od-text">PIN ' + esc(st.pin) + '<br>' + esc(st.address).replace(/\n/g, '<br>') + '<br>📅 ' + esc(st.needed) + ' · ' + bi(TIMES[st.time][0], TIMES[st.time][1]) + '</p>' +
+      noticeHtml() + '</section>' +
       '<p class="form-msg" id="od-msg" role="status" aria-live="polite"></p>' +
       '<div class="action-row od-nav"><button type="button" class="btn btn-wide btn-outline" id="od-back">← ' + bi('மாற்றங்கள் செய்ய', 'Back to edit') + '</button>' +
       '<button type="button" class="btn btn-wide" id="od-submit">✔ ' + bi('உறுதி செய்து அனுப்பு', 'Confirm & submit') + '</button></div></div>';
@@ -192,7 +209,7 @@
     A.currentUser().then(function (u) {
       if (!u) { out.innerHTML = msg('login'); out.className = 'form-msg is-error'; btn.disabled = false; return; }
       return DB.rpc('sa_place_order_items', { p_token: DB.token(), p_pooja_slug: p.slug, p_pin: st.pin,
-        p_address: st.address, p_needed_by: st.needed, p_notes: st.notes.trim(), p_items: items })
+        p_address: st.address, p_needed_by: st.needed, p_notes: ('Delivery time: ' + TIMES[st.time][1] + (st.notes.trim() ? '\n' + st.notes.trim() : '')), p_items: items })
         .then(function (r) {
           if (!r.ok) {
             out.innerHTML = msg(T[r.error] ? r.error : 'fail'); out.className = 'form-msg is-error'; btn.disabled = false; return;
@@ -224,7 +241,7 @@
       }
       if (!st || st.slug !== p.slug) {
         var keys = d.samagri.length && d.samagri[0].key ? d.samagri.map(function (s) { return s.key; }) : O.kindKeys(kind);
-        st = { slug: p.slug, rows: O.defaults(keys), notes: '', pin: '', address: '', needed: '', color: color };
+        st = { slug: p.slug, rows: O.defaults(keys), notes: '', pin: '', address: '', needed: '', time: '', color: color };
       }
       edit(box, p);
       window.scrollTo(0, 0);

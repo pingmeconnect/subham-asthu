@@ -15,6 +15,9 @@
     login: ['பார்ட்னர் போர்ட்டலைப் பார்க்க உள்நுழையவும்.', 'Log in to open the Partner Portal.'],
     partner_only: ['கூட்டாளர் போர்ட்டல் வாத்தியார் / சமையல்காரர்களுக்கானது.', 'The Partner Portal is for priests and cooks.'],
     saved: ['விவரங்கள் சேமிக்கப்பட்டன.', 'Details saved.'],
+    phone2_bad: ['இரண்டாவது மொபைல் எண் (10 இலக்கம், முதல் எண்ணிலிருந்து வேறுபட்டது) கட்டாயம்.', 'A second mobile number (10 digits, different from your login number) is required.'],
+    areas_bad: ['சேவை வழங்கும் குறைந்தது ஒரு PIN குறியீட்டை (தமிழ்நாடு / புதுச்சேரி) உள்ளிடவும்.', 'Enter at least one Tamil Nadu / Puducherry PIN code you serve.'],
+    photo_bad: ['படத்தைச் சேர்க்க முடியவில்லை. வேறு படத்தை முயற்சிக்கவும்.', 'Could not use that photo. Try another one.'],
     pin_bad: ['சரியான 6 இலக்க PIN குறியீட்டை உள்ளிடவும்.', 'Enter a valid 6-digit PIN code.'],
     lang_bad: ['குறைந்தது ஒரு மொழியைத் தேர்ந்தெடுக்கவும்.', 'Choose at least one language.'],
     fail: ['சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.', 'Could not save. Please try again.'],
@@ -29,6 +32,7 @@
   var STATE_MSG = { free: 'free', paid: 'paid', due: 'due', hidden: 'hidden' };
 
   var ctx = null; // { role, profile, state, subscription, bookings }
+  var photo = { value: null, shown: '' }; // value: null = unchanged, '' = remove, 'data:...' = new
 
   function $(id) { return document.getElementById(id); }
 
@@ -42,6 +46,16 @@
     el.innerHTML = bi(m[0], m[1]);
     el.classList.toggle('is-error', !!isError);
     el.classList.toggle('is-ok', !isError);
+  }
+
+  function areaRow(a) {
+    return '<div class="area-row"><input name="apin" type="text" inputmode="numeric" maxlength="6" placeholder="600126" value="' + esc(a ? a.pin : '') + '" aria-label="PIN">' +
+      '<input name="aplace" type="text" maxlength="60" placeholder="' + (document.documentElement.getAttribute('data-lang') === 'en' ? 'Place name' : 'இடத்தின் பெயர்') + '" value="' + esc(a ? a.place : '') + '" aria-label="Place">' +
+      '<button type="button" class="od-b" data-action="area-del" aria-label="remove">✕</button></div>';
+  }
+  function areaRows(p) {
+    var list = p && p.service_areas && p.service_areas.length ? p.service_areas : (p && p.pin_code ? [{ pin: p.pin_code, place: '' }] : [null]);
+    return list.map(areaRow).join('');
   }
 
   function profileForm(role, p) {
@@ -59,8 +73,15 @@
         return '<option value="' + k + '"' + (current === k ? ' selected' : '') + '>' + options[k][0] + ' · ' + options[k][1] + '</option>';
       }).join('') + '</select></label>';
     return '<form id="profile-form" novalidate>' +
-      '<label class="field"><span class="ta">PIN குறியீடு (6 இலக்கம்)</span><span class="en">PIN code (6 digits)</span>' +
-        '<input name="pin" type="text" inputmode="numeric" maxlength="6" value="' + esc(p ? p.pin_code : '') + '" required></label>' +
+      '<label class="field"><span class="ta">இரண்டாவது மொபைல் எண் (கட்டாயம்) — முதல் எண் கிடைக்காவிட்டால் மட்டும் அழைப்போம்</span><span class="en">Second mobile number (required) — used only if we cannot reach your main number</span>' +
+        '<input name="phone2" type="tel" inputmode="numeric" maxlength="10" value="' + esc(p && p.phone2 ? p.phone2 : '') + '" required></label>' +
+      '<fieldset class="check-group"><legend>' + bi('எந்தெந்த பகுதிகளில் சேவை வழங்குவீர்கள்? (PIN குறியீடு + இடத்தின் பெயர்)', 'Which areas do you serve? (PIN code + place name)') + '</legend>' +
+        '<div id="area-rows">' + areaRows(p) + '</div>' +
+        '<button type="button" class="btn btn-outline" data-action="area-add">+ ' + bi('இன்னொரு பகுதி', 'Add another area') + '</button></fieldset>' +
+      '<fieldset class="check-group"><legend>' + bi('புகைப்படம் (விருப்பம்)', 'Photo (optional)') + '</legend>' +
+        '<div class="photo-pick"><img id="photo-prev" class="photo-prev" alt="" ' + (photo.shown ? 'src="' + esc(photo.shown) + '"' : 'hidden') + '>' +
+        '<input id="photo-file" type="file" accept="image/*">' +
+        '<button type="button" class="btn btn-outline" data-action="photo-del">' + bi('படத்தை நீக்கு', 'Remove photo') + '</button></div></fieldset>' +
       specialty +
       '<label class="field"><span class="ta">அனுபவம் (ஆண்டுகள்)</span><span class="en">Experience (years)</span>' +
         '<input name="years" type="number" min="0" max="80" value="' + (p ? p.experience_years : 0) + '" required></label>' +
@@ -149,14 +170,16 @@
             return;
           }
           // A partner login with no profile yet: create one from the form.
-          ctx = { role: r.role, profile: null };
+          photo = { value: null, shown: '' };
+          ctx = { role: r.role, profile: null, mobile: u.mobile };
           box.innerHTML = '<h1>' + bi('பார்ட்னர் போர்ட்டல்', 'Partner Portal') + '</h1>' +
             '<p>' + bi('முதலில் உங்கள் சுயவிவரத்தை அமைக்கவும்.', 'Set up your profile first.') + '</p>' +
             profileForm(r.role, null);
           return;
         }
         var p = r.profile;
-        ctx = { role: p.role, profile: p, state: r.state, subscription: r.subscription };
+        photo = { value: null, shown: p.photo_url || '' };
+        ctx = { role: p.role, profile: p, state: r.state, subscription: r.subscription, mobile: u.mobile };
         box.innerHTML = '<h1>' + bi(esc(p.name_ta || p.name_en), esc(p.name_en || p.name_ta)) + '</h1>' +
           '<h2>' + bi('சுயவிவரம்', 'Profile') + '</h2>' + profileForm(p.role, p) +
           (SASettings.bool('subscriptions_enabled') ? subscriptionCard(p.role, r.state, r.subscription) + payCard(r) : '') +
@@ -179,6 +202,9 @@
     var act = b.getAttribute('data-action');
     var id = b.getAttribute('data-id');
     var next = function () { return render(); };
+    if (act === 'area-add') { document.getElementById('area-rows').insertAdjacentHTML('beforeend', areaRow(null)); return; }
+    if (act === 'area-del') { var rows = document.querySelectorAll('#area-rows .area-row'); if (rows.length > 1) b.closest('.area-row').remove(); return; }
+    if (act === 'photo-del') { photo.value = ''; photo.shown = ''; var im = document.getElementById('photo-prev'); im.hidden = true; im.removeAttribute('src'); return; }
     if (act === 'accept') return setStatus(id, 'accepted').then(next);
     if (act === 'decline') return setStatus(id, 'declined').then(next);
     if (act === 'complete') return setStatus(id, 'completed').then(next);
@@ -189,22 +215,35 @@
     }
   });
 
+  $('portal-box').addEventListener('change', function (e) {
+    if (e.target.id !== 'photo-file' || !e.target.files[0]) return;
+    window.SAExtras.toDataUrl(e.target.files[0], 240).then(function (u) {
+      photo.value = u; photo.shown = u;
+      var im = document.getElementById('photo-prev'); im.src = u; im.hidden = false;
+    }).catch(function () { showMsg(document.querySelector('#profile-form .form-msg'), 'photo_bad', true); });
+  });
+
   $('portal-box').addEventListener('submit', function (e) {
     if (e.target.id !== 'profile-form') return;
     e.preventDefault();
     var f = e.target;
     var out = f.querySelector('.form-msg');
     var d = new FormData(f);
-    var pin = String(d.get('pin') || '').trim();
     var langs = d.getAll('lang');
-    if (!/^\d{6}$/.test(pin)) return showMsg(out, 'pin_bad', true);
+    var phone2 = String(d.get('phone2') || '').replace(/\D/g, '');
+    var pins = d.getAll('apin'), places = d.getAll('aplace');
+    var areas = [];
+    pins.forEach(function (pn, i) { pn = String(pn).trim(); if (pn || String(places[i]).trim()) areas.push({ pin: pn, place: String(places[i] || '').trim() }); });
+    if (!/^[6-9]\d{9}$/.test(phone2) || (ctx && ctx.mobile && phone2 === ctx.mobile)) return showMsg(out, 'phone2_bad', true);
+    if (!areas.length || !areas.every(function (a) { return window.SARegion.okPin(a.pin); })) return showMsg(out, 'areas_bad', true);
     if (!langs.length) return showMsg(out, 'lang_bad', true);
 
-    DB.rpc('sa_save_profile', {
-      p_token: DB.token(), p_pin: pin, p_spec: String(d.get('spec') || ''),
-      p_years: parseInt(d.get('years'), 10) || 0, p_langs: langs
+    DB.rpc('sa_save_profile_v2', {
+      p_token: DB.token(), p_spec: String(d.get('spec') || ''),
+      p_years: parseInt(d.get('years'), 10) || 0, p_langs: langs,
+      p_phone2: phone2, p_areas: areas, p_photo: photo.value
     }).then(function (r) {
-      if (!r.ok) return showMsg(out, r.error === 'pin_bad' || r.error === 'lang_bad' ? r.error : 'fail', true);
+      if (!r.ok) return showMsg(out, ['phone2_bad', 'areas_bad', 'photo_bad', 'lang_bad'].indexOf(r.error) !== -1 ? r.error : 'fail', true);
       return render();
     }).catch(function () { showMsg(out, 'fail', true); });
   });

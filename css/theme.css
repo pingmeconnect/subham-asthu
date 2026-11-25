@@ -187,7 +187,7 @@ html[data-lang="en"] .btn { font-family: var(--font-en); }
 /* TEMP images: TEMP-cat-homa / TEMP-cat-samskara are temporary placeholders (see img/photos/README-images.txt) */
 /* ---------- Home: service quick links ---------- */
 .svc-strip {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
   padding: 14px; background: var(--parchment); border: 1px solid var(--border); border-radius: 16px;
 }
 .svc-link {
@@ -343,7 +343,7 @@ html[data-lang="en"] .pooja-card strong { font-family: var(--font-en); }
   main { padding: 28px 0 56px; }
 }
 @media (min-width: 1000px) {
-  .svc-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .svc-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .home-duo { grid-template-columns: 1.15fr 1fr; align-items: stretch; }
   .about-split { grid-template-columns: 0.95fr 1.25fr 1fr; align-items: center; }
   .about-photo { min-height: 100%; height: 100%; -webkit-mask-image: linear-gradient(90deg, #000 60%, transparent); mask-image: linear-gradient(90deg, #000 60%, transparent); }
@@ -437,3 +437,20 @@ html[data-lang="en"] .pooja-card strong { font-family: var(--font-en); }
   .bn-ta { font-size: 1.32rem; }
   .bn-en { font-size: 0.6rem; letter-spacing: 0.16em; }
 }
+
+/* Order notices + order-pick page */
+.od-notes { margin: 14px 0 0; padding: 14px 16px 14px 34px; background: var(--parchment); border: 1px solid var(--border); border-radius: 12px; font-size: 1rem; line-height: 1.6; }
+.od-notes li { margin-bottom: 6px; }
+.od-pick-search { width: 100%; margin: 8px 0 18px; }
+
+/* Partner cards, profile form, combos */
+.pcard-head { display: flex; align-items: center; gap: 12px; }
+.pcard-photo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); flex: none; }
+.pcard-nophoto { display: inline-flex; align-items: center; justify-content: center; background: var(--parchment); font-size: 1.8rem; }
+.area-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.area-row input { flex: 1; min-width: 0; }
+.area-row input:first-child { flex: 0 0 8rem; }
+.photo-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.photo-prev { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
+.combo-card { border-left-color: var(--gold); }
+.combo-img { width: 100%; max-height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }

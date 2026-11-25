@@ -18,7 +18,7 @@
     req_ok: ['கோரிக்கை அனுப்பப்பட்டது. வாத்தியார் / சமையல்காரர் ஏற்ற பின் தொலைபேசி எண் காட்டப்படும்.', 'Request sent. The phone number appears once the partner accepts.'],
     login_first: ['முன்பதிவு செய்ய முதலில் உள்நுழையவும்.', 'Please log in first to request a booking.'],
     date_bad: ['இன்றோ அதற்குப் பின்னரோ உள்ள தேதியைத் தேர்ந்தெடுக்கவும்.', 'Choose a date today or later.'],
-    pin_bad: ['சரியான 6 இலக்க PIN குறியீட்டை உள்ளிடவும்.', 'Enter a valid 6-digit PIN code.'],
+    pin_bad: ['தமிழ்நாடு / புதுச்சேரியின் சரியான 6 இலக்க PIN குறியீட்டை உள்ளிடவும்.', 'Enter a valid 6-digit Tamil Nadu / Puducherry PIN code.'],
     pooja_bad: ['பூஜை / நிகழ்ச்சியைத் தேர்ந்தெடுக்கவும்.', 'Choose a pooja or event.'],
     unavailable: ['இந்தச் சேவை வழங்குநர் இப்போது கிடைக்கவில்லை.', 'This partner is not available right now.'],
     fail: ['முன்பதிவு அனுப்ப முடியவில்லை. மீண்டும் முயற்சிக்கவும்.', 'Could not send the request. Please try again.'],
@@ -59,15 +59,19 @@
       ? langLabel(p.sampradayam)
       : bi(PD.COOK[p.cook_specialty][0], PD.COOK[p.cook_specialty][1]);
     var langs = (p.languages || []).map(langLabel).join('');
+    var areas = (p.areas || []).map(function (a) {
+      return '<span class="badge">' + esc(a.pin) + (a.place ? ' · ' + esc(a.place) : '') + '</span>';
+    }).join('');
     return '<article class="pooja-card partner-card">' +
-      '<strong>' + nameOf(p) + '</strong>' +
+      '<div class="pcard-head">' + (p.photo_url ? '<img class="pcard-photo" src="' + esc(p.photo_url) + '" alt="" loading="lazy">'
+        : '<span class="pcard-photo pcard-nophoto" aria-hidden="true">🙏</span>') + '<strong>' + nameOf(p) + '</strong></div>' +
       '<div class="badges">' +
         '<span class="badge">' + bi(PD.ROLE[p.role][0], PD.ROLE[p.role][1]) + '</span>' +
         '<span class="badge">' + specialty + '</span>' +
         '<span class="badge">' + bi(p.experience_years + ' ஆண்டுகள் அனுபவம்', p.experience_years + ' yrs experience') + '</span>' +
         langs +
       '</div>' +
-      '<p class="partner-pin">' + bi('PIN குறியீடு', 'PIN code') + ': ' + esc(p.pin_code) + '</p>' +
+      '<p class="partner-pin">' + bi('சேவை வழங்கும் பகுதிகள்', 'Areas served') + ':</p><div class="badges">' + areas + '</div>' +
       '<button type="button" class="btn btn-wide" data-request="' + esc(p.id) + '">' +
         bi('முன்பதிவு கோரிக்கை', 'Request booking') + '</button>' +
       '</article>';
@@ -138,7 +142,7 @@
     if (!/^[0-2]\d:[0-5]\d$/.test(time)) return setMsg(out, 'time_bad', true);
     if (venue.length < 10) return setMsg(out, 'address_bad', true);
     if (notes.length > 300) return setMsg(out, 'notes_bad', true);
-    if (!/^\d{6}$/.test(pin)) return setMsg(out, 'pin_bad', true);
+    if (!window.SARegion.okPin(pin)) return setMsg(out, 'pin_bad', true);
     if (!slug) return setMsg(out, 'pooja_bad', true);
 
     return DB.rpc('sa_create_booking', {

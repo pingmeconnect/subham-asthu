@@ -533,9 +533,55 @@
     });
   }
 
+  // ---------- Order Samagri entry: login first, then choose the pooja ----------
+  function renderOrderPick() {
+    var box = $('order-pick');
+    return Promise.all([A.currentUser(), P.seed(), DB.rpc('sa_list_offers', {}).catch(function () { return []; })]).then(function (res) {
+      var u = res[0], rows = res[1], offers = res[2] || [];
+      if (!u) {
+        try { localStorage.setItem(RETURN_KEY, '#order'); } catch (e) { /* session only */ }
+        box.innerHTML = '<p>' + bi('பூஜை சாமான்களை ஆர்டர் செய்ய, முதலில் உங்கள் மொபைல் எண் மற்றும் PIN மூலம் உள்நுழையவும் அல்லது பதிவு செய்யவும்.',
+          'To order pooja samagri, please log in or register with your mobile number and PIN first.') + '</p>' +
+          '<div class="action-row"><a class="btn btn-wide" href="#login">' + bi('உள்நுழை / பதிவு செய்', 'Log in / Register') + '</a></div>';
+        return;
+      }
+      var html = '<p>' + bi('எந்த பூஜைக்குச் சாமான்கள் வேண்டும்? பூஜையைத் தேர்ந்தெடுங்கள்; அடுத்த பக்கத்தில் பட்டியலை மாற்றலாம்.',
+        'Which pooja do you need samagri for? Choose it; you can edit the list on the next page.') + '</p>' +
+        '<input type="search" id="od-pick-q" class="od-pick-search" placeholder="' + (document.documentElement.getAttribute('data-lang') === 'en' ? 'Search pooja…' : 'பூஜையைத் தேடுக…') + '">';
+      if (offers.length) {
+        html += '<section class="pooja-group combo-group"><h2>🎁 ' + bi('சிறப்பு நாள் தொகுப்புகள்', 'Special-day combos') + '</h2><div class="pooja-grid">';
+        offers.forEach(function (o) {
+          var tag = o.pooja_slug ? 'a' : 'div';
+          html += '<' + tag + ' class="pooja-card combo-card"' + (o.pooja_slug ? ' href="#pooja/' + esc(o.pooja_slug) + '/order"' : '') + '>' +
+            (o.image_url ? '<img class="combo-img" src="' + esc(o.image_url) + '" alt="" loading="lazy">' : '') +
+            '<strong>' + bi(esc(o.title_ta), esc(o.title_en)) + '</strong>' +
+            (o.text_ta || o.text_en ? '<p>' + bi(esc(o.text_ta || o.text_en), esc(o.text_en || o.text_ta)) + '</p>' : '') +
+            (o.pooja_slug ? '<span class="badge cal-next">' + bi('ஆர்டர் செய்ய →', 'Order →') + '</span>' : '') + '</' + tag + '>';
+        });
+        html += '</div></section>';
+      }
+      Object.keys(P.CATEGORIES).forEach(function (cat) {
+        var items = rows.filter(function (r) { return r.category === cat; });
+        html += '<section class="pooja-group cat-' + cat + '" style="--cc:' + CAT_COLOR[cat] + '"><h2>' + bi(P.CATEGORIES[cat].ta, P.CATEGORIES[cat].en) + '</h2><div class="pooja-grid">';
+        items.forEach(function (r) {
+          html += '<a class="pooja-card" style="--cc:' + CAT_COLOR[cat] + '" href="#pooja/' + r.slug + '/order" data-q="' + esc((r.name_en + ' ' + r.name_ta).toLowerCase()) + '">' +
+            '<strong>' + bi(esc(r.name_ta), esc(r.name_en)) + '</strong></a>';
+        });
+        html += '</div></section>';
+      });
+      box.innerHTML = html;
+      $('od-pick-q').addEventListener('input', function () {
+        var q = this.value.trim().toLowerCase();
+        box.querySelectorAll('.pooja-card[data-q]').forEach(function (a) { a.hidden = q && a.getAttribute('data-q').indexOf(q) === -1; });
+        box.querySelectorAll('.pooja-group:not(.combo-group)').forEach(function (g) { g.hidden = !g.querySelector('.pooja-card:not([hidden])'); });
+      });
+    }).catch(function () { box.innerHTML = '<p class="form-msg is-error">' + bi('பக்கத்தை ஏற்ற முடியவில்லை. மீண்டும் முயற்சிக்கவும்.', 'Could not load the page. Please try again.') + '</p>'; });
+  }
+
   // ---------- Routing ----------
   function route() {
     var hash = location.hash || '';
+    if (hash === '#order') return renderOrderPick();
     if (hash === '#poojas' || hash.indexOf('#poojas/') === 0) {
       var cat = hash.slice('#poojas/'.length);
       return renderList().then(function () {

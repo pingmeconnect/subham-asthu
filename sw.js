@@ -1,6 +1,6 @@
 /* Subham Astu — small offline-friendly service worker.
    Caches the page shell so the app opens fast. It never caches or answers any database call. */
-var CACHE = 'subham-asthu-v7';
+var CACHE = 'subham-asthu-v8';
 var SHELL = ['./', 'index.html', 'css/style.css', 'css/admin.css', 'css/theme.css', 'manifest.json', 'img/logo.png', 'img/subham-astu-emblem.png', 'img/subham-astu-emblem-192.png', 'img/favicon-32.png', 'img/favicon-64.png', 'img/apple-touch-icon.png', 'img/icon-192.png', 'img/icon-512.png'];
 
 self.addEventListener('install', function (e) {
