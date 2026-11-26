@@ -324,3 +324,36 @@ button.as-card { cursor: pointer; } .as-card-q { display: block; margin-top: 4px
   body.astro-printing .card { box-shadow: none; border: 0; }
 }
 .astro-wrap h1 { margin-top: 10px; margin-bottom: 12px; }
+
+/* Hero: keep the Vinayagar emblem fully round (text no longer fades over it) */
+@media (min-width: 761px) {
+  .hero::before { left: 14px; width: 300px; background-position: left center; }
+  .hero-text { margin-left: 330px; margin-right: auto; max-width: 560px; }
+}
+@media (min-width: 761px) and (max-width: 1000px) {
+  .hero::before { width: 220px; }
+  .hero-text { margin-left: 240px; max-width: 460px; }
+}
+
+/* ================= Clean, calm, app-like feel ================= */
+html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+/* Home: only what a visitor needs. (Hidden sections stay in the file; remove the class "home-extra" to bring one back.) */
+.home-extra { display: none !important; }
+.home-duo { display: block !important; }
+.home-duo > .home-section { max-width: none; }
+.page[data-page="home"] > * + * { margin-top: 18px; }
+.page[data-page="home"] .section-title { font-size: 1.3rem; }
+.page[data-page="home"] .section-title::before { display: none; }
+/* softer cards */
+.cat-tile, .svc-link, .fest-card, .dl-card, .pg-card, .panel { box-shadow: 0 1px 3px rgba(88, 30, 40, .06); }
+.cat-tile:hover, .svc-link:hover, .fest-card:hover, .dl-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(88, 30, 40, .12); }
+/* smooth page change and touch feedback */
+.page:not([hidden]) { animation: sa-page .32s ease both; }
+@keyframes sa-page { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.btn, .svc-link, .cat-tile, .feature-card, .as-chip, .as-card, .bottom-nav a, .pg-tabs a, .as-tabs a { transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease; }
+.btn:active, .svc-link:active, .cat-tile:active, .feature-card:active, .as-chip:active, .as-card:active { transform: scale(.97); }
+.btn { border-radius: 14px; }
+/* hero: calmer entrance (a short fade only) */
+.hero::before, .hero::after { animation: sa-fade .8s ease both; }
+@keyframes sa-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .page:not([hidden]), .hero::before, .hero::after { animation: none; } .btn:active, .svc-link:active, .cat-tile:active { transform: none; } }
