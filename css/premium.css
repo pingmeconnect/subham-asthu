@@ -440,28 +440,28 @@ html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
 .hero::after  { z-index: -2; }
 .hero-cta { flex-wrap: wrap; }
 
+/* Desktop: three fixed columns (Vinayagar | text | temple arch), everything centred on one line */
 @media (min-width: 761px) {
-  .hero { padding: clamp(28px, 4vw, 52px) clamp(18px, 3vw, 36px); }
-  .hero::before {
-    display: block; top: 50%; bottom: auto; left: 2.5%; right: auto; width: clamp(180px, 23%, 250px); height: auto; aspect-ratio: 1;
-    transform: translateY(-50%); border: 0; border-radius: 0; box-shadow: none; background-color: transparent;
-    background-image: url("../img/vinayagar-hero.png"); background-size: contain; background-position: center; background-repeat: no-repeat;
-    -webkit-mask-image: radial-gradient(closest-side, #000 78%, transparent 100%); mask-image: radial-gradient(closest-side, #000 78%, transparent 100%);
-    mix-blend-mode: multiply; filter: drop-shadow(0 8px 14px rgba(88, 30, 40, .18));
-  }
-  .hero::after {
-    display: block; top: 0; bottom: 0; left: auto; right: 0; width: 24%; height: auto; border: 0;
-    background-image: url("../img/photos/hero-gopuram.webp"); background-size: cover; background-position: 52% center; background-repeat: no-repeat;
-    -webkit-mask-image: linear-gradient(270deg, #000 55%, transparent); mask-image: linear-gradient(270deg, #000 55%, transparent);
-  }
-  .hero-text { max-width: none; margin: 0 27% 0 27%; padding: 8px 0; }
-  .hero-text::before { inset: -12px -18px; }
+  .hero { display: grid; grid-template-columns: 220px minmax(0, 1fr) 220px; align-items: center; column-gap: 28px;
+    min-height: 340px; padding: 28px 32px; }
+  .hero::before { display: block; position: relative; top: auto; bottom: auto; left: auto; right: auto; transform: none; z-index: auto;
+    grid-column: 1; grid-row: 1; justify-self: center; width: 220px; height: 220px; aspect-ratio: auto;
+    background-color: transparent; background-image: url("../img/vinayagar-hero.png"); background-size: contain; background-position: center; background-repeat: no-repeat;
+    border: 0; border-radius: 0; box-shadow: none; -webkit-mask-image: none; mask-image: none; mix-blend-mode: multiply; filter: none; }
+  .hero-text { grid-column: 2; grid-row: 1; max-width: 480px; width: 100%; margin: 0 auto; padding: 0; justify-self: center; }
+  .hero-text::before { display: none; }
+  .hero::after { display: block; position: relative; top: auto; bottom: auto; left: auto; right: auto; z-index: auto;
+    grid-column: 3; grid-row: 1; justify-self: center; width: 220px; height: 260px; margin: 0; border: 3px solid #C9A04F; border-radius: 110px 110px 18px 18px;
+    background-image: linear-gradient(180deg, rgba(255, 240, 210, .10), rgba(88, 30, 40, .22)), url("../img/photos/hero-gopuram.webp");
+    background-size: cover; background-position: 52% 40%; background-repeat: no-repeat;
+    -webkit-mask-image: none; mask-image: none; box-shadow: 0 8px 20px rgba(88, 30, 40, .18); }
+  .hero-text h1 { font-size: clamp(1.1rem, 1.8vw, 1.3rem); }
+  .hero-text p { font-size: clamp(.92rem, 1.3vw, 1rem); margin-bottom: 14px; }
 }
-
 @media (min-width: 761px) and (max-width: 1000px) {
-  .hero::before { width: 22%; left: 2%; }
-  .hero::after  { width: 22%; }
-  .hero-text { margin: 0 25% 0 26%; }
+  .hero { grid-template-columns: 170px minmax(0, 1fr) 170px; column-gap: 18px; padding: 24px 20px; }
+  .hero::before { width: 170px; height: 170px; }
+  .hero::after { width: 170px; height: 220px; border-radius: 85px 85px 16px 16px; }
 }
 
 @media (max-width: 760px) {
