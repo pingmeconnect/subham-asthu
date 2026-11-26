@@ -486,3 +486,23 @@ html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
 /* ================= Next-special-day banner: breathing room at the bottom ================= */
 .fest-banner { padding: 16px 20px 26px; }
 @media (max-width: 767px) { .fest-banner { padding: 14px 16px 24px; } }
+
+/* Partner dashboard: subscription boxes (Tamil + English) */
+.sub-card { margin: 16px 0; }
+.sub-card h2 { font-size: 1.1rem; margin: 0 0 10px; }
+.sub-card h2 .ta, .sub-card h2 .en { display: block; }
+.sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.sub-box { background: #FFFBF3; border: 1px solid var(--gold, #C9A24B); border-radius: 14px; padding: 12px 14px; }
+.sub-wide { grid-column: 1 / -1; }
+.sub-label { display: block; font-size: .85rem; color: var(--maroon, #6b1d1d); margin-bottom: 6px; }
+.sub-label .ta, .sub-label .en { display: block; }
+.sub-label .en { color: #6b5b4e; font-size: .8rem; }
+.sub-value { display: block; font-size: 1.05rem; }
+.sub-value .ta, .sub-value .en { display: block; }
+.sub-value small { font-weight: 400; color: #6b5b4e; }
+.sub-status-paid { border-color: #2e7d32; }
+.sub-status-due { border-color: #e0a100; }
+.sub-status-hidden { border-color: #b00020; background: #fdecee; }
+.sub-rules { margin: 0; padding-left: 18px; font-size: .92rem; }
+.sub-rules li { margin-bottom: 4px; }
+.sub-rules .en, .sub-box p .en { display: block; color: #6b5b4e; }

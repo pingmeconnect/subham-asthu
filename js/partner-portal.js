@@ -98,29 +98,43 @@
       '</form>';
   }
 
-  // One plan for priests and cooks: free trial, then Starter (1-5 completed orders) or Standard (6+).
+  // One plan for priests and cooks, shown as separate labelled boxes (Tamil + English).
+  function subBox(ta, en, valueHtml, extraClass) {
+    return '<div class="sub-box' + (extraClass ? ' ' + extraClass : '') + '">' +
+      '<span class="sub-label"><span class="ta">' + ta + '</span><span class="en">' + en + '</span></span>' +
+      '<strong class="sub-value">' + valueHtml + '</strong></div>';
+  }
   function subscriptionCard(role, state) {
     var after = state.standardAfter || 5;
     var trialDays = SASettings.int('sub_trial_days');
     var starter = SASettings.int('sub_starter_fee');
     var standard = SASettings.int('sub_standard_fee');
-    var tierLabel = state.tier === 'standard' ? bi('நிலையான திட்டம்', 'Standard plan')
-      : state.tier === 'starter' ? bi('தொடக்கத் திட்டம்', 'Starter plan')
-      : bi('இலவச சோதனைக் காலம்', 'Free trial');
-    return '<div class="sub-card">' +
-      '<h2>' + bi('திட்டம் & கட்டணம் (கூட்டாளர் மட்டும்)', 'Plan & fee (partner only)') + '</h2>' +
-      '<p>' + bi('தற்போதைய திட்டம்', 'Current plan') + ': <strong>' + tierLabel + '</strong>' +
-        (state.fee ? ' · <strong>₹' + state.fee + '</strong> / ' + bi('மாதம்', 'month') : ' · ₹0') + '</p>' +
-      '<p>' + bi('முடிந்த ஆர்டர்கள்', 'Completed orders') + ': <strong>' + state.completed + '</strong></p>' +
+    var tierTa = state.tier === 'standard' ? 'நிலையான திட்டம்' : state.tier === 'starter' ? 'தொடக்கத் திட்டம்' : 'இலவச சோதனைக் காலம்';
+    var tierEn = state.tier === 'standard' ? 'Standard plan' : state.tier === 'starter' ? 'Starter plan' : 'Free trial';
+    var statusTa = state.status === 'paid' ? 'செலுத்தப்பட்டது' : state.status === 'due' ? 'நிலுவை உள்ளது' : state.status === 'hidden' ? 'நிலுவை – சுயவிவரம் மறைக்கப்பட்டது' : 'இலவசம்';
+    var statusEn = state.status === 'paid' ? 'Paid' : state.status === 'due' ? 'Payment due' : state.status === 'hidden' ? 'Overdue – profile hidden' : 'Free';
+    var boxes =
+      subBox('தற்போதைய திட்டம்', 'Current plan', '<span class="ta">' + tierTa + '</span><span class="en">' + tierEn + '</span>') +
+      subBox('மாத கட்டணம்', 'Monthly fee', (state.fee ? '₹' + state.fee : '₹0') + ' <small>/ ' + bi('மாதம்', 'month') + '</small>') +
+      subBox('முடிந்த ஆர்டர்கள்', 'Completed orders', String(state.completed) + ' <small>(' + after + ' ' + bi('வரை Starter', 'Starter up to') + ')</small>') +
       (state.tier === 'trial'
-        ? '<p>' + bi('முதல் 1 ஆர்டர் முடிந்து, ' + trialDays + ' நாட்கள் கழித்த பின் கட்டணம் தொடங்கும்.', 'Free until your first completed order AND ' + trialDays + ' days after registration have both passed.') +
-          ' <strong>' + bi('சோதனை முடியும் நாள்', 'Trial ends') + ': ' + esc(state.trialEnd) + '</strong></p>'
+        ? subBox('சோதனை முடியும் நாள்', 'Trial ends', esc(state.trialEnd) + ' <small>(' + trialDays + ' ' + bi('நாட்கள்', 'days') + ' + 1 ' + bi('ஆர்டர்', 'order') + ')</small>')
         : '') +
-      (state.billingStart ? '<p>' + bi('கட்டணம் தொடங்கும் மாதம்', 'Billing starts') + ': <strong>' + esc(state.billingStart) + '-01</strong></p>' : '') +
-      '<p class="soon">' + bi('1 முதல் ' + after + ' ஆர்டர்கள்: ₹' + starter + ' / மாதம். ' + (after + 1) + '-ஆவது ஆர்டரிலிருந்து: ₹' + standard + ' / மாதம்.',
-        'Orders 1 to ' + after + ': ₹' + starter + ' / month. From order ' + (after + 1) + ': ₹' + standard + ' / month.') + '</p>' +
-      '<p class="soon">' + bi('UPI மூலம் செலுத்திய பின், பரிவர்த்தனை எண் அல்லது ஸ்கிரீன்ஷாட்டை நிர்வாகத்திற்கு அனுப்பவும்.',
-        'After paying by UPI, send the transaction ID or a screenshot to the admin.') + '</p>' +
+      (state.billingStart ? subBox('கட்டணம் தொடங்கும் மாதம்', 'Billing starts', esc(state.billingStart)) : '') +
+      subBox('நிலை', 'Status', '<span class="ta">' + statusTa + '</span><span class="en">' + statusEn + '</span>', 'sub-status-' + (state.status || 'free'));
+    var rules =
+      '<div class="sub-box sub-wide"><span class="sub-label"><span class="ta">திட்ட விதிகள்</span><span class="en">Plan rules</span></span>' +
+      '<ul class="sub-rules">' +
+        '<li><span class="ta">1 முதல் ' + after + ' முடிந்த ஆர்டர்கள்: ₹' + starter + ' / மாதம்.</span><span class="en">Orders 1 to ' + after + ': ₹' + starter + ' / month.</span></li>' +
+        '<li><span class="ta">' + (after + 1) + '-ஆவது முடிந்த ஆர்டரிலிருந்து: ₹' + standard + ' / மாதம்.</span><span class="en">From order ' + (after + 1) + ': ₹' + standard + ' / month.</span></li>' +
+        '<li><span class="ta">முதல் ஆர்டர் முடிந்து, ' + trialDays + ' நாட்கள் கழிந்த பின்பே கட்டணம் தொடங்கும்.</span><span class="en">Billing starts only after your first completed order AND ' + trialDays + ' days have both passed.</span></li>' +
+      '</ul></div>';
+    var pay =
+      '<div class="sub-box sub-wide"><span class="sub-label"><span class="ta">கட்டணம் செலுத்தும் முறை</span><span class="en">How to pay</span></span>' +
+      '<p><span class="ta">UPI மூலம் செலுத்தவும். பரிவர்த்தனை எண் அல்லது ஸ்கிரீன்ஷாட்டை நிர்வாகத்திற்கு அனுப்பவும்.</span><span class="en">Pay by UPI, then send the transaction ID or a screenshot to the admin.</span></p></div>';
+    return '<div class="sub-card">' +
+      '<h2><span class="ta">திட்டம் &amp; கட்டணம் (கூட்டாளர் மட்டும்)</span><span class="en">Plan &amp; fee (partner only)</span></h2>' +
+      '<div class="sub-grid">' + boxes + rules + pay + '</div>' +
       note(STATE_MSG[state.status] || 'free', state.status === 'hidden') +
       '</div>';
   }
