@@ -6,6 +6,7 @@
 
   window.SA_CONFIG = {
     DEMO_CONTROLS: false,
+    SUPPORT_EMAIL: '',   // shown in the homepage top bar when filled (blank = hidden)
     SUPABASE_URL: 'https://gawzcdhuhbbbjohnnixz.supabase.co',
     SUPABASE_KEY: 'sb_publishable_hAi6yx1ay7PzBkwTL8ldtw_jcKLiZzW'
   };

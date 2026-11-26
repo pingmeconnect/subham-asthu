@@ -160,6 +160,64 @@
     for (i = 0; i < list.length; i++) if (t === (list[i][0] + ' / ' + list[i][1]).toLowerCase() || t === list[i][0].toLowerCase() || t === list[i][1].toLowerCase()) return list[i];
     return null;
   }
+
+  var TZS = [['Asia/Kolkata', 'இந்தியா / India'], ['Asia/Colombo', 'இலங்கை / Sri Lanka'], ['Asia/Kathmandu', 'Nepal'], ['Asia/Dhaka', 'Bangladesh'], ['Asia/Singapore', 'சிங்கப்பூர் / Singapore'], ['Asia/Kuala_Lumpur', 'மலேசியா / Malaysia'], ['Asia/Bangkok', 'Thailand'], ['Asia/Jakarta', 'Indonesia'], ['Asia/Dubai', 'UAE / Oman'], ['Asia/Qatar', 'Qatar'], ['Asia/Kuwait', 'Kuwait'], ['Asia/Riyadh', 'Saudi Arabia'], ['Asia/Karachi', 'Pakistan'], ['Asia/Tokyo', 'Japan'], ['Asia/Hong_Kong', 'Hong Kong'], ['Europe/London', 'UK'], ['Europe/Paris', 'Europe (Central)'], ['Africa/Johannesburg', 'South Africa'], ['Indian/Mauritius', 'Mauritius'], ['America/New_York', 'USA / Canada East'], ['America/Chicago', 'USA Central'], ['America/Denver', 'USA Mountain'], ['America/Los_Angeles', 'USA West'], ['Australia/Sydney', 'Australia East'], ['Australia/Perth', 'Australia West'], ['Pacific/Auckland', 'New Zealand']];
+  var CC_TZ = { in: 'Asia/Kolkata', lk: 'Asia/Colombo', np: 'Asia/Kathmandu', bd: 'Asia/Dhaka', sg: 'Asia/Singapore', my: 'Asia/Kuala_Lumpur', th: 'Asia/Bangkok', id: 'Asia/Jakarta', ae: 'Asia/Dubai', om: 'Asia/Dubai', qa: 'Asia/Qatar', kw: 'Asia/Kuwait', sa: 'Asia/Riyadh', pk: 'Asia/Karachi', jp: 'Asia/Tokyo', hk: 'Asia/Hong_Kong', gb: 'Europe/London', ie: 'Europe/London', fr: 'Europe/Paris', de: 'Europe/Paris', nl: 'Europe/Paris', ch: 'Europe/Paris', it: 'Europe/Paris', es: 'Europe/Paris', za: 'Africa/Johannesburg', mu: 'Indian/Mauritius', au: 'Australia/Sydney', nz: 'Pacific/Auckland' };
+  function tzGuess(cc, lon) {
+    cc = String(cc || '').toLowerCase();
+    if (cc === 'us' || cc === 'ca') return lon > -87 ? 'America/New_York' : lon > -102 ? 'America/Chicago' : lon > -114 ? 'America/Denver' : 'America/Los_Angeles';
+    if (cc === 'au' && lon < 130) return 'Australia/Perth';
+    return CC_TZ[cc] || null;
+  }
+  function placeOptions() {
+    var G = window.SAPlaceGroups || {}, list = window.SAPlaces || [], found = placeFind(S.placeText), out = '<option value="">— ' + bi('ஊரைத் தேர்வு செய்க', 'Select place') + ' —</option>';
+    ['TN', 'PY', 'IN', 'INT'].forEach(function (g) {
+      var rows = list.filter(function (p) { return (p[5] || 'IN') === g; });
+      if (!rows.length) return;
+      rows = rows.slice().sort(function (x, y) { return x[1].localeCompare(y[1]); });
+      out += '<optgroup label="' + esc(G[g] || g) + '">' + rows.map(function (p) {
+        var v = p[0] + ' / ' + p[1];
+        return '<option value="' + esc(v) + '"' + (found === p ? ' selected' : '') + '>' + esc(p[1] + ' — ' + p[0]) + '</option>';
+      }).join('') + '</optgroup>';
+    });
+    out += '<option value="__other"' + (S.placeText && !found ? ' selected' : '') + '>' + bi('பட்டியலில் இல்லை — தேடுக…', 'Not in the list — search…') + '</option>';
+    return out;
+  }
+  function fmtLL(lat, lon) { return Math.abs(lat).toFixed(3) + '° ' + (lat >= 0 ? 'N' : 'S') + ', ' + Math.abs(lon).toFixed(3) + '° ' + (lon >= 0 ? 'E' : 'W'); }
+  function llText(p) { return p ? bi('அட்சரேகை / தீர்க்கரேகை: ', 'Latitude / Longitude: ') + fmtLL(p[2], p[3]) + ' · ' + esc(p[4]) : ''; }
+  function placeSearch() {
+    var q = (box.querySelector('input[name="psearch"]') || {}).value, ul = $('as-res');
+    q = String(q || '').trim(); if (!ul) return; if (q.length < 2) { ul.innerHTML = ''; return; }
+    ul.innerHTML = '<li class="as-note">…</li>';
+    fetch('https://nominatim.openstreetmap.org/search?format=json&limit=6&addressdetails=1&accept-language=en&q=' + encodeURIComponent(q))
+      .then(function (r) { return r.json(); })
+      .then(function (rows) {
+        if (!rows.length) { ul.innerHTML = '<li class="as-note">' + bi('கிடைக்கவில்லை. கீழே அட்சரேகை / தீர்க்கரேகை நேரடியாகத் தரலாம்.', 'Nothing found. You can type latitude / longitude below.') + '</li>'; return; }
+        ul.innerHTML = rows.map(function (r, i) {
+          return '<li><button type="button" class="as-pick" data-i="' + i + '" style="display:block;width:100%;text-align:left;padding:8px 10px;margin:4px 0;border:1px solid #d9b24a;border-radius:8px;background:#fff;cursor:pointer">' + esc(r.display_name) + '</button></li>';
+        }).join('');
+        ul._rows = rows;
+      }).catch(function () { ul.innerHTML = '<li class="as-note">' + bi('தேடல் இப்போது இயங்கவில்லை. அட்சரேகை / தீர்க்கரேகையை நேரடியாகத் தரவும்.', 'Search is unavailable right now. Please type latitude / longitude below.') + '</li>'; });
+  }
+  function placePick(i) {
+    var ul = $('as-res'), r = ul && ul._rows && ul._rows[i]; if (!r) return;
+    var lat = parseFloat(r.lat), lon = parseFloat(r.lon), cc = r.address && r.address.country_code, tz = tzGuess(cc, lon) || S.tz;
+    var nm = (r.display_name || '').split(',').slice(0, 2).join(',').trim();
+    function set(n, v) { var e = box.querySelector('[name="' + n + '"]'); if (e) e.value = v; }
+    set('pname', nm); set('lat', lat.toFixed(4)); set('lon', lon.toFixed(4)); set('tz', tz);
+    S.placeText = nm; S.lat = lat.toFixed(4); S.lon = lon.toFixed(4); S.tz = tz; save();
+    ul.innerHTML = '<li class="as-note">✓ ' + esc(nm) + ' — ' + fmtLL(lat, lon) + '</li>';
+  }
+  function placeChosen(v) {
+    var m = $('as-manual'), ll = $('as-ll');
+    function set(n, x) { var e = box.querySelector('[name="' + n + '"]'); if (e) e.value = x; }
+    if (v === '__other') { S.placeText = (box.querySelector('input[name="pname"]') || {}).value || ''; if (m) m.hidden = false; if (ll) ll.hidden = true; save(); return; }
+    S.placeText = v; var p = placeFind(v);
+    if (m) m.hidden = true;
+    if (ll) { ll.hidden = !p; ll.innerHTML = llText(p); }
+    if (p) { S.lat = String(p[2]); S.lon = String(p[3]); S.tz = p[4]; set('lat', p[2]); set('lon', p[3]); set('tz', p[4]); }
+    save();
+  }
   function inputFromState() {
     var pl = placeFind(S.placeText), d = (S.dob || '').split('-'), t = (S.tobKnown && S.tob ? S.tob : '12:00').split(':');
     var lat = pl ? pl[2] : parseFloat(S.lat), lon = pl ? pl[3] : parseFloat(S.lon), tz = pl ? pl[4] : S.tz;
@@ -211,13 +269,16 @@
       '<label class="field"><span>' + bi('பிறந்த தேதி', 'Date of birth') + '</span><input name="dob" type="date" min="1900-01-01" max="' + new Date().toISOString().slice(0, 10) + '" value="' + esc(S.dob) + '"></label>' +
       '<label class="field"><span>' + bi('பிறந்த நேரம்', 'Time of birth') + '</span><input name="tob" type="time" value="' + esc(S.tob) + '"' + (S.tobKnown ? '' : ' disabled') + '></label>' +
       '<label class="as-chk"><input type="checkbox" name="tobUnknown"' + (S.tobKnown ? '' : ' checked') + '> ' + bi('சரியான பிறந்த நேரம் தெரியாது', "I don't know the exact birth time") + '</label>' +
-      '<label class="field"><span>' + bi('பிறந்த ஊர்', 'Place of birth') + '</span><input name="place" list="as-places" type="text" value="' + esc(S.placeText) + '" placeholder="சென்னை / Chennai" autocomplete="off"><datalist id="as-places">' + places + '</datalist></label>' +
-      '<div class="as-manual" ' + (showManual ? '' : 'hidden') + '><p class="as-note">' + bi('பட்டியலில் இல்லை. அட்சரேகை / தீர்க்கரேகை தரவும் (கூகுள் மேப்பில் ஊரின் மீது அழுத்திப் பார்க்கலாம்).', 'Not in the list. Please give latitude / longitude (long-press the town in Google Maps).') + '</p>' +
-        '<label class="field"><span>' + bi('அட்சரேகை (Lat)', 'Latitude') + '</span><input name="lat" type="number" step="0.001" value="' + esc(S.lat) + '"></label>' +
-        '<label class="field"><span>' + bi('தீர்க்கரேகை (Long)', 'Longitude') + '</span><input name="lon" type="number" step="0.001" value="' + esc(S.lon) + '"></label>' +
+      '<label class="field"><span>' + bi('பிறந்த ஊர்', 'Place of birth') + '</span><select name="place">' + placeOptions() + '</select></label>' +
+      '<p class="as-note" id="as-ll"' + (found ? '' : ' hidden') + '>' + llText(found) + '</p>' +
+      '<div class="as-manual" id="as-manual" ' + (showManual ? '' : 'hidden') + '><p class="as-note">' + bi('ஊர் பெயரைத் தேடுங்கள்; அட்சரேகை / தீர்க்கரேகை தானாக நிரப்பப்படும்.', 'Search the town — latitude / longitude fill in automatically.') + '</p>' +
+        '<div style="display:flex;gap:8px"><input name="psearch" type="text" placeholder="Town, district, country" autocomplete="off" style="flex:1"><button type="button" class="btn" data-psearch>' + bi('தேடு', 'Search') + '</button></div>' +
+        '<ul id="as-res" style="list-style:none;margin:8px 0;padding:0"></ul>' +
+        '<label class="field"><span>' + bi('ஊர் பெயர்', 'Town name') + '</span><input name="pname" type="text" maxlength="80" value="' + esc(showManual ? S.placeText : '') + '"></label>' +
+        '<label class="field"><span>' + bi('அட்சரேகை (Lat)', 'Latitude') + '</span><input name="lat" type="number" step="0.0001" value="' + esc(S.lat) + '"></label>' +
+        '<label class="field"><span>' + bi('தீர்க்கரேகை (Long)', 'Longitude') + '</span><input name="lon" type="number" step="0.0001" value="' + esc(S.lon) + '"></label>' +
         '<label class="field"><span>' + bi('நாடு / நேர மண்டலம்', 'Country / time zone') + '</span><select name="tz">' +
-        [['Asia/Kolkata', 'இந்தியா / India'], ['Asia/Colombo', 'இலங்கை / Sri Lanka'], ['Asia/Singapore', 'சிங்கப்பூர் / Singapore'], ['Asia/Kuala_Lumpur', 'மலேசியா / Malaysia'], ['Asia/Dubai', 'UAE'], ['Europe/London', 'UK'], ['America/New_York', 'USA East'], ['America/Chicago', 'USA Central'], ['America/Los_Angeles', 'USA West'], ['Australia/Sydney', 'Australia']].map(function (z) {
-          return '<option value="' + z[0] + '"' + (S.tz === z[0] ? ' selected' : '') + '>' + z[1] + '</option>'; }).join('') + '</select></label></div>' +
+        TZS.map(function (z) { return '<option value="' + z[0] + '"' + (S.tz === z[0] ? ' selected' : '') + '>' + z[1] + '</option>'; }).join('') + '</select></label></div>' +
       '<p class="form-msg" id="as-m1" role="alert"></p>' +
       '<button type="submit" class="btn">' + bi('ஜாதகத்தைக் காட்டு →', 'Show my chart →') + '</button></form>' +
       '<p class="as-disc">' + bi('உங்கள் விவரங்கள் ஜோதிடருக்கு மட்டும் தெரியும்; வேறு யாருடனும் பகிரப்படாது.', 'Your details are seen only by the astrologer and are not shared.') + '</p>';
@@ -335,8 +396,9 @@
   function readStep1(f) {
     var d = new FormData(f);
     S.name = String(d.get('name') || '').trim(); S.gender = d.get('gender') || ''; S.dob = d.get('dob') || '';
-    S.tobKnown = !d.get('tobUnknown'); S.tob = d.get('tob') || ''; S.placeText = String(d.get('place') || '').trim();
+    S.tobKnown = !d.get('tobUnknown'); S.tob = d.get('tob') || ''; var pv = String(d.get('place') || '').trim();
     if (d.get('lat') != null) { S.lat = d.get('lat'); S.lon = d.get('lon'); S.tz = d.get('tz') || S.tz; }
+    if (pv === '__other') S.placeText = String(d.get('pname') || '').trim() || (S.lat && S.lon ? S.lat + ', ' + S.lon : '__other'); else S.placeText = pv;
     save();
   }
   function ensureLogin() {
@@ -361,7 +423,7 @@
       if (S.name.length < 2) return msg('as-m1', 'பெயர் தேவை / Name needed');
       if (!S.dob) return msg('as-m1', 'பிறந்த தேதி தேவை / Date of birth needed');
       if (S.tobKnown && !S.tob) return msg('as-m1', 'பிறந்த நேரம் தரவும் அல்லது "தெரியாது" தேர்வு செய்யவும் / Give the time or tick "don\'t know"');
-      if (!S.placeText) return msg('as-m1', 'பிறந்த ஊர் தேவை / Place of birth needed');
+      if (!S.placeText || S.placeText === '__other') return msg('as-m1', 'பிறந்த ஊர் தேவை / Place of birth needed');
       if (!inputFromState()) { render(); return msg('as-m1', 'ஊர் பட்டியலில் இல்லை எனில் அட்சரேகை, தீர்க்கரேகை தரவும் / If the town is not listed, give latitude and longitude'); }
       go(2);
     } else if (f.classList.contains('as-ref')) {
@@ -374,14 +436,18 @@
     }
   });
 
+  box.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.name === 'psearch') { e.preventDefault(); placeSearch(); } });
   box.addEventListener('input', function (e) {
     var t = e.target;
     if (t.name === 'tobUnknown') { S.tobKnown = !t.checked; var tb = box.querySelector('input[name="tob"]'); if (tb) tb.disabled = t.checked; save(); }
-    if (t.name === 'place') { S.placeText = t.value.trim(); var m = box.querySelector('.as-manual'); if (m) m.hidden = !S.placeText || !!placeFind(S.placeText); save(); }
+    if (t.name === 'pname') { S.placeText = t.value.trim(); save(); }
+    if (t.name === 'lat' || t.name === 'lon') { S[t.name] = t.value; save(); }
     if (t.name === 'own') { S.own = t.value; save(); }
   });
   box.addEventListener('change', function (e) {
     var t = e.target;
+    if (t.name === 'place') return placeChosen(t.value);
+    if (t.name === 'tz') { S.tz = t.value; save(); }
     if (t.name === 'verify') { S.verify = t.value; var k = $('as-known'); if (k) k.hidden = t.value !== 'no'; save(); }
     if (t.name === 'knownRasi') { S.knownRasi = t.value; save(); }
     if (t.name === 'knownStar') { S.knownStar = t.value; save(); }
@@ -398,6 +464,8 @@
     }
   });
   box.addEventListener('click', function (e) {
+    var ps = e.target.closest('[data-psearch]'); if (ps) { e.preventDefault(); return placeSearch(); }
+    var pk = e.target.closest('.as-pick'); if (pk) { e.preventDefault(); return placePick(+pk.getAttribute('data-i')); }
     var b = e.target.closest('[data-as],[data-topic]');
     if (!b) return;
     if (b.hasAttribute('data-topic')) {
