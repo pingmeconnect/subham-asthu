@@ -3,7 +3,7 @@
   'use strict';
 
   var LANG_KEY = 'subham-asthu-lang';
-  var PAGES = ['home', 'poojas', 'order', 'pooja', 'bookings', 'partner', 'about', 'faq', 'disclaimers', 'privacy', 'downloads', 'panchang', 'rasi', 'login', 'admin'];
+  var PAGES = ['home', 'poojas', 'order', 'pooja', 'bookings', 'partner', 'about', 'faq', 'disclaimers', 'privacy', 'downloads', 'panchang', 'rasi', 'astrology', 'astro-admin', 'login', 'admin'];
   var root = document.documentElement;
 
   function readStored(key) {
@@ -31,7 +31,7 @@
     // '#pooja/<slug>' is the pooja detail page; its nav item is 'poojas'.
     var id = (location.hash || '#home').slice(1).split('/')[0];
     if (PAGES.indexOf(id) === -1) id = 'home';
-    var navId = id === 'pooja' || id === 'order' ? 'poojas' : id === 'partner' ? 'login' : id === 'admin' ? 'login' : id;
+    var navId = id === 'pooja' || id === 'order' ? 'poojas' : id === 'partner' ? 'login' : id === 'admin' || id === 'astro-admin' ? 'login' : id;
 
     document.querySelectorAll('.page').forEach(function (section) {
       section.hidden = section.getAttribute('data-page') !== id;

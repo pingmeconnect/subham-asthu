@@ -124,7 +124,7 @@
           <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M24 7v34M7 24h34"/><circle cx="24" cy="24" r="5"/></svg>
           <strong><span class="ta">ராசி பலன்</span><span class="en">Rasi Palan</span></strong>
         </a>
-        <a class="svc-link svc-astro" href="#soon-astrology" data-soon="astrology">
+        <a class="svc-link svc-astro" href="#astrology">
           <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="8"/><path d="M24 4v8M24 36v8M4 24h8M36 24h8M10 10l6 6M32 32l6 6M38 10l-6 6M16 32l-6 6"/></svg>
           <em class="svc-new"><span class="ta">புதியது</span><span class="en">NEW</span></em>
           <strong><span class="ta">ஜோதிடர் ஆலோசனை</span><span class="en">Astrologer Consultation</span></strong>
@@ -598,6 +598,7 @@
           <p><span class="ta">வணக்கம்,</span><span class="en">Hello,</span> <strong id="account-name"></strong></p>
           <p id="partner-link" hidden><a class="btn btn-outline" href="#partner"><span class="ta">கூட்டாளர் போர்ட்டல்</span><span class="en">Partner Portal</span></a></p>
           <p id="admin-link" hidden><a class="btn btn-outline" href="#admin"><span class="ta">நிர்வாகப் பக்கம்</span><span class="en">Admin Dashboard</span></a></p>
+          <p id="astro-admin-link" hidden><a class="btn btn-outline" href="#astro-admin"><span class="ta">ஜோதிடர் ஆலோசனை (நிர்வாகம்)</span><span class="en">Astrology consultations (admin)</span></a></p>
           <button type="button" class="btn btn-outline" id="logout-btn"><span class="ta">வெளியேறு</span><span class="en">Log out</span></button>
 
           <div class="acct-tools">
@@ -730,6 +731,14 @@
     </section>
 
     <!-- ADMIN DASHBOARD (admin role only; rendered by js/admin.js) -->
+        <section class="page" data-page="astrology" hidden>
+      <div class="card astro-wrap" id="astro-box"></div>
+    </section>
+
+    <section class="page" data-page="astro-admin" hidden>
+      <div class="card astro-wrap" id="astro-admin-box"></div>
+    </section>
+
     <section class="page" data-page="admin" hidden>
       <div class="card" id="admin-box"></div>
     </section>
@@ -789,6 +798,9 @@
   <script src="js/astro-core.js?v=1" defer></script>
   <script src="js/panchang.js?v=1" defer></script>
   <script src="js/calendar.js?v=1" defer></script>
+  <script src="js/astro-places.js?v=1" defer></script>
+  <script src="js/astro.js?v=1" defer></script>
+  <script src="js/astro-admin.js?v=1" defer></script>
   <script src="js/downloads.js?v=1" defer></script>
   <script src="js/ticker.js?v=1" defer></script>
   <script src="js/reveal.js?v=1" defer></script>

@@ -71,7 +71,7 @@
     for (var i = 0; i < 12; i++) {
       var cb = C.chandraBala(i, r.moonRasi.i);
       h += '<button type="button" class="pg-r pg-' + cb.word + '" data-rasi="' + i + '"><span class="pg-rn">' + two([C.RASI_TA[i], C.RASI_EN[i].split(' ')[0]]) + '</span>' +
-        '<span class="pg-rw"><i aria-hidden="true">' + ICON[cb.word] + '</i> ' + two(word[cb.word]) + '</span></button>';
+        '<span class="pg-rw"><i aria-hidden="true">' + ICON[cb.word] + '</i> ' + two(word[cb.word]) + '</span>' + (function () { var t = transit(i); return t && t.sani.k !== 'n' ? '<span class="pg-rs">' + bi('சனி: ' + (t.sani.k === 'e' ? 'ஏழரை' : 'அஷ்டமம் / அர்த்தாஷ்டமம்'), 'Saturn: ' + (t.sani.k === 'e' ? 'Ezharai' : 'Ashtama / Ardhashtama')) + '</span>' : ''; })() + '</button>';
     }
     h += '</div><p class="pg-foot">' + footTxt() + '</p>';
     box.innerHTML = h;
@@ -105,6 +105,23 @@
     rasiPage();
   }
 
+
+  // ---- Sani / Guru transit status for a rasi (from real planet positions; needs js/astro-core.js) ----
+  var ASTRO = function () { return window.SAAstro; };
+  function transit(i) {
+    var A = ASTRO(); if (!A || !date) return null;
+    var J = window.SAPanchangCore._t.jd(date.y, date.m, date.d, 0) + (720 - 330) / 1440;
+    var sa = Math.floor(A.sidereal('sa', J) / 30), ju = Math.floor(A.sidereal('ju', J) / 30);
+    var hs = ((sa - i) % 12 + 12) % 12 + 1, hj = ((ju - i) % 12 + 12) % 12 + 1, sani;
+    if (hs === 12) sani = { k: 'e', ph: 1, ta: 'ஏழரைச் சனி - முதல் கட்டம் (12-ஆம் இடம்)', en: 'Ezharai Sani (7½ years) - 1st phase (Saturn in 12th)' };
+    else if (hs === 1) sani = { k: 'e', ph: 2, ta: 'ஏழரைச் சனி - இரண்டாம் கட்டம் (ஜென்ம ராசி)', en: 'Ezharai Sani - 2nd phase (Saturn over your rasi)' };
+    else if (hs === 2) sani = { k: 'e', ph: 3, ta: 'ஏழரைச் சனி - மூன்றாம் கட்டம் (2-ஆம் இடம்)', en: 'Ezharai Sani - 3rd phase (Saturn in 2nd)' };
+    else if (hs === 8) sani = { k: 'a', ta: 'அஷ்டமச் சனி (8-ஆம் இடம்)', en: 'Ashtama Sani (Saturn in 8th)' };
+    else if (hs === 4) sani = { k: 'a', ta: 'அர்த்தாஷ்டமச் சனி (4-ஆம் இடம்)', en: 'Ardhashtama Sani (Saturn in 4th)' };
+    else sani = { k: 'n', ta: 'பெரிய சனிக் காலம் எதுவும் இல்லை', en: 'No major Saturn period now' };
+    var gGood = [2, 5, 7, 9, 11].indexOf(hj) !== -1;
+    return { sani: sani, hs: hs, hj: hj, saR: sa, juR: ju, guru: gGood ? { ta: 'குரு பலம் உண்டு (' + hj + '-ஆம் இடம்)', en: 'Jupiter is favourable (' + hj + 'th from your rasi)' } : { ta: 'குரு பலம் குறைவு (' + hj + '-ஆம் இடம்)', en: 'Jupiter is not in a favourable house (' + hj + 'th from your rasi)' }, gGood: gGood };
+  }
   // ---------------- Rasi box ----------------
   var dlg = null;
   function rasiBox(i) {
@@ -125,6 +142,8 @@
     }
     dlg.innerHTML = '<div class="soon-box" role="dialog" aria-modal="true"><p><span class="soon-badge pg-' + cb.word + '">' + ICON[cb.word] + ' ' + two(word[cb.word]) + '</span></p>' +
       '<h2>' + two([C.RASI_TA[i], C.RASI_EN[i]]) + '</h2><p>' + bi(msg[0], msg[1]) + '</p>' +
+      (function () { var t = transit(i); return t ? '<div class="pg-tr"><p><b>' + bi('சனி பெயர்ச்சி', 'Saturn transit') + ':</b> ' + bi(t.sani.ta, t.sani.en) + '<br><small>' + bi('சனி இப்போது ', 'Saturn is now in ') + two([C.RASI_TA[t.saR], C.RASI_EN[t.saR]]) + '</small></p>' +
+        '<p><b>' + bi('குரு பெயர்ச்சி', 'Jupiter transit') + ':</b> ' + bi(t.guru.ta, t.guru.en) + '<br><small>' + bi('குரு இப்போது ', 'Jupiter is now in ') + two([C.RASI_TA[t.juR], C.RASI_EN[t.juR]]) + '</small></p></div>' : ''; })() +
       '<p><small>' + bi('இன்று சந்திரன்: ', 'Moon today: ') + two([r.moonRasi.ta, r.moonRasi.en]) + ' · ' + tillTxt(r.moonRasi.until) + '</small></p>' +
       '<p><small>' + bi('இது தனிப்பட்ட ஜாதகப் பலன் அல்ல; சந்திரனின் நிலை மட்டும்.', 'This is the moon\'s position only, not a personal horoscope.') + '</small></p>' +
       '<div class="soon-act"><button type="button" class="btn" data-x>' + bi('மூடு', 'Close') + '</button></div></div>';

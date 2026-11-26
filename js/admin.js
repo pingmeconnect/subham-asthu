@@ -158,6 +158,7 @@
         todoCard(toApprove(d).length, 'புதிய அங்கீகாரம்', 'New approvals', 'வாத்தியார் / சமையல்காரர்', 'Priests / cooks waiting', 'people', 'approve', true) +
         todoCard(feesDue(d).length, 'கட்டணம் நிலுவை', 'Fees pending', 'இந்த மாதம்', 'This month', 'people', 'fees', false) +
       '</div>' +
+      '<p><a class="btn" href="#astro-admin">🔮 ' + bi('ஜோதிடர் ஆலோசனை கோரிக்கைகள்', 'Astrology consultation requests') + '</a></p>' +
       '<h2 class="ad-menu-h">' + bi('எல்லா பகுதிகள்', 'All sections') + '</h2>' +
       '<div class="ad-menu">' + SECTIONS.slice(1).map(function (s) {
         return '<button type="button" class="ad-menu-btn" data-act="tab" data-tab="' + s[0] + '"><span class="ad-ic" aria-hidden="true">' + s[1] + '</span>' + bi(s[2], s[3]) + '</button>';

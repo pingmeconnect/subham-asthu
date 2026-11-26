@@ -71,6 +71,7 @@
       }
       $('partner-link').hidden = !(u && (u.role === 'priest' || u.role === 'cook'));
       $('admin-link').hidden = !(u && u.role === 'admin');
+      if ($('astro-admin-link')) $('astro-admin-link').hidden = !(u && u.role === 'admin');
     });
   }
 
