@@ -56,6 +56,23 @@
 
   // ---------- samagri items: [icon, Tamil, English] ----------
   var ITEM = {
+    sesame: ['rice', 'கருப்பு எள்', 'Black sesame'],
+    darbha: ['leaf', 'தர்ப்பைப் புல்', 'Darbha grass'],
+    elderpic: ['dot', 'முன்னோர் படம்', 'Photo of ancestors'],
+    gurupic: ['dot', 'குரு / ஆச்சார்யர் படம்', 'Picture of your Guru'],
+    vadamalai: ['garland', 'வடை மாலை', 'Vada garland'],
+    poonool: ['thread', 'புதிய பூணூல்', 'New sacred thread (poonool)'],
+    paper: ['dot', 'புதிய வெள்ளைக் காகிதம்', 'Fresh white paper'],
+    pen: ['dot', 'எழுதுகோல் (பேனா)', 'Pen'],
+    coins: ['dot', 'நாணயங்கள் / பணம்', 'Coins and notes'],
+    panakam: ['milk', 'பானகம்', 'Panakam (jaggery drink)'],
+    neermor: ['milk', 'நீர்மோர்', 'Spiced buttermilk'],
+    butter: ['milk', 'வெண்ணெய்', 'Butter'],
+    greens: ['leaf', 'அகத்திக்கீரை / புல்', 'Agathi keerai or fresh grass'],
+    cowdecor: ['dot', 'பசுவுக்கான மஞ்சள், குங்குமம், மாலை, மணி', 'Turmeric, kumkum, garland and bell for the cow'],
+    kadai: ['sweets', 'காரடை (இனிப்பு) & உப்பு அடை', 'Karadai (sweet) and salted adai'],
+    rawbutter: ['milk', 'உருக்காத வெண்ணெய்', 'Unmelted butter'],
+    kuberakolam: ['dot', 'குபேர கோலம் (அரிசி மாவு)', 'Kubera kolam (rice flour)'],
     lamp: ['lamp', 'குத்துவிளக்கு', 'Kuthuvilakku (lamp)'],
     agal: ['lamp', 'அகல் விளக்குகள்', 'Agal (clay) lamps'],
     oil: ['oil', 'நல்லெண்ணெய் / நெய்', 'Gingelly oil or ghee'],
@@ -113,6 +130,23 @@
 
   // ---------- how to get each item ready: [Tamil, English] ----------
   var PREP = {
+    sesame: ['சிறு கிண்ணத்தில் வைக்கவும்.', 'Keep in a small bowl.'],
+    darbha: ['கழுவி வைக்கவும்; கிடைக்காவிட்டால் வாத்தியாரிடம் கேளுங்கள்.', 'Wash and keep; ask your priest if you cannot find it.'],
+    elderpic: ['சுத்தமாகத் துடைத்து மாலை அணிவிக்கவும்.', 'Wipe clean and garland it.'],
+    gurupic: ['சுத்தமாகத் துடைத்து மலர் வைக்கவும்.', 'Wipe clean and place flowers.'],
+    vadamalai: ['முன்னதாகவே மிளகு வடை செய்து மாலையாகக் கோர்க்கவும்.', 'Make pepper vadas earlier and string them.'],
+    poonool: ['வாத்தியார் அல்லது கடையில் வாங்கி முன்கூட்டியே வைக்கவும்.', 'Buy or arrange from your priest in advance.'],
+    paper: ['சுத்தமான தாள்; தட்டில் வைக்கவும்.', 'A clean sheet; keep it on a plate.'],
+    pen: ['புதிய அல்லது சுத்தமான பேனா.', 'A new or clean pen.'],
+    coins: ['சுத்தம் செய்து தட்டில் வைக்கவும்.', 'Clean them and keep on a plate.'],
+    panakam: ['வெல்லம், சுக்கு, ஏலக்காய், எலுமிச்சை சேர்த்து முன்னதாகத் தயாரிக்கவும்.', 'Make with jaggery, dry ginger, cardamom and lemon.'],
+    neermor: ['பூஜைக்கு முன் தயாரிக்கவும்.', 'Prepare before the pooja.'],
+    butter: ['சிறு கிண்ணத்தில் வைக்கவும்.', 'Keep in a small bowl.'],
+    greens: ['பசுவுக்குக் கொடுக்க, கழுவிக் கட்டி வைக்கவும்.', 'To feed the cow; wash and bundle.'],
+    cowdecor: ['பசுவின் அருகில் ஒரு தட்டில் வைக்கவும்.', 'Keep on a plate near the cow.'],
+    kadai: ['பச்சரிசி மாவு, காராமணி கொண்டு முன்கூட்டியே தயாரிக்கவும்.', 'Make with rice flour and cowpeas beforehand.'],
+    rawbutter: ['சிறு கிண்ணத்தில் வைக்கவும்.', 'Keep in a small bowl.'],
+    kuberakolam: ['பூஜைப் பீடத்தில் அரிசி மாவால் வரையவும்.', 'Draw on the pooja seat with rice flour.'],
     lamp: ['கழுவித் துடைத்து, சந்தனம் குங்குமம் இடவும்.', 'Wash, wipe dry and mark with sandal and kumkum.'],
     agal: ['புது அகல்களை முதல் நாள் நீரில் ஊறவைத்துக் காயவிடவும்.', 'Soak new clay lamps in water the day before and dry them.'],
     oil: ['விளக்கின் முக்கால் பங்கு நிரப்பவும்.', 'Fill the lamp about three-quarters.'],
@@ -269,6 +303,102 @@
   // ---------- the 20 self-done poojas ----------
   // sam: item keys. steps: key of S, or [Tamil, English, mantraNumber?]. m: [mantraId, whenTa, whenEn, times]
   var POOJA = {
+    'friday-home-pooja': {
+      time: ['சுமார் 30 நிமிடம்', 'About 30 minutes'],
+      sam: ['picture', 'lamp', 'oil', 'wicks', 'kumkum', 'turmeric', 'sandal', 'flowers', 'lotus', 'rice', 'kalasam', 'betel', 'tulsi', 'sweetpongal', 'milk', 'fruits', 'camphor', 'incense', 'bell'],
+      steps: ['bathe', 'clean', 'decorate', ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['கலசத்தில் / செம்பில் நீர் வைத்து, இந்தப் பூஜையை ஏன் செய்கிறோம் என்று மனதார வேண்டிக்கொள்ளவும் (சங்கல்பம்).', 'Keep a kalasam or pot of water and make a simple resolve (sankalpam) for why you do this pooja.'], ['லட்சுமி தேவியை மனதில் தியானித்து, மலர், குங்குமம் சாத்தி வணங்கவும்.', 'Meditate on Goddess Lakshmi and offer flowers and kumkum.', 3], ['லட்சுமி துதியைக் கூறவும்.', 'Recite the Lakshmi prayer.', 4], ['108 போற்றியை (அஷ்டோத்தர சதநாமாவளி) கூறி, ஒவ்வொரு நாமத்துக்கும் குங்குமம் அல்லது மலர் இடவும்.', 'Chant the 108 names, offering kumkum or a flower with each name.', 5], ['பால் பாயசம் / சர்க்கரைப் பொங்கல் / கற்கண்டு நைவேத்தியம் படைக்கவும்.', 'Offer milk payasam, sweet pongal or kalkandu as naivedyam.'], 'aarti', 'namaskar'],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['lakshmi_gayatri', 'தியானத்தின் போது', 'During meditation', '3'], ['lakshmi_stuti', 'பூஜையில்', 'During the pooja', '1'], ['lakshmi_nama', 'போற்றியின் போது', 'While chanting the names', '1']]
+    },
+    'tuesday-home-pooja': {
+      time: ['சுமார் 30 நிமிடம்', 'About 30 minutes'],
+      sam: ['vel', 'lamp', 'oil', 'wicks', 'kumkum', 'vibhuti', 'flowers', 'rice', 'kalasam', 'betel', 'sweetpongal', 'banana', 'camphor', 'incense', 'bell'],
+      steps: ['bathe', 'clean', ['முருகப்பெருமான் படம் அல்லது வேலை அலங்கரித்து, செவ்வரளி போன்ற மலர் சாத்தவும்.', 'Decorate the Murugan picture or vel and offer red flowers such as arali.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['கலசத்தில் / செம்பில் நீர் வைத்து, இந்தப் பூஜையை ஏன் செய்கிறோம் என்று மனதார வேண்டிக்கொள்ளவும் (சங்கல்பம்).', 'Keep a kalasam or pot of water and make a simple resolve (sankalpam) for why you do this pooja.'], ['முருகனைத் தியானித்து, நாமத்தைக் கூறவும்.', 'Meditate on Murugan and chant his name.', 3], ['துர்க்கை துதியைக் கூறி வணங்கவும்.', 'Recite the Durga prayer and bow.', 4], ['சர்க்கரைப் பொங்கல் / பாயசம் / வாழைப்பழம் நைவேத்தியம் படைக்கவும்.', 'Offer sweet pongal, payasam or banana as naivedyam.'], 'aarti', 'namaskar'],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['muruga_nama', 'முருகனுக்கு', 'For Murugan', '3'], ['durga', 'துர்க்கைக்கு', 'For Durga', '1']]
+    },
+    'nithya-pooja': {
+      time: ['சுமார் 20 நிமிடம்', 'About 20 minutes'],
+      sam: ['picture', 'lamp', 'oil', 'wicks', 'kumkum', 'vibhuti', 'flowers', 'fruits', 'camphor', 'incense', 'matches'],
+      steps: ['bathe', 'clean', ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['பூஜைக்குப் புதிய நீர் அல்லது பாலை நைவேத்தியமாக வைக்கவும்.', 'Keep fresh water or milk as the daily offering.'], ['தெய்வப் படங்களுக்கு மலர், குங்குமம், விபூதி இடவும்.', 'Offer flowers, kumkum and vibhuti to the pictures of the deities.'], ['சூரிய துதியைக் கூறவும்.', 'Recite the Surya prayer.', 3], ['ஓம் நமசிவாய என்றும், ஓம் நமோ நாராயணாய என்றும் உங்கள் வழக்கப்படி கூறவும்.', 'Say Om Namah Shivaya and Om Namo Narayanaya, as your family does.', 4], ['நைவேத்தியம் படைத்து ஆரத்தி காட்டவும்.', 'Offer naivedyam and show aarti.'], 'namaskar', ['மாலை சுமார் 6 மணிக்கு மீண்டும் விளக்கேற்றி, 5 நிமிடம் வணங்கவும் (சந்தியா தீபம்).', 'Light the lamp again around 6 PM and pray for 5 minutes (sandhya deepam).']],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['surya', 'காலையில்', 'In the morning', '1'], ['panchakshara', 'உங்கள் வழக்கப்படி', 'As your family follows', '1']]
+    },
+    'masa-sashti': {
+      time: ['சுமார் 45 நிமிடம்', 'About 45 minutes'],
+      sam: ['vel', 'lamp', 'oil', 'wicks', 'kumkum', 'vibhuti', 'flowers', 'rice', 'kalasam', 'betel', 'sweetpongal', 'milk', 'fruits', 'camphor', 'incense'],
+      steps: [['சஷ்டி அன்று காலை முதல் முடிந்தவரை உபவாசம் இருக்கவும்; பால், பழம் எடுக்கலாம்.', 'Fast from morning as far as you can; milk and fruit are fine.'], 'bathe', 'clean', ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['கலசத்தில் / செம்பில் நீர் வைத்து, இந்தப் பூஜையை ஏன் செய்கிறோம் என்று மனதார வேண்டிக்கொள்ளவும் (சங்கல்பம்).', 'Keep a kalasam or pot of water and make a simple resolve (sankalpam) for why you do this pooja.'], ['முருகப்பெருமானை வேல் / படத்தில் தியானித்து, செவ்வரளி மலர் சாத்தவும்.', 'Meditate on Murugan at the vel or picture and offer red arali flowers.', 3], ['முருகன் நாமம், ஷடாட்சர மந்திரம் கூறவும்.', 'Chant the Murugan name.', 3], ['கந்த சஷ்டி கவசத்தின் தொடக்கப் பகுதியைப் படிக்கவும்.', 'Read the opening of the Kanda Sashti Kavacham.', 4], ['பால் பாயசம் / சர்க்கரைப் பொங்கல் / தேன் தினை மாவு நைவேத்தியம் படைக்கவும்.', 'Offer milk payasam, sweet pongal or honey-millet flour.'], 'aarti', ['மாலை பூஜைக்குப் பின் எளிய உணவுடன் விரதம் முடிக்கவும்.', 'Break the fast with simple food after the evening pooja.']],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['muruga_nama', 'முருகனுக்கு', 'For Murugan', '3'], ['muruga_venba', 'கவசம்', 'Kavacham', '1']]
+    },
+    'amavasya-pitru': {
+      time: ['சுமார் 45 நிமிடம்', 'About 45 minutes'],
+      sam: ['elderpic', 'lamp', 'oil', 'wicks', 'sesame', 'rice', 'darbha', 'kalasam', 'bananaleaf', 'betel', 'banana', 'fruits', 'camphor', 'incense', 'matches'],
+      steps: ['bathe', ['பூஜை இடத்தைச் சுத்தம் செய்து, முன்னோர் படத்தை மாலை அணிவித்து வைக்கவும்.', 'Clean the place and set the photo of your ancestors with a garland.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['கலசத்தில் நீர் வைத்து, முன்னோரை நினைத்து உங்கள் குடும்ப வழக்கப்படி சங்கல்பம் செய்யவும்.', 'Keep a kalasam of water and make the resolve for your ancestors as your family custom.'], ['எள்ளும் நீரும் அளித்தல் (தர்ப்பணம்) உங்கள் குடும்ப வாத்தியார் அல்லது பெரியவர்கள் சொல்லும் முறைப்படி செய்யவும்.', 'Offer sesame and water (tarpanam) as your family priest or elders direct.'], ['வாழை இலையில் முன்னோருக்குப் பிடித்த எளிய சைவ உணவுகளைப் படையல் வைக்கவும்.', 'Serve simple vegetarian food your ancestors liked on a banana leaf.'], 'aarti', ['காகத்துக்கும் பசுவுக்கும் உணவு வைத்த பின் குடும்பத்தினர் உண்ணவும்; முடிந்தால் ஒருவருக்கு அன்னதானம்.', 'Feed a crow and a cow first, then the family eats; give food to a needy person if you can.']],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['narayana', 'நிறைவில்', 'At the end', '3']]
+    },
+    'guru-purnima': {
+      time: ['சுமார் 40 நிமிடம்', 'About 40 minutes'],
+      sam: ['gurupic', 'lamp', 'oil', 'wicks', 'sandal', 'kumkum', 'vibhuti', 'flowers', 'cloth', 'sundal', 'sweetpongal', 'fruits', 'betel', 'camphor', 'incense'],
+      steps: ['bathe', 'clean', ['குரு படத்தை (தட்சிணாமூர்த்தி, வியாசர், ஆதிசங்கரர் அல்லது உங்கள் குரு) மஞ்சள் வஸ்திரம், மலர் மாலையால் அலங்கரிக்கவும்.', 'Decorate your guru picture (Dakshinamurthy, Vyasa, Adi Sankara or your own guru) with a yellow cloth and garland.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['கலசத்தில் / செம்பில் நீர் வைத்து, இந்தப் பூஜையை ஏன் செய்கிறோம் என்று மனதார வேண்டிக்கொள்ளவும் (சங்கல்பம்).', 'Keep a kalasam or pot of water and make a simple resolve (sankalpam) for why you do this pooja.'], ['குருவைத் தியானித்து, சந்தனம், குங்குமம், மஞ்சள் மலர் சாத்தவும்.', 'Meditate on the guru and offer sandal, kumkum and yellow flowers.'], ['குரு போற்றி (அஷ்டோத்தர சதநாமாவளி) கூறவும்.', 'Chant the guru\'s 108 names.'], ['கொண்டைக்கடலை சுண்டல், சர்க்கரைப் பொங்கல், பழம் நைவேத்தியம் படைக்கவும்.', 'Offer chickpea sundal, sweet pongal and fruit.'], 'aarti', ['உங்கள் ஆசிரியர்கள், பெரியவர்களை வணங்கி ஆசி பெறவும்.', 'Bow to your teachers and elders and take their blessings.']],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1']]
+    },
+    'maattu-pongal': {
+      time: ['சுமார் 40 நிமிடம்', 'About 40 minutes'],
+      sam: ['cowdecor', 'greens', 'pongalpot', 'rice', 'jaggery', 'cane', 'banana', 'coconut', 'flowers', 'kumkum', 'turmeric', 'lamp', 'oil', 'wicks', 'camphor', 'incense'],
+      steps: ['bathe', ['பசுவையும் கன்றையும் நீராட்டி, கொம்புகளுக்கு வண்ணம் தீட்டி, மாலை, மணி அணிவிக்கவும் (வீட்டில் பசு இல்லையெனில் அருகிலுள்ள பசுவிடம் செல்லவும்).', 'Bathe the cow and calf, colour the horns and garland them with a bell (if you have no cow, go to one nearby).'], ['பசுவுக்கு மஞ்சள், குங்குமம் இடவும்.', 'Apply turmeric and kumkum to the cow.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['பொங்கல் வைத்து, "பொங்கலோ பொங்கல்" என்று கூறி மகிழவும்.', 'Cook the pongal and say "Pongalo Pongal" with joy.'], ['பசுவுக்கு அகத்திக்கீரை, வாழைப்பழம், பொங்கல் கொடுக்கவும்.', 'Feed the cow agathi keerai, banana and pongal.'], 'aarti', ['பசுவை வலம் வந்து வணங்கவும்; உழைக்கும் கால்நடைகளுக்கு நன்றி சொல்லவும்.', 'Walk around the cow and bow; thank all working animals.']],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1']]
+    },
+    'rama-navami': {
+      time: ['சுமார் 45 நிமிடம்', 'About 45 minutes'],
+      sam: ['picture', 'lamp', 'oil', 'tulsi', 'flowers', 'garland', 'sandal', 'banana', 'fruits', 'panakam', 'neermor', 'betel', 'camphor', 'incense'],
+      steps: ['bathe', 'clean', ['ராமர் - சீதை - லட்சுமணன் - அனுமன் படத்தை அலங்கரித்து, துளசி, மலர் மாலை சாத்தவும்.', 'Decorate the Rama-Sita-Lakshmana-Hanuman picture and offer tulsi and garland.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['கலசத்தில் / செம்பில் நீர் வைத்து, இந்தப் பூஜையை ஏன் செய்கிறோம் என்று மனதார வேண்டிக்கொள்ளவும் (சங்கல்பம்).', 'Keep a kalasam or pot of water and make a simple resolve (sankalpam) for why you do this pooja.'], ['ராம துதியைக் கூறவும்.', 'Recite the Rama prayer.', 3], ['"ஸ்ரீ ராம ராம ராமேதி" நாமத்தைக் கூறவும்.', 'Chant the Rama name verse.', 4], ['பானகம், நீர்மோர், பழம் நைவேத்தியம் படைக்கவும்.', 'Offer panakam, buttermilk and fruit.'], 'aarti', 'prasadam'],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['rama_dhyana', 'ராமருக்கு', 'For Rama', '1'], ['rama_nama', 'நாமம் சொல்லும்போது', 'While chanting the name', '3']]
+    },
+    'hanuman-jayanthi': {
+      time: ['சுமார் 40 நிமிடம்', 'About 40 minutes'],
+      sam: ['picture', 'lamp', 'oil', 'vadamalai', 'garland', 'flowers', 'tulsi', 'butter', 'jaggery', 'banana', 'betel', 'camphor', 'incense'],
+      steps: ['bathe', 'clean', ['அனுமன் படத்துக்கு மலர், துளசி, வெற்றிலை / வடை மாலை சாத்தவும்.', 'Offer flowers, tulsi and a betel-leaf or vada garland to the Hanuman picture.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['ராம நாமத்தைக் கூறவும்.', 'Chant the Rama name.', 3], ['அனுமன் துதியைக் கூறவும்.', 'Recite the Hanuman prayer.', 4], ['வடை, வெண்ணெய், வெல்லம் கலந்த அவல், பழம் நைவேத்தியம் படைக்கவும்.', 'Offer vada, butter, jaggery aval and fruit.'], 'aarti', 'prasadam'],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['rama_nama', 'ராம நாமம்', 'Rama name', '3'], ['hanuman', 'அனுமனுக்கு', 'For Hanuman', '1']]
+    },
+    'avani-avittam': {
+      time: ['சுமார் 60 நிமிடம்', 'About 60 minutes'],
+      sam: ['poonool', 'picture', 'lamp', 'oil', 'wicks', 'sandal', 'kumkum', 'turmeric', 'flowers', 'rice', 'kalasam', 'darbha', 'coconut', 'sweets', 'camphor', 'incense'],
+      steps: ['bathe', 'clean', ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['உபாகர்மாவுக்கான சங்கல்பம், காமோகார்ஷீத் ஜபம், புதிய பூணூல் அணியும் முறைகள் உங்கள் சாகைக்கு ஏற்ப வாத்தியாருடன் சேர்ந்து செய்யவும்.', 'The upakarma sankalpam, kamokarsheet japam and wearing of the new poonool vary by your Veda shakha; do them with your priest.'], ['பழைய பூணூலை மாற்றிப் புதியதை அணிந்த பின் பெரியோர்களிடம் ஆசி பெறவும்.', 'After changing the old thread for the new one, take the blessings of elders.'], ['தேங்காய் பாயசம் / இனிப்பு நைவேத்தியம் படைக்கவும்.', 'Offer coconut payasam or a sweet as naivedyam.'], 'aarti', ['மறுநாள் காயத்ரி ஜபம்: உங்கள் வழக்கப்படி காயத்ரி ஜபத்தைக் குறிப்பிட்ட எண்ணிக்கையில் செய்யவும்.', 'Next day, Gayatri japam: do the Gayatri japam in your family\'s count.']],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1']]
+    },
+    'chitra-pournami': {
+      time: ['சுமார் 45 நிமிடம்', 'About 45 minutes'],
+      sam: ['paper', 'pen', 'picture', 'lamp', 'oil', 'wicks', 'flowers', 'bilva', 'kumkum', 'sandal', 'rice', 'betel', 'sweetpongal', 'fruits', 'camphor', 'incense'],
+      steps: ['bathe', 'clean', ['சித்ரகுப்தர் படத்தை (இல்லையெனில் ஒரு விளக்கை) அலங்கரிக்கவும்.', 'Decorate the Chitragupta picture (or a lamp if you have none).'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['புதிய வெள்ளைக் காகிதம், எழுதுகோல் இரண்டையும் படத்தின் முன் வைத்து, மலர் சாத்தி வணங்கவும்.', 'Place a fresh white paper and a pen before the picture and offer flowers.'], ['பஞ்சாக்ஷர மந்திரத்தை உங்கள் வழக்கப்படி கூறவும்.', 'Chant the Panchakshara mantra as your family does.', 3], ['பால் பாயசம் / சர்க்கரைப் பொங்கல் நைவேத்தியம் படைத்து ஆரத்தி காட்டவும்.', 'Offer milk payasam or sweet pongal and show aarti.'], 'aarti', ['உப்பில்லாத உணவுடன் விரதம் இருப்பது வழக்கம்; முடிந்தவர்கள் கடைப்பிடிக்கலாம்.', 'Keeping a salt-free diet is a custom; follow it if you can.']],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['panchakshara', 'சிவனுக்கு', 'For Shiva', '1']]
+    },
+    'karadaiyan-nonbu': {
+      time: ['சுமார் 45 நிமிடம்', 'About 45 minutes'],
+      sam: ['picture', 'lamp', 'oil', 'wicks', 'kumkum', 'turmeric', 'thread', 'flowers', 'bananaleaf', 'betel', 'banana', 'coconut', 'kadai', 'rawbutter', 'kalasam', 'camphor', 'incense'],
+      steps: ['bathe', 'clean', ['காமாட்சி / கௌரி அம்மன் படத்தை அலங்கரித்து, வாழை இலையில் காரடை, வெண்ணெய், வெற்றிலை பாக்கு, பழம் வைக்கவும்.', 'Decorate the Kamakshi/Gauri picture and set karadai, butter, betel and fruit on a banana leaf.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['கலசத்தில் / செம்பில் நீர் வைத்து, இந்தப் பூஜையை ஏன் செய்கிறோம் என்று மனதார வேண்டிக்கொள்ளவும் (சங்கல்பம்).', 'Keep a kalasam or pot of water and make a simple resolve (sankalpam) for why you do this pooja.'], ['அம்மன் துதி (அம்பாள் நாமம்) கூறவும்.', 'Recite the Ambal name.', 3], ['அபிராமி துதியைக் கூறவும்.', 'Recite the Abirami verse.', 4], ['நோன்புச் சரடை அம்மனிடம் வைத்து வணங்கி, குடும்பப் பெரியவர் உதவியுடன் கட்டிக்கொள்ளவும்.', 'Place the nonbu thread before the Goddess, pray, and tie it with an elder\'s help.'], 'aarti', ['சுமங்கலிகளுக்குத் தாம்பூலம் கொடுத்து ஆசி பெறவும்.', 'Give thaamboolam to married women and take their blessings.']],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['lalita_nama', 'அம்மனுக்கு', 'For the Goddess', '3'], ['abirami', 'நிறைவில்', 'At the end', '1']]
+    },
+    'thai-poosam': {
+      time: ['சுமார் 45 நிமிடம்', 'About 45 minutes'],
+      sam: ['vel', 'lamp', 'oil', 'wicks', 'kumkum', 'vibhuti', 'flowers', 'milk', 'sweetpongal', 'banana', 'fruits', 'rice', 'betel', 'camphor', 'incense'],
+      steps: ['bathe', 'clean', ['முருகன் படம் அல்லது வேலை மலர் மாலையால் அலங்கரிக்கவும்.', 'Decorate the Murugan picture or vel with a garland.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['கலசத்தில் / செம்பில் நீர் வைத்து, இந்தப் பூஜையை ஏன் செய்கிறோம் என்று மனதார வேண்டிக்கொள்ளவும் (சங்கல்பம்).', 'Keep a kalasam or pot of water and make a simple resolve (sankalpam) for why you do this pooja.'], ['முருகனைத் தியானித்து, முருகன் நாமத்தைக் கூறவும்.', 'Meditate on Murugan and chant his name.', 3], ['கந்த சஷ்டி கவசத்தின் தொடக்கத்தைப் படிக்கவும்.', 'Read the opening of the Kanda Sashti Kavacham.', 4], ['பசும்பால் (பால் காவடி), சர்க்கரைப் பொங்கல், பழம் நைவேத்தியம் படைக்கவும்.', 'Offer cow\'s milk (paal kavadi), sweet pongal and fruit.'], 'aarti', 'prasadam'],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['muruga_nama', 'முருகனுக்கு', 'For Murugan', '3'], ['muruga_venba', 'கவசம்', 'Kavacham', '1']]
+    },
+    'panguni-uthiram': {
+      time: ['சுமார் 45 நிமிடம்', 'About 45 minutes'],
+      sam: ['picture', 'lamp', 'oil', 'wicks', 'kumkum', 'turmeric', 'thread', 'flowers', 'garland', 'rice', 'betel', 'banana', 'sweetpongal', 'milk', 'fruits', 'camphor', 'incense'],
+      steps: ['bathe', 'clean', ['சிவன்-பார்வதி (அல்லது முருகன்-தெய்வானை) திருமணக் கோலப் படத்தை மாலையால் அலங்கரிக்கவும்.', 'Decorate the wedding picture of Shiva-Parvati (or Murugan-Deivanai) with a garland.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['கலசத்தில் / செம்பில் நீர் வைத்து, இந்தப் பூஜையை ஏன் செய்கிறோம் என்று மனதார வேண்டிக்கொள்ளவும் (சங்கல்பம்).', 'Keep a kalasam or pot of water and make a simple resolve (sankalpam) for why you do this pooja.'], ['உமா மகேஸ்வர நாமத்தைக் கூறவும்.', 'Chant the Uma-Maheshwara name.', 3], ['முருகன் நாமத்தைக் கூறவும்.', 'Chant the Murugan name.', 4], ['பால் பாயசம், சர்க்கரைப் பொங்கல், பழம் நைவேத்தியம் படைக்கவும்.', 'Offer milk payasam, sweet pongal and fruit.'], 'aarti', ['சுமங்கலிகளுக்குத் தாம்பூலம் கொடுத்து ஆசி பெறவும்.', 'Give thaamboolam to married women and take their blessings.']],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['uma', 'சிவ பார்வதிக்கு', 'For Shiva-Parvati', '3'], ['muruga_nama', 'முருகனுக்கு', 'For Murugan', '3']]
+    },
+    'deepavali-kubera': {
+      time: ['சுமார் 45 நிமிடம்', 'About 45 minutes'],
+      sam: ['kuberakolam', 'picture', 'lamp', 'agal', 'oil', 'wicks', 'coins', 'lotus', 'flowers', 'kumkum', 'turmeric', 'rice', 'kalasam', 'betel', 'sweets', 'sweetpongal', 'fruits', 'camphor', 'incense'],
+      steps: ['clean', ['பூஜை பீடத்தில் அரிசி மாவால் குபேர கோலம் வரைந்து, மஹாலட்சுமி, குபேரர், கணபதி படங்களை வைக்கவும்.', 'Draw the Kubera kolam with rice flour on the pooja seat and place the pictures of Mahalakshmi, Kubera and Ganapathy.'], ['நாணயங்கள் / பணத்தை சுத்தம் செய்து தட்டில் வைக்கவும்; வீடு முழுவதும் அகல் விளக்குகள் ஏற்றவும்.', 'Clean the coins or notes and keep them on a plate; light agal lamps around the home.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['கலசத்தில் / செம்பில் நீர் வைத்து, இந்தப் பூஜையை ஏன் செய்கிறோம் என்று மனதார வேண்டிக்கொள்ளவும் (சங்கல்பம்).', 'Keep a kalasam or pot of water and make a simple resolve (sankalpam) for why you do this pooja.'], ['மகாலட்சுமியைத் தியானித்து, தாமரை மலர் சாத்தவும்.', 'Meditate on Mahalakshmi and offer a lotus flower.', 3], ['லட்சுமி நாமம், துதியைக் கூறவும்.', 'Chant the Lakshmi names and prayer.', 4], ['பால் பாயசம், சர்க்கரைப் பொங்கல், இனிப்பு, பழம் நைவேத்தியம் படைக்கவும்.', 'Offer milk payasam, sweet pongal, sweets and fruit.'], 'aarti', 'prasadam'],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['lakshmi_gayatri', 'தியானத்தின் போது', 'During meditation', '3'], ['lakshmi_nama', 'போற்றியின் போது', 'While chanting the names', '1'], ['lakshmi_stuti', 'பூஜையில்', 'During the pooja', '1']]
+    },
+    'margazhi-thiruppavai': {
+      time: ['சுமார் 30 நிமிடம் (தினமும்)', 'About 30 minutes (daily)'],
+      sam: ['picture', 'lamp', 'oil', 'wicks', 'kolam', 'flowers', 'tulsi', 'kumkum', 'rice', 'sweetpongal', 'banana', 'camphor', 'incense'],
+      steps: [['அதிகாலை எழுந்து நீராடி, வாசலில் கோலமிடவும்.', 'Wake early, bathe and draw a kolam at the doorstep.'], 'clean', ['ஆண்டாள் / ரங்கநாதர் படத்தை மலர், துளசியால் அலங்கரிக்கவும்.', 'Decorate the Andal/Ranganatha picture with flowers and tulsi.'], ['விளக்கேற்றி, விநாயகரை வணங்கவும்; குரு, குலதெய்வத்தை மனதில் நினைக்கவும்.', 'Light the lamp and pray to Ganesha; remember your guru and kula deivam.', 2], ['அன்றைய நாளுக்கான திருப்பாவை பாசுரத்தைப் பாடவும் (30 நாள் முறை); முதல் பாசுரம் இங்கே உள்ளது.', 'Sing that day\'s Tiruppavai verse (30-day order); the first verse is given here.', 3], ['நாராயண நாமம் கூறவும்.', 'Chant the Narayana name.', 4], ['திருவெம்பாவை / சிவபுராணம் சிவ வழிபாட்டாளர்கள் படிக்கலாம்.', 'Shiva devotees may read Tiruvempavai or Sivapuranam.', 5], ['சர்க்கரைப் பொங்கல் / வாழைப்பழம் நைவேத்தியம் படைத்து ஆரத்தி காட்டவும்.', 'Offer sweet pongal or banana and show aarti.'], 'aarti', 'prasadam'],
+      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['deepa', 'விளக்கு ஏற்றும்போது', 'While lighting the lamp', '1'], ['tiruppavai', 'முதல் பாசுரம்', 'First verse', '1'], ['narayana', 'நாமம்', 'Name', '3'], ['sivapuranam', 'சிவ வழிபாடு', 'For Shiva worship', '1']]
+    },
     'sankatahara-chaturthi': {
       time: ['சுமார் 45 நிமிடம்', 'About 45 minutes'],
       sam: ['vinayagar', 'lamp', 'oil', 'wicks', 'durva', 'flowers', 'kumkum', 'turmeric', 'modak', 'fruits', 'coconut', 'camphor', 'incense'],
@@ -477,6 +607,10 @@
   var LAKSHMI = [['lakshmi_a1', 'அர்ச்சனைக்குப் பின்', 'After the offerings', '1'], ['lakshmi_a2', 'தொடர்ந்து', 'Continue', '1']];
   var AMBAL = [['abirami', 'நிறைவில்', 'At the end', '1']];
   var EXTRA = {
+    'friday-home-pooja': LAKSHMI,
+    'rama-navami': [['kamban', 'நிறைவில்', 'At the end', '1']],
+    'hanuman-jayanthi': [['kamban', 'நிறைவில்', 'At the end', '1']],
+    'deepavali-kubera': LAKSHMI,
     'sankatahara-chaturthi': [['sankata_stotra', 'அர்ச்சனைக்குப் பின்', 'After the offerings', '1']],
     'vinayagar-chaturthi': [['sankata_stotra', 'அர்ச்சனைக்குப் பின்', 'After the offerings', '1']],
     'pradosham': SHIVA, 'maha-shivaratri': SHIVA,
@@ -487,6 +621,22 @@
 
   // ---------- when to do it: [Tamil, English] ----------
   var WHEN = {
+    'friday-home-pooja': ['ஒவ்வொரு வெள்ளிக்கிழமை; காலை 6:00–8:00 அல்லது மாலை 6:00 மணி. ராகு காலத்தில் (10:30–12:00) தொடங்க வேண்டாம்.', 'Every Friday; morning 6:00-8:00 or evening 6:00 PM. Do not begin in Rahu Kalam (10:30-12:00).'],
+    'tuesday-home-pooja': ['ஒவ்வொரு செவ்வாய்க்கிழமை; காலை அல்லது மாலை. ராகு காலத்தில் (பிற்பகல் 3:00–4:30) தொடங்க வேண்டாம்.', 'Every Tuesday; morning or evening. Do not begin in Rahu Kalam (3:00-4:30 PM).'],
+    'nithya-pooja': ['தினமும்; காலை 6:00–8:00 (சூரிய உதய நேரம்) மற்றும் மாலை சுமார் 6:00 மணி.', 'Every day; morning 6:00-8:00 (sunrise) and evening around 6:00 PM.'],
+    'masa-sashti': ['சஷ்டி திதி அன்று (மாதம் இரு முறை); வளர்பிறை சஷ்டி பலரும் கடைப்பிடிப்பர். செவ்வாய் அல்லது கிருத்திகையுடன் சேர்ந்தால் சிறப்பு.', 'On Sashti tithi (twice a month); many keep the waxing-moon Sashti. Special when it falls on Tuesday or Krithigai.'],
+    'amavasya-pitru': ['அமாவாசை திதியில்; பகல் வேளை (மதியம் / தர்ப்பண நேரம்).', 'On Amavasya tithi; during the day (midday / tarpanam time).'],
+    'guru-purnima': ['ஆடி மாத பௌர்ணமி; காலை 6:00–9:00 அல்லது மாலை.', 'Aadi month Pournami (full moon); morning 6:00-9:00 or evening.'],
+    'maattu-pongal': ['தை 2 (ஜனவரி 15 / 16); காலை.', 'Thai 2 (15/16 January); morning.'],
+    'rama-navami': ['பங்குனி / சித்திரை வளர்பிறை நவமி; நண்பகல் சுமார் 11:30–12:30. நவமியும் புனர்பூசமும் சேரும் நாள் சிறப்பு.', 'Waxing Navami in Panguni/Chithirai; around noon 11:30-12:30. Special when Navami meets Punarvasu.'],
+    'hanuman-jayanthi': ['மார்கழி அமாவாசையும் மூல நட்சத்திரமும் கூடும் நாள் (தமிழ்நாடு வழக்கம்); காலை.', 'The day Margazhi Amavasya meets the Moolam star (Tamil Nadu custom); morning.'],
+    'avani-avittam': ['ஆவணி மாதம் அவிட்டம் நட்சத்திரம் / பௌர்ணமி; மறுநாள் காயத்ரி ஜபம். காலை.', 'Aavani month, Avittam star or full moon; Gayatri japam the next day. Morning.'],
+    'chitra-pournami': ['சித்திரை பௌர்ணமி, சித்திரை நட்சத்திரத்துடன் கூடினால் சிறப்பு; காலை அல்லது மாலை.', 'Chithirai Pournami, special when it meets the Chithirai star; morning or evening.'],
+    'karadaiyan-nonbu': ['மாசி முடிந்து பங்குனி பிறக்கும் நேரம் (மீன சங்கிராந்தி); நோன்பு நேரம் ஆண்டுதோறும் மாறும் - பஞ்சாங்கத்தைப் பாருங்கள்.', 'At the turn from Masi to Panguni (Meena Sankranti); the exact time changes each year, so check the panchangam.'],
+    'thai-poosam': ['தை மாத பௌர்ணமி, பூசம் நட்சத்திரத்துடன்; காலை 6:00–9:00.', 'Thai month Pournami with the Poosam star; morning 6:00-9:00.'],
+    'panguni-uthiram': ['பங்குனி பௌர்ணமி, உத்திரம் நட்சத்திரத்துடன்; காலை அல்லது மாலை.', 'Panguni Pournami with the Uthiram star; morning or evening.'],
+    'deepavali-kubera': ['தீபாவளி அன்று மாலை; பிரதோஷ காலத்துக்குப் பின் அல்லது பஞ்சாங்கம் குறிக்கும் லட்சுமி பூஜை நேரத்தில்.', 'Deepavali evening; after Pradosham time or at the Lakshmi pooja time given in your panchangam.'],
+    'margazhi-thiruppavai': ['மார்கழி மாதம் முழுவதும் (30 நாள்); அதிகாலை 4:30–6:00.', 'The whole of Margazhi (30 days); early morning 4:30-6:00.'],
     'sankatahara-chaturthi': ['மாதம் ஒருமுறை - தேய்பிறை சதுர்த்தி அன்று மாலை; சந்திரன் உதித்த பின் விரதம் முடிக்கவும்.', 'Once a month on the waning-moon Chaturthi, in the evening; break the fast after moonrise.'],
     'pradosham': ['மாதம் இருமுறை - திரயோதசி அன்று மாலை சுமார் 4:30–6:00 பிரதோஷ வேளையில்.', 'Twice a month on Trayodashi, in the evening Pradosha time, about 4:30–6:00 PM.'],
     'pournami-satyanarayana': ['மாதம் ஒருமுறை - பௌர்ணமி அன்று, காலை அல்லது மாலை.', 'Once a month on Pournami (full moon), morning or evening.'],

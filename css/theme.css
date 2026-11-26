@@ -501,3 +501,31 @@ html[data-lang="en"] .pooja-card strong { font-family: var(--font-en); }
   .hero::before { display: block; left: 0; right: 0; top: 14px; bottom: auto; width: auto; height: 170px; }
   .hero::after { display: none; }
 }
+
+/* ---------- Home extras: next-festival banner, coming-festival cards, install bar ---------- */
+.fest-banner { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 0 0 20px; padding: 16px 20px; background: var(--maroon); color: var(--white); border-radius: 16px; border: 1px solid var(--maroon-deep); }
+.fest-banner[hidden], #fest-strip[hidden] { display: none; }
+.fest-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.fest-kicker { color: var(--gold-light); letter-spacing: .04em; }
+.fest-info strong { font-family: var(--font-head-ta); font-size: 1.2rem; font-weight: 600; }
+html[data-lang="en"] .fest-info strong { font-family: var(--font-en); }
+.fest-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.fest-banner .btn { background: var(--gold-light); color: var(--maroon-deep); border-color: var(--gold-light); }
+.fest-banner .btn-outline { background: transparent; color: var(--white); border-color: var(--gold-light); }
+.fest-banner .btn-outline:hover { background: rgba(255, 255, 255, .1); }
+.fest-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.fest-card { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; background: var(--white); border: 1px solid var(--border); border-top: 3px solid var(--gold); border-radius: 14px; box-shadow: var(--shadow-card); color: var(--ink); text-decoration: none; }
+.fest-card:hover { background: #FFFAF0; border-color: var(--gold); }
+.fest-card strong { font-family: var(--font-head-ta); font-size: 1.02rem; font-weight: 600; color: var(--maroon); }
+html[data-lang="en"] .fest-card strong { font-family: var(--font-en); }
+.fest-date { color: var(--muted); font-size: .92rem; }
+.fest-card small { color: var(--muted); }
+.install-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; display: flex; align-items: center; gap: 12px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: var(--maroon-deep); color: var(--white); box-shadow: 0 -2px 12px rgba(0, 0, 0, .2); }
+.install-bar .ib-text { flex: 1; font-size: .95rem; }
+.install-bar .btn { background: var(--gold-light); color: var(--maroon-deep); border-color: var(--gold-light); }
+.ib-close { background: none; border: 0; color: var(--white); font-size: 1.6rem; line-height: 1; padding: 4px 8px; cursor: pointer; }
+body.has-install-bar { padding-bottom: 64px; }
+@media (max-width: 640px) {
+  .fest-banner { padding: 14px 16px; }
+  .fest-actions, .fest-actions .btn { width: 100%; }
+}
