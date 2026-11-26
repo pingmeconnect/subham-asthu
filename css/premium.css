@@ -241,3 +241,27 @@ input, select, textarea { font-size: 1.05rem !important; min-height: 50px; }
   .cal-sheet { align-items: flex-end; padding: 0; }
   .cal-sheet .cal-box { width: 100%; border-radius: 22px 22px 0 0; max-height: 88vh; animation: sa-rise .3s ease both; }
 }
+
+/* ---- header v3: brand + tools on row 1, menu on its own row 2 (no overlap in any font) ---- */
+@media (min-width: 1120px) {
+  .site-header .header-inner { flex-wrap: wrap; align-items: center; justify-content: space-between; row-gap: 4px; }
+  .site-header .brand { order: 1; flex: none; }
+  .site-header .header-end { order: 2; margin-left: auto; flex: none; }
+  .site-header .site-nav { order: 3; flex: 1 0 100%; border-top: 1px solid var(--gold-light); padding-top: 4px; margin-top: 2px; }
+  .site-header .nav-inner { flex-wrap: wrap; justify-content: center; gap: 4px 6px; }
+  .site-header .sa-size-head { display: flex !important; }
+}
+
+.pg-r .pg-rs { display: block; margin-top: 4px; font-size: .78rem; color: #7A5A12; font-weight: 600; }
+.pg-tr { margin: 8px 0; padding: 10px 12px; border-radius: 12px; background: #F6EEDC; text-align: left; }
+.pg-tr p { margin: 6px 0; font-size: 1rem; } .pg-tr small { color: var(--muted); }
+
+/* Astrologer tile: gentle highlight, same size as the other tiles (no extra space) */
+.svc-astro { position: relative; border: 2px solid var(--gold) !important; background: linear-gradient(180deg,#FFF8E6,#FFF) !important; animation: sa-glow 3.2s ease-in-out infinite; }
+.svc-astro svg { stroke: var(--maroon); }
+.svc-new { position: absolute; top: -9px; right: 8px; padding: 1px 10px; border-radius: 999px; background: var(--maroon); color: #FFE9B0; font-style: normal; font-weight: 800; font-size: .8rem; letter-spacing: .04em; line-height: 1.5; box-shadow: 0 2px 6px rgba(88,30,40,.3); }
+@keyframes sa-glow { 0%,100% { box-shadow: 0 0 0 0 rgba(201,150,43,0); } 50% { box-shadow: 0 0 0 5px rgba(201,150,43,.28); } }
+@media (max-width: 899px) { .svc-strip .svc-astro { grid-column: 1 / -1; } }
+.svc-astro { min-height: 84px; margin-bottom: 8px; }
+.svc-astro ~ .svc-soon-title { margin-top: 14px; }
+@media (prefers-reduced-motion: reduce) { .svc-astro { animation: none; } }
