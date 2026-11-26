@@ -369,3 +369,19 @@ html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
   .hero::before { left: 50%; right: auto; width: 150px; height: 150px; top: 16px; transform: translateX(-50%); border-radius: 50%;
     background-color: #FFF8EA; background-size: 122% auto; background-position: 50% 38%; border: 3px solid #C9A04F; box-shadow: 0 0 0 5px rgba(201,160,79,.22); }
 }
+
+/* Hero emblem v3: whole picture, no frame, soft edges (the file's own edges fade into the page) */
+@media (min-width: 761px) {
+  .hero::before { top: 50%; bottom: auto; left: 20px; width: 300px; height: 300px; transform: translateY(-50%); border-radius: 0; border: 0; box-shadow: none;
+    background-color: transparent; background-size: contain; background-position: center; background-repeat: no-repeat;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%); mask-composite: intersect; }
+}
+@media (min-width: 761px) and (max-width: 1000px) { .hero::before { width: 220px; height: 220px; left: 12px; } }
+@media (max-width: 760px) {
+  .hero::before { left: 50%; right: auto; width: 190px; height: 190px; top: 8px; transform: translateX(-50%); border-radius: 0; border: 0; box-shadow: none; background-color: transparent;
+    background-size: contain; background-position: center; background-repeat: no-repeat;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%); mask-composite: intersect; }
+  .hero { padding-top: 205px; }
+}
