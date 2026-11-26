@@ -432,3 +432,57 @@ html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
 .fest-actions .btn-outline { background: transparent; color: #FFF6E0; border: 2px solid #FFF6E0; }
 .fest-actions .btn-outline:hover { background: rgba(255,246,224,.14); }
 @media (max-width: 560px) { .fest-actions { width: 100%; } .fest-actions .btn { flex: 1 1 140px; justify-content: center; text-align: center; } }
+
+/* ================= Hero: final layout (Vinayagar left, temple right, text centred) =================
+   Stacking: gopuram (::after) sits at z -2, Vinayagar (::before) at z -1, so the Vinayagar is never covered. */
+.hero { isolation: isolate; }
+.hero::before { z-index: -1; }
+.hero::after  { z-index: -2; }
+.hero-cta { flex-wrap: wrap; }
+
+@media (min-width: 761px) {
+  .hero { padding: clamp(28px, 4vw, 52px) clamp(18px, 3vw, 36px); }
+  .hero::before {
+    display: block; top: 50%; bottom: auto; left: 2.5%; right: auto; width: clamp(180px, 23%, 250px); height: auto; aspect-ratio: 1;
+    transform: translateY(-50%); border: 0; border-radius: 0; box-shadow: none; background-color: transparent;
+    background-image: url("../img/vinayagar-hero.png"); background-size: contain; background-position: center; background-repeat: no-repeat;
+    -webkit-mask-image: radial-gradient(closest-side, #000 78%, transparent 100%); mask-image: radial-gradient(closest-side, #000 78%, transparent 100%);
+    mix-blend-mode: multiply; filter: drop-shadow(0 8px 14px rgba(88, 30, 40, .18));
+  }
+  .hero::after {
+    display: block; top: 0; bottom: 0; left: auto; right: 0; width: 24%; height: auto; border: 0;
+    background-image: url("../img/photos/hero-gopuram.webp"); background-size: cover; background-position: 52% center; background-repeat: no-repeat;
+    -webkit-mask-image: linear-gradient(270deg, #000 55%, transparent); mask-image: linear-gradient(270deg, #000 55%, transparent);
+  }
+  .hero-text { max-width: none; margin: 0 27% 0 27%; padding: 8px 0; }
+  .hero-text::before { inset: -12px -18px; }
+}
+
+@media (min-width: 761px) and (max-width: 1000px) {
+  .hero::before { width: 22%; left: 2%; }
+  .hero::after  { width: 22%; }
+  .hero-text { margin: 0 25% 0 26%; }
+}
+
+@media (max-width: 760px) {
+  .hero { padding: 200px 16px 26px; min-height: 0; }
+  .hero::before {
+    display: block; top: 12px; bottom: auto; left: 50%; right: auto; width: 150px; height: 150px; aspect-ratio: auto;
+    transform: translateX(-50%); border: 0; border-radius: 0; box-shadow: none; background-color: transparent;
+    background-image: url("../img/vinayagar-hero.png"); background-size: contain; background-position: center; background-repeat: no-repeat;
+    -webkit-mask-image: radial-gradient(closest-side, #000 78%, transparent 100%); mask-image: radial-gradient(closest-side, #000 78%, transparent 100%);
+    mix-blend-mode: multiply; filter: drop-shadow(0 6px 10px rgba(88, 30, 40, .18));
+  }
+  .hero::after {
+    display: block; top: 0; bottom: auto; left: 0; right: 0; width: auto; height: 200px; border: 0;
+    background-image: url("../img/photos/hero-gopuram.webp"); background-size: cover; background-position: 50% 30%; background-repeat: no-repeat;
+    -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent);
+  }
+  .hero-text { margin: 0; max-width: none; padding: 0; }
+  .hero-text::before { display: none; }
+  .hero-cta { flex-direction: column; align-items: stretch; }
+}
+
+/* ================= Next-special-day banner: breathing room at the bottom ================= */
+.fest-banner { padding: 16px 20px 26px; }
+@media (max-width: 767px) { .fest-banner { padding: 14px 16px 24px; } }
