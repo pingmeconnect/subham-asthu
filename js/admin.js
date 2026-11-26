@@ -44,6 +44,7 @@
   var custQ = '', adminUser = null, calRows = [];
   var fullP = {}, followData = null, bookPrefs = {}, offersList = [], editVendor = null, editOffer = null, offerImage = null, partnerPhoto = null;
   var contactData = { messages: [], new_count: 0 };
+  var helpReqData = { requests: [], open_count: 0 };
   var tab = 'home'; // home | orders | bookings | people | stores | poojas | messages | settings
   var orderFilter = 'waiting_for_confirmation';
   var bookingFilter = 'soon';
@@ -66,6 +67,7 @@
     ['messages', '💬', 'தானியங்கி செய்திகள் (4 வகை)', 'Automatic messages (4 kinds)'],
     ['soon', '🔔', 'விரைவில் வரும் உரைகள்', 'Coming-soon texts'],
     ['helpmsgs', '✉', 'உதவி & பரிந்துரைகள்', 'Help & suggestions'],
+    ['helprequests', '🛟', 'உதவி மையம் கோரிக்கைகள்', 'Help Centre requests'],
     ['settings', '⚙', 'அமைப்புகள்', 'Settings']
   ];
 
@@ -106,7 +108,8 @@
       tab === 'combos' ? soft('sa_admin_list_offers') : Promise.resolve(null),
       tab === 'followup' ? soft('sa_admin_followup') : Promise.resolve(null),
       tab === 'bookings' ? soft('sa_admin_booking_prefs') : Promise.resolve(null),
-      tab === 'helpmsgs' ? soft('sa_admin_list_contact') : Promise.resolve(null)]).then(function (res) {
+      tab === 'helpmsgs' ? soft('sa_admin_list_contact') : Promise.resolve(null),
+      tab === 'helprequests' ? soft('sa_admin_list_help_requests') : Promise.resolve(null)]).then(function (res) {
       var d = res[0];
       if (d && d.ok && res[1] && res[1].ok) d.vendors = res[1].vendors;
       fullP = {};
@@ -115,6 +118,7 @@
       followData = res[4] && res[4].ok ? res[4] : null;
       bookPrefs = res[5] && res[5].ok ? res[5].prefs : {};
       contactData = res[6] && res[6].ok ? res[6] : { messages: [], new_count: 0 };
+      helpReqData = res[7] && res[7].ok ? res[7] : { requests: [], open_count: 0 };
       return d;
     });
   }
@@ -878,6 +882,7 @@
     if (tab === 'offers') return offersSection(d);
     if (tab === 'soon') return soonSection();
     if (tab === 'helpmsgs') return helpMsgsSection();
+    if (tab === 'helprequests') return helpRequestsSection();
     if (tab === 'settings') return securityCards(d) + settingsSection();
     return homeSection(d);
   }
@@ -1007,6 +1012,35 @@
       (items || '<p>' + bi('இன்னும் செய்திகள் இல்லை.', 'No messages yet.') + '</p>');
   }
 
+  // Help Centre requests from logged-in customers. The admin's reply shows to the customer as a notification.
+  function helpRequestsSection() {
+    var H = window.SA_HELP || { CATS: [], QUESTIONS: {} };
+    var catName = function (code) {
+      var c = H.CATS.filter(function (x) { return x.code === code; })[0];
+      return c ? bi(c.ta, c.en) : esc(code);
+    };
+    var qName = function (cat, code) {
+      if (!code) return '';
+      var q = (H.QUESTIONS[cat] || []).filter(function (x) { return x[0] === code; })[0];
+      return q ? '<p><strong>' + bi(q[1], q[2]) + '</strong></p>' : '';
+    };
+    var items = (helpReqData.requests || []).map(function (r) {
+      var when = new Date(r.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+      return '<div class="ad-card' + (r.status === 'open' ? ' is-hot' : '') + '">' +
+        '<p><strong>' + esc(r.name) + '</strong> · ' + phoneLine(r.mobile) + ' · ' + catName(r.category) + ' · ' + esc(when) + '</p>' +
+        qName(r.category, r.question_code) +
+        (r.message ? '<p>' + esc(r.message) + '</p>' : '') +
+        (r.reply ? '<p class="soon">' + bi('முந்தைய பதில்: ', 'Earlier reply: ') + esc(r.reply) + '</p>' : '') +
+        '<label class="field"><span class="ta">பதில்</span><span class="en">Reply</span>' +
+          '<textarea id="hr-reply-' + esc(r.id) + '" rows="3" maxlength="1000"></textarea></label>' +
+        '<div class="ad-btns"><button type="button" class="btn" data-act="help-reply" data-id="' + esc(r.id) + '">' +
+          bi('பதில் அனுப்பு', 'Send reply') + '</button></div></div>';
+    }).join('');
+    return '<h1>' + bi('உதவி மையம் கோரிக்கைகள்', 'Help Centre requests') + '</h1>' +
+      '<p class="soon">' + bi('திறந்தவை: ' + (helpReqData.open_count || 0), 'Open: ' + (helpReqData.open_count || 0)) + '</p>' +
+      (items || '<p>' + bi('இன்னும் கோரிக்கைகள் இல்லை.', 'No requests yet.') + '</p>');
+  }
+
   function settingsSection() {
     var rows = SASettings.rows().filter(function (r) { return r.key !== 'wa_sample' && r.group !== 'coming_soon'; });
     var out = '<h1>' + bi('அமைப்புகள்', 'Settings') + '</h1>' +
@@ -1098,6 +1132,12 @@
     if (act === 'del-offer') {
       if (!ask('இந்தத் தொகுப்பை நீக்கவா?', 'Delete this combo?')) return;
       return after(DB.rpc('sa_admin_delete_offer', { p_token: DB.token(), p_id: id }), NOTICE.saved[0], NOTICE.saved[1]);
+    }
+    if (act === 'help-reply') {
+      var hta = document.getElementById('hr-reply-' + id);
+      var txt = hta ? hta.value.trim() : '';
+      if (txt.length < 2) { showNotice('பதிலை எழுதவும்.', 'Please write a reply.', true); return; }
+      return after(DB.rpc('sa_admin_reply_help_request', { p_token: DB.token(), p_id: id, p_reply: txt }), NOTICE.saved[0], NOTICE.saved[1]);
     }
     if (act === 'rec-fu') {
       return after(DB.rpc('sa_admin_record_followup', { p_token: DB.token(), p_kind: b.getAttribute('data-kind'), p_ref: id, p_rating: b.getAttribute('data-rating'), p_comment: '' }), NOTICE.saved[0], NOTICE.saved[1]);
