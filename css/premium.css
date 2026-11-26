@@ -176,3 +176,13 @@ input, select, textarea { font-size: 1.05rem !important; min-height: 50px; }
 .bottom-nav { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
 .card > h1:first-child { padding-bottom: 20px; margin-bottom: 28px !important; line-height: 1.45; }
 .bottom-nav a, .bottom-nav a span { font-size: .76rem !important; overflow-wrap: normal !important; word-break: keep-all; }
+
+/* ---- header never overlaps: compact nav on desktop ---- */
+@media (min-width: 1120px) {
+  .site-header .nav-inner a { padding: 6px 9px; font-size: .9rem; white-space: nowrap; }
+  .site-header .nav-inner a[data-nav="login"] { margin-left: 2px; }
+  .site-header .header-inner { gap: 10px; }
+  .site-header .header-end { flex: none; gap: 8px; }
+  .site-header .sa-size-head button { min-width: 34px; min-height: 34px; padding: 0 4px; }
+}
+@media (min-width: 1120px) and (max-width: 1279px) { .site-header .sa-size-head { display: none; } }

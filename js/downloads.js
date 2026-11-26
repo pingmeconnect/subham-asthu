@@ -88,7 +88,12 @@
       headers: { 'Content-Type': 'application/json', apikey: CFG.SUPABASE_KEY, Authorization: 'Bearer ' + CFG.SUPABASE_KEY },
       body: JSON.stringify({ token: t, slug: slug })
     }).then(function (r) {
-      if (r.status === 401) { DB.setToken(null); throw new Error('login'); }
+      if (r.status === 401) {   // only a real "not logged in" answer from our function ends the session
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (j && j.error === 'login') { DB.setToken(null); throw new Error('login'); }
+          throw new Error('gateway');   // Supabase blocked the call (Verify JWT still ON) - the customer is still logged in
+        });
+      }
       if (r.status === 429) throw new Error('limit');
       if (!r.ok) throw new Error('fail');
       return r.blob();
@@ -100,6 +105,7 @@
       say(card, bi('பதிவிறக்கம் தொடங்கியது ✔', 'Download started ✔'));
     }).catch(function (e) {
       say(card, e.message === 'login' ? bi('மீண்டும் <a href="#login">உள்நுழையுங்கள்</a>.', 'Please <a href="#login">log in</a> again.')
+        : e.message === 'gateway' ? bi('சேவை இன்னும் தயாராகவில்லை. சிறிது நேரம் கழித்து முயற்சிக்கவும்.', 'The download service is not ready yet. Please try again shortly.')
         : e.message === 'limit' ? bi('இன்றைய பதிவிறக்க வரம்பு முடிந்தது. நாளை முயற்சிக்கவும்.', 'Daily download limit reached. Try again tomorrow.')
         : bi('இப்போது பதிவிறக்க முடியவில்லை. சிறிது நேரம் கழித்து முயற்சிக்கவும்.', 'Could not download right now. Please try again shortly.'));
     }).then(function () { btn.disabled = false; });
