@@ -50,7 +50,7 @@
   var EN_RE = build(EN, false), TA_RE = build(TA, true);
   var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, INPUT: 1, OPTION: 1, TITLE: 1, CODE: 1 };
   // Menus, headings, buttons, tiles and the running bar stay short and clean; brackets go in the reading text only.
-  var SKIP_IN = 'nav, header, button, h1, h2, h3, .sa-ticker, .bottom-nav, .svc-link, .cat-tile, .pg-card, .pg-tools, .pg-rasi, .pg-l, .dl-card, .soon-box, .brand, .m-panel, .footer-links, .fest-banner, .fest-card';
+  var SKIP_IN = 'nav, header, button, h1, h2, h3, .sa-ticker, .bottom-nav, .svc-link, .cat-tile, .pg-card, .pg-tools, .pg-rasi, .pg-l, .dl-card, .soon-box, .cal-wrap, .pg-tabs, .brand, .m-panel, .footer-links, .fest-banner, .fest-card';
 
   function explain(text, rules) {
     var out = text, changed = false;

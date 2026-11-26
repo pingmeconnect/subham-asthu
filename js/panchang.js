@@ -142,11 +142,14 @@
     });
     box.addEventListener('change', function (e) {
       if (e.target.classList.contains('pg-date') && e.target.value) { var p = e.target.value.split('-'); date = { y: +p[0], m: +p[1], d: +p[2] }; page(); }
-      if (e.target.classList.contains('pg-city')) { city = +e.target.value; try { localStorage.setItem(KEY, city); } catch (x) { /* ok */ } page(); homeCard(); }
+      if (e.target.classList.contains('pg-city')) { city = +e.target.value; try { localStorage.setItem(KEY, city); } catch (x) { /* ok */ } page(); homeCard(); document.dispatchEvent(new Event('sa-city')); }
     });
   }
 
   load(); date = todayIST();
+  // shared with js/calendar.js (month calendar tab)
+  window.SAPanchangShared = { compute: compute, bi: bi, two: two, clock: clock, range: range, tillTxt: tillTxt, todayIST: todayIST,
+    setDate: function (d) { date = d; page(); } };
   homeCard(); wire();
   function onHash() { if (/^#(panchang|rasi)/.test(location.hash || '')) { date = date || todayIST(); page(); } }
   window.addEventListener('hashchange', onHash); onHash();

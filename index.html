@@ -103,7 +103,7 @@
         </div>
         <div class="fest-actions">
           <a class="btn" id="fest-open" href="#poojas"><span class="ta">பூஜை விவரம்</span><span class="en">Pooja details</span></a>
-          <a class="btn btn-outline" href="#poojas"><span class="ta">நாட்காட்டி</span><span class="en">See the calendar</span></a>
+          <a class="btn btn-outline" href="#panchang/calendar"><span class="ta">நாட்காட்டி</span><span class="en">See the calendar</span></a>
         </div>
       </div>
 
@@ -237,7 +237,7 @@
       <div class="home-section" id="fest-strip" hidden>
         <h2 class="section-title"><span class="ta">வரும் விசேஷங்கள்</span><span class="en">Coming Festivals &amp; Poojas</span></h2>
         <div class="fest-cards" id="fest-cards"></div>
-        <p class="section-more"><a href="#poojas"><span class="ta">முழு நாட்காட்டியைப் பார்க்க →</span><span class="en">See the full calendar →</span></a></p>
+        <p class="section-more"><a href="#panchang/calendar"><span class="ta">முழு நாட்காட்டியைப் பார்க்க →</span><span class="en">See the full calendar →</span></a></p>
       </div>
 
       <!-- 6. Find a Purohithar / Samayalkarar -->
@@ -559,8 +559,13 @@
     <!-- PANCHANG -->
     <section class="page" data-page="panchang" hidden>
       <div class="card">
-        <h1><span class="ta">தினசரி பஞ்சாங்கம் & ராசி</span><span class="en">Daily Panchang & Rasi</span></h1>
+        <h1><span class="ta">பஞ்சாங்கம் &amp; நாட்காட்டி</span><span class="en">Panchang &amp; Calendar</span></h1>
+        <div class="pg-tabs" role="navigation" aria-label="Panchang tabs">
+          <a href="#panchang" data-pgtab="today"><span class="ta">இன்றைய பஞ்சாங்கம்</span><span class="en">Today's Panchang</span></a>
+          <a href="#panchang/calendar" data-pgtab="cal"><span class="ta">மாத நாட்காட்டி</span><span class="en">Month calendar</span></a>
+        </div>
         <div id="pg-page"></div>
+        <div id="pg-cal" hidden></div>
       </div>
     </section>
 
@@ -781,6 +786,7 @@
   <script src="js/ui.js?v=14" defer></script>
   <script src="js/panchang-core.js?v=1" defer></script>
   <script src="js/panchang.js?v=1" defer></script>
+  <script src="js/calendar.js?v=1" defer></script>
   <script src="js/downloads.js?v=1" defer></script>
   <script src="js/ticker.js?v=1" defer></script>
   <script src="js/reveal.js?v=1" defer></script>
