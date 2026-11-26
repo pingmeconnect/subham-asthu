@@ -1,0 +1,83 @@
+/* Subham Astu — Premium Maroon & Gold theme for all pages except Home (scoped; see theme-pages source). */
+body:not(:has(.page[data-page="home"]:not([hidden]))){
+  --cream:#fef3de;--parchment:#fdebd0;--white:#fffaf0;
+  --maroon:#6b0b12;--maroon-deep:#430d16;
+  --gold:#c89436;--gold-light:#f2cf79;
+  --border:#e9c07c;--gold-soft:#ecc88b;
+  --ink:#3a2320;--muted:#6b5550;
+  --shadow-card:0 5px 12px rgba(160,90,40,.18);
+  --sa-card:linear-gradient(180deg,#fff7ea,#fdebd0);
+  --sa-maroon-grad:linear-gradient(180deg,#8a1217,#6a0a10);
+  --sa-gold-grad:linear-gradient(180deg,#ffd98d,#e9ae52);
+}
+html{background:#fef3de}
+body:not(:has(.page[data-page="home"]:not([hidden]))){background:linear-gradient(180deg,#fef0db 0,#fdf0dc 420px,#fef3de 900px,#fef1dc 100%)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-header{background:linear-gradient(180deg,#fff1de,#fce8ce);border-bottom:2px solid var(--gold);box-shadow:0 4px 14px rgba(107,11,18,.10)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-header .lamp{border:1.5px solid var(--gold);background:radial-gradient(circle,#fff 0,#f8e2b8 72%,#e8bd6d 100%);box-shadow:inset 0 0 0 3px #fff8e9}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .brand-name .bn-ta{color:#7a0a10;font-weight:800}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .brand-name .bn-en{color:#6d0a10;font-weight:700;letter-spacing:.2em}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .brand-name .bn-tag,body:not(:has(.page[data-page="home"]:not([hidden]))) .brand-tag{color:#a1592b}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .nav-inner a{color:#5c1018;font-weight:600;border-radius:10px}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .nav-inner a:hover{background:rgba(200,148,54,.16);color:var(--maroon)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .nav-inner a[aria-current="page"]{background:var(--sa-maroon-grad);color:#fff2d6;box-shadow:0 3px 8px rgba(90,10,15,.35)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .nav-inner a[data-nav="login"],body:not(:has(.page[data-page="home"]:not([hidden]))) .hdr-register{background:var(--sa-maroon-grad);color:#fff2d6;border:1px solid var(--gold);border-radius:12px;box-shadow:0 3px 8px rgba(90,10,15,.25)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .nav-inner a[data-nav="login"]:hover,body:not(:has(.page[data-page="home"]:not([hidden]))) .hdr-register:hover{background:var(--maroon-deep);color:#ffe7ac}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .lang-toggle{border:1px solid var(--gold);border-radius:20px;background:#fff6e6}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .lang-toggle button{color:var(--maroon)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .lang-toggle button.is-active{background:var(--sa-maroon-grad);color:#ffe9bd;border-radius:16px}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .m-panel{background:#fff6e6;border:1px solid var(--gold);box-shadow:0 10px 24px rgba(107,11,18,.2)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .m-panel a{color:var(--maroon)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .m-panel a.m-login,body:not(:has(.page[data-page="home"]:not([hidden]))) .m-panel a.m-register{background:var(--sa-maroon-grad);color:#fff2d6}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .sa-ticker{background:linear-gradient(90deg,#5b020f,#7b050d 50%,#5b020f);border-bottom:2px solid var(--gold)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card,body:not(:has(.page[data-page="home"]:not([hidden]))) .cat-tile,body:not(:has(.page[data-page="home"]:not([hidden]))) .svc-link,body:not(:has(.page[data-page="home"]:not([hidden]))) .fest-card,body:not(:has(.page[data-page="home"]:not([hidden]))) .dl-card,body:not(:has(.page[data-page="home"]:not([hidden]))) .combo-card,body:not(:has(.page[data-page="home"]:not([hidden]))) .feature-card,body:not(:has(.page[data-page="home"]:not([hidden]))) .acct-box,body:not(:has(.page[data-page="home"]:not([hidden]))) .faq-item,body:not(:has(.page[data-page="home"]:not([hidden]))) .od,body:not(:has(.page[data-page="home"]:not([hidden]))) .pooja-card,body:not(:has(.page[data-page="home"]:not([hidden]))) .partner-card,body:not(:has(.page[data-page="home"]:not([hidden]))) .astro-wrap .card{
+  background:var(--sa-card);border:1.3px solid var(--border);border-radius:14px;box-shadow:var(--shadow-card)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card{border-radius:16px}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card .card,body:not(:has(.page[data-page="home"]:not([hidden]))) .card .dl-card,body:not(:has(.page[data-page="home"]:not([hidden]))) .card .faq-item,body:not(:has(.page[data-page="home"]:not([hidden]))) .card .acct-box{box-shadow:0 3px 8px rgba(160,90,40,.14)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .faq-item[open]{background:#fff4de;border-color:var(--gold)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card > h1:first-child,body:not(:has(.page[data-page="home"]:not([hidden]))) .card > header > h1{color:var(--maroon);font-weight:800;padding-bottom:30px;margin-bottom:22px!important}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card > h1:first-child::after{width:210px;height:24px;border-radius:0;background:url("../img/home-new/orn-h.png") left center/contain no-repeat}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card h2,body:not(:has(.page[data-page="home"]:not([hidden]))) .card h3{color:var(--maroon)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card h2{border-bottom:1.5px solid rgba(200,148,54,.45);padding-bottom:4px}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .page a:not(.btn):not(.dl-btn):not(.pg-tabs a):not(.fest-card):not(.cat-tile):not(.svc-link){color:#8a1217}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .dl-note,body:not(:has(.page[data-page="home"]:not([hidden]))) .od-notes li,body:not(:has(.page[data-page="home"]:not([hidden]))) .soon{background:#fff3da;border-left:5px solid var(--gold);border-radius:10px}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .badge,body:not(:has(.page[data-page="home"]:not([hidden]))) .badge-ok{background:#fff0c9;color:var(--maroon);border:1px solid var(--gold)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .btn,body:not(:has(.page[data-page="home"]:not([hidden]))) .dl-btn{background:var(--sa-maroon-grad);color:#fff2d6;border:1px solid var(--gold);border-radius:24px;box-shadow:0 4px 10px rgba(90,10,15,.28);letter-spacing:.2px}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .btn:hover,body:not(:has(.page[data-page="home"]:not([hidden]))) .dl-btn:hover{background:var(--maroon-deep);color:#ffe7ac;transform:translateY(-2px);box-shadow:0 8px 18px rgba(90,10,15,.32)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .btn-gold,body:not(:has(.page[data-page="home"]:not([hidden]))) .hero .btn-gold{background:var(--sa-gold-grad);color:#4f0e12;border:1px solid #f5d58b}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .btn-outline{background:#fff6e6;color:var(--maroon);border:1.5px solid var(--gold);box-shadow:none}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .btn-outline:hover{background:#fdeacb;color:var(--maroon)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .field > span{color:var(--maroon);font-weight:700}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .field input,body:not(:has(.page[data-page="home"]:not([hidden]))) .field select,body:not(:has(.page[data-page="home"]:not([hidden]))) textarea,body:not(:has(.page[data-page="home"]:not([hidden]))) .dl-tools input,body:not(:has(.page[data-page="home"]:not([hidden]))) .od select,body:not(:has(.page[data-page="home"]:not([hidden]))) .od textarea,body:not(:has(.page[data-page="home"]:not([hidden]))) .od input[type="text"],body:not(:has(.page[data-page="home"]:not([hidden]))) .od input[type="date"],body:not(:has(.page[data-page="home"]:not([hidden]))) select,body:not(:has(.page[data-page="home"]:not([hidden]))) input[type="text"],body:not(:has(.page[data-page="home"]:not([hidden]))) input[type="search"],body:not(:has(.page[data-page="home"]:not([hidden]))) input[type="tel"],body:not(:has(.page[data-page="home"]:not([hidden]))) input[type="email"],body:not(:has(.page[data-page="home"]:not([hidden]))) input[type="password"],body:not(:has(.page[data-page="home"]:not([hidden]))) input[type="date"]{
+  background:#fffaf0;border:1.5px solid var(--border);border-radius:12px;color:var(--ink)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .field input:focus,body:not(:has(.page[data-page="home"]:not([hidden]))) .field select:focus,body:not(:has(.page[data-page="home"]:not([hidden]))) textarea:focus,body:not(:has(.page[data-page="home"]:not([hidden]))) select:focus,body:not(:has(.page[data-page="home"]:not([hidden]))) input:focus{outline:3px solid rgba(200,148,54,.35);border-color:var(--maroon)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .form-msg{color:var(--maroon)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .tabs{background:#fdebd0;border:1px solid var(--border);border-radius:14px}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .tab{color:var(--maroon);font-weight:700}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .tab.is-active{background:var(--sa-maroon-grad);color:#ffe9bd;box-shadow:0 3px 8px rgba(90,10,15,.3)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .pg-tabs a{background:var(--sa-card);border:1.5px solid var(--gold);color:var(--maroon)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .pg-tabs a[aria-current="true"]{background:var(--sa-maroon-grad);color:#ffe9bd;border-color:var(--gold)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card table{border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card th{background:var(--sa-maroon-grad);color:#ffe9bd;font-weight:700}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card td{border-bottom:1px solid rgba(233,192,124,.6)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .card tbody tr:nth-child(even){background:rgba(255,243,218,.7)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .bottom-nav{background:linear-gradient(180deg,#fff1de,#fce8ce);border-top:2px solid var(--gold)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .bottom-nav a{color:#7a4a36}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .bottom-nav a[aria-current="page"]{color:var(--maroon)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .bottom-nav a[aria-current="page"]::before{background:var(--gold)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .bottom-nav a[aria-current="page"] svg{stroke:var(--maroon);fill:rgba(242,207,121,.5)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer{position:relative;margin-top:70px;padding-top:62px;background:linear-gradient(90deg,#5b020f,#7b050d 50%,#5b020f);border-top:0;color:#f3dcae}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer::before{content:"";position:absolute;left:0;right:0;bottom:calc(100% - 20px);height:34px;background:url("../img/home-new/footer-wave.png") center top/100% 100% no-repeat;pointer-events:none}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer::after{content:"";position:absolute;left:0;right:0;bottom:calc(100% + 13px);height:173px;pointer-events:none;
+  background:url("../img/home-new/scene-l2.png") left bottom/auto 173px no-repeat,url("../img/home-new/scene-r2.png") right bottom/auto 173px no-repeat;opacity:.95}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer a{color:var(--gold-light)}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer .footer-tag{color:#f6d27c;font-size:1.15rem;font-weight:600}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer p{color:rgba(255,236,200,.88)}
+@media(max-width:900px){body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer::after{display:none}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer{margin-top:50px}}
+@media print{body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer::before,body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer::after{display:none}}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer .wrap{text-align:center}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 26px}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer .wrap{width:min(90%,1300px);margin-inline:auto}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer .wrap > *{margin-left:auto!important;margin-right:auto!important}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .footer-static p{margin-left:auto!important;margin-right:auto!important;text-align:center}
+body:not(:has(.page[data-page="home"]:not([hidden]))) .soon,body:not(:has(.page[data-page="home"]:not([hidden]))) .od-notes li,body:not(:has(.page[data-page="home"]:not([hidden]))) .dl-note{padding:10px 14px}
