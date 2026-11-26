@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="css/admin.css?v=14">
   <link rel="stylesheet" href="css/theme.css?v=16">
   <link rel="stylesheet" href="css/premium.css?v=2">
+  <link rel="stylesheet" href="css/home-redesign.css?v=1">
 </head>
 <body>
 
@@ -78,19 +79,25 @@
     <section class="page" data-page="home">
 
       <!-- 1. Hero -->
-      <div class="hero">
-        <div class="hero-text">
-          <p class="hero-brand" aria-hidden="true"><span class="hb-ta">சுபம் அஸ்து</span><span class="hb-en">SUBHAM ASTU</span></p>
+      <div class="hr-hero">
+        <div class="hr-hero-text">
+          <p class="hr-brand" aria-hidden="true"><span class="hr-bta">சுபம் அஸ்து</span><span class="hr-ben">SUBHAM ASTU</span></p>
           <h1>
             <span class="ta">உங்கள் இல்லத்து மங்கள நிகழ்வுகளுக்கு...<br><em>சரியான நபர். சரியான இணைப்பு.</em></span>
             <span class="en">For the auspicious occasions of your home...<br><em>The right person. The right connection.</em></span>
           </h1>
           <p class="ta">வாத்தியார், சமையல், பூஜைப் பொருட்கள் — எல்லாம் ஒரே இடத்தில்.</p>
           <p class="en">Priests, cooks and pooja items — all in one place.</p>
-          <div class="hero-cta">
-            <a class="btn btn-gold" href="#bookings"><span class="ta">தொடங்குங்கள்</span><span class="en">Get Started</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            <a class="btn btn-ghost" href="#poojas"><span class="ta">பூஜைகளைப் பாருங்கள்</span><span class="en">Explore Poojas</span></a>
+          <div class="hr-hero-cta">
+            <a class="hr-btn hr-btn-gold" href="#bookings"><span class="ta">தொடங்குங்கள்</span><span class="en">Get Started</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="hr-btn hr-btn-ghost" href="#poojas"><span class="ta">பூஜைகளைப் பாருங்கள்</span><span class="en">Explore Poojas</span></a>
           </div>
+        </div>
+        <figure class="hr-hero-deity">
+          <img src="img/vinayagar-hero.png" alt="Lord Ganesha" fetchpriority="high" decoding="async">
+        </figure>
+        <div class="hr-hero-temple" aria-hidden="true">
+          <img src="img/photos/hero-gopuram.webp" alt="" loading="eager" decoding="async">
         </div>
       </div>
 
@@ -111,41 +118,41 @@
       <div class="pg-card" id="pg-home" hidden></div>
 
       <!-- 2. Service quick links -->
-      <div class="svc-strip">
-        <a class="svc-link svc-main" href="#downloads">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 6h18l8 8v28H12z"/><path d="M30 6v8h8M18 24h14M18 30h14M18 36h9"/></svg>
-          <strong><span class="ta">பூஜை வழிகாட்டி PDF</span><span class="en">Pooja Guides (PDF)</span><small><span class="ta">34 பூஜைகள் · பதிவிறக்கம்</span><span class="en">34 poojas · Download</span></small></strong>
+      <nav class="hr-quick" aria-label="Quick access / விரைவு அணுகல்">
+        <a class="hr-qcard" href="#panchang">
+          <span class="hr-qicon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="32" rx="4"/><path d="M6 19h36M16 5v8M32 5v8M16 28h6M26 28h6M16 34h6"/></svg></span>
+          <strong><span class="ta">பஞ்சாங்கம்</span><span class="en">Panchangam</span></strong>
         </a>
-        <a class="svc-link" href="#panchang">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="9" width="36" height="32" rx="4"/><path d="M6 19h36M16 5v8M32 5v8M16 28h6M26 28h6M16 34h6"/></svg>
-          <strong><span class="ta">பஞ்சாங்கம்</span><span class="en">Panchang</span></strong>
-        </a>
-        <a class="svc-link" href="#rasi">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M24 7v34M7 24h34"/><circle cx="24" cy="24" r="5"/></svg>
+        <a class="hr-qcard" href="#rasi">
+          <span class="hr-qicon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="M24 7v34M7 24h34"/><circle cx="24" cy="24" r="5"/></svg></span>
           <strong><span class="ta">ராசி பலன்</span><span class="en">Rasi Palan</span></strong>
         </a>
-        <a class="svc-link svc-astro" href="#astrology">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="8"/><path d="M24 4v8M24 36v8M4 24h8M36 24h8M10 10l6 6M32 32l6 6M38 10l-6 6M16 32l-6 6"/></svg>
-          <em class="svc-new"><span class="ta">புதியது</span><span class="en">NEW</span></em>
-          <strong><span class="ta">ஜோதிடர் ஆலோசனை</span><span class="en">Astrologer Consultation</span></strong>
+        <a class="hr-qcard" href="#downloads">
+          <span class="hr-qicon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M12 6h18l8 8v28H12z"/><path d="M30 6v8h8M18 24h14M18 30h14M18 36h9"/></svg></span>
+          <strong><span class="ta">வழிகாட்டி PDF</span><span class="en">Vazhipadu PDF</span></strong>
         </a>
-        <p class="svc-soon-title"><span class="ta">விரைவில் வருகின்றன <small>— பணி நடைபெறுகிறது</small></span><span class="en">Coming soon <small>— work in progress</small></span></p>
-        <a class="svc-link is-soon" href="#bookings/priest" data-soon="priest">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="12" r="6"/><path d="M12 42c0-9 5-15 12-15s12 6 12 15"/><path d="M18 30l6 6 6-6M24 27v9"/></svg>
-          <strong><span class="ta">வாத்தியார்கள்</span><span class="en">Priests</span></strong>
+        <a class="hr-qcard" href="#order" data-soon="order">
+          <span class="hr-qicon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M6 18l4-10h28l4 10"/><path d="M9 24v18h30V24M20 42V31h8v11"/></svg></span>
+          <strong><span class="ta">பூஜைப் பொருட்கள்</span><span class="en">Pooja Products</span></strong>
         </a>
-        <a class="svc-link is-soon" href="#bookings/cook" data-soon="cook">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 26a8 8 0 0 1 3-15 9 9 0 0 1 14 0 8 8 0 0 1 3 15z"/><path d="M15 26v13h18V26M15 33h18"/></svg>
-          <strong><span class="ta">சமையல்காரர்கள்</span><span class="en">Cooks</span></strong>
+        <a class="hr-qcard" href="#poojas">
+          <span class="hr-qicon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="12" r="6"/><path d="M12 42c0-9 5-15 12-15s12 6 12 15"/><path d="M18 30l6 6 6-6M24 27v9"/></svg></span>
+          <strong><span class="ta">சேவைகள்</span><span class="en">Services</span></strong>
         </a>
-        <a class="svc-link is-soon" href="#order" data-soon="order">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 18l4-10h28l4 10"/><path d="M6 18c0 3 3 5 6 5s6-2 6-5c0 3 3 5 6 5s6-2 6-5c0 3 3 5 6 5s6-2 6-5"/><path d="M9 24v18h30V24M20 42V31h8v11"/></svg>
-          <strong><span class="ta">பூஜைப் பொருட்கள் ஆர்டர்</span><span class="en">Order Pooja Samagri</span><small><span class="ta">பூஜையைத் தேர்ந்தெடுத்து ஆர்டர் செய்யுங்கள்</span><span class="en">Choose a pooja, then order</span></small></strong>
+        <a class="hr-qcard" href="#faq">
+          <span class="hr-qicon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M10 26v-4a14 14 0 0 1 28 0v4"/><rect x="6" y="26" width="8" height="12" rx="3"/><rect x="34" y="26" width="8" height="12" rx="3"/><path d="M38 38c0 3-3 4-8 4h-4"/></svg></span>
+          <strong><span class="ta">உதவி மையம்</span><span class="en">Help Centre</span></strong>
         </a>
-        <a class="svc-link is-soon" href="#soon-matching" data-soon="matching">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="18" cy="24" r="10"/><circle cx="30" cy="24" r="10"/></svg>
-          <strong><span class="ta">திருமணப் பொருத்தம்</span><span class="en">Horoscope Matching</span></strong>
+      </nav>
+      <div class="hr-soon">
+        <a class="hr-chip is-live" href="#astrology">
+          <span class="hr-new"><span class="ta">புதியது</span><span class="en">NEW</span></span>
+          <span class="ta">ஜோதிடர் ஆலோசனை</span><span class="en">Astrologer Consultation</span>
         </a>
+        <p class="hr-soon-title"><span class="ta">விரைவில் வருகின்றன <small>— பணி நடைபெறுகிறது</small></span><span class="en">Coming soon <small>— work in progress</small></span></p>
+        <a class="hr-chip" href="#bookings/priest" data-soon="priest"><span class="ta">வாத்தியார்கள்</span><span class="en">Priests</span></a>
+        <a class="hr-chip" href="#bookings/cook" data-soon="cook"><span class="ta">சமையல்காரர்கள்</span><span class="en">Cooks</span></a>
+        <a class="hr-chip" href="#soon-matching" data-soon="matching"><span class="ta">திருமணப் பொருத்தம்</span><span class="en">Horoscope Matching</span></a>
       </div>
 
       <!-- 3. Services (pooja categories) + How it works -->
@@ -303,7 +310,7 @@
 
       <!-- 9. Community trust (principles only; add real family feedback here once collected) -->
       <div class="home-section home-extra">
-        <h2 class="section-title"><span class="ta">சமூக நம்பிக்கை &amp; குடும்ப அனுபவங்கள்</span><span class="en">Community Trust &amp; Family Experiences</span></h2>
+        <h2 class="section-title"><span class="ta">சமூக நம்பிக்கை</span><span class="en">Community Trust</span></h2>
         <div class="trust-grid">
           <div class="trust-card">
             <strong><span class="ta">உங்கள் ஊரிலேயே</span><span class="en">Right in Your Town</span></strong>
