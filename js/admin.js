@@ -425,6 +425,7 @@
       '<div class="pooja-grid">' + previews + '</div>' +
       '<div class="action-row">' +
         '<button type="button" class="btn btn-outline" data-act="test-messages">' + bi('சோதனைச் செய்திகளை அனுப்பு (எனக்கு)', 'Queue test messages (to me)') + '</button>' +
+        '<button type="button" class="btn" data-act="api-send">' + bi('WhatsApp API மூலம் அனுப்பு', 'Send via WhatsApp API') + '</button>' +
         '<button type="button" class="btn btn-outline" data-act="run-reminders">' + bi('நாளைய நினைவூட்டல்கள்', "Queue tomorrow's reminders") + '</button>' +
       '</div>' +
       '<h3>' + bi('அனுப்ப வேண்டிய செய்திகள்', 'Messages to send') + '</h3>' +
@@ -955,6 +956,21 @@
     });
   }
 
+  // Sends queued WhatsApp messages now through the approved templates (Edge Function "send-whatsapp").
+  function apiSendWhatsapp() {
+    var c = window.SA_CONFIG;
+    return fetch(c.SUPABASE_URL + '/functions/v1/send-whatsapp', {
+      method: 'POST',
+      headers: { 'apikey': c.SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: '{}'
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || j.ok === false) throw new Error(j && j.error || 'send_failed');
+      var ta = 'அனுப்பப்பட்டது: ' + j.sent + ' · தோல்வி: ' + j.failed;
+      var en = 'Sent: ' + j.sent + ' · Failed: ' + j.failed;
+      return render().then(function () { showNotice(ta, en, j.failed > 0); });
+    }).catch(function () { showNotice(NOTICE.fail[0], NOTICE.fail[1], true); });
+  }
+
   function testMessages() {
     return after(DB.rpc('sa_admin_queue_test', { p_token: DB.token() }), NOTICE.test_sent[0], NOTICE.test_sent[1]);
   }
@@ -1240,6 +1256,7 @@
     }
     if (act === 'run-reminders') return runReminders();
     if (act === 'test-messages') return testMessages();
+    if (act === 'api-send') return apiSendWhatsapp();
   });
 
   box.addEventListener('change', function (e) {
