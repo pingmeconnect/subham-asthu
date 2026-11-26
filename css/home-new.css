@@ -1,0 +1,13 @@
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fef1dc}
+body{font-family:"Noto Sans Tamil","FreeSans",sans-serif;overflow-x:hidden}
+#vp{width:100%;overflow:hidden;position:relative}
+#stage{position:absolute;left:0;top:0;width:1536px;height:1024px;transform-origin:0 0;background:linear-gradient(180deg,#fef0db 0,#fdeedb 440px,#fdf0dc 560px,#fef3de 600px,#fef3de 745px,#fef1dc 780px,#fef1dc 930px)}
+.a{position:absolute;display:block}
+.t{position:absolute;white-space:nowrap;line-height:1.2}
+.mu{mix-blend-mode:multiply}
+.brand,.pt{font-family:"Noto Sans Tamil","FreeSans",sans-serif}
+.serif{font-family:"Cormorant Garamond","Times New Roman",serif}
+.card-cream{background:linear-gradient(180deg,#fff7ea,#fdebd0);border:1.3px solid #e9c07c;box-shadow:0 5px 11px rgba(160,90,40,.2)}
+.chev{width:7px;height:7px;border-right:2px solid #5c1018;border-bottom:2px solid #5c1018;transform:rotate(45deg)}
+.arrow{background:transparent;border:0;border-radius:50%;cursor:pointer;padding:0}
