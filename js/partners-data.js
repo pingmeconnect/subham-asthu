@@ -39,6 +39,7 @@
     accepted: ['ஏற்கப்பட்டது', 'Accepted'],
     declined: ['நிராகரிக்கப்பட்டது', 'Declined'],
     completed: ['முடிந்தது', 'Completed'],
+    not_completed: ['முழுமையாக நடக்கவில்லை', 'Not completed'],
     cancelled: ['ரத்து செய்யப்பட்டது', 'Cancelled']
   };
 

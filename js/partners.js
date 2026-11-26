@@ -220,6 +220,10 @@
             (b.venue_address ? '<p class="soon">📍 ' + esc(b.venue_address) + '</p>' : '') +
             contact +
             (b.prefs ? '<p>' + prefsLine(b.prefs) + '</p>' : '') +
+            (b.status === 'cancelled' && b.cancel_reason ? '<p class="soon">' + bi('ரத்துக்கான காரணம்:', 'Reason:') + ' ' + esc(b.cancel_reason) + '</p>' : '') +
+            (b.can_confirm ? '<div class="confirm-box"><p><strong>' + bi('நிகழ்ச்சி சிறப்பாக நடந்ததா?', 'Did the service go smoothly?') + '</strong></p>' +
+              '<button type="button" class="btn" data-confirm="yes" data-id="' + esc(b.id) + '">' + bi('ஆம்', 'Yes') + '</button> ' +
+              '<button type="button" class="btn btn-outline" data-confirm="no" data-id="' + esc(b.id) + '">' + bi('இல்லை', 'No') + '</button></div>' : '') +
             window.SAExtras.feedbackHtml('booking', b.id, (b.status === 'accepted' || b.status === 'completed') && b.event_date <= SUB.today(), b.feedback) +
             '</article>';
         }).join('');
@@ -227,6 +231,15 @@
         box.innerHTML = '<h2>' + bi('என் முன்பதிவுகள்', 'My bookings') + '</h2>' +
           (rows.length ? '<div class="pooja-grid">' + list + '</div>' : '<p>' + bi(MSG.no_bookings[0], MSG.no_bookings[1]) + '</p>');
         window.SAExtras.bindFeedback(box, renderMine);
+        if (!box.dataset.confirmBound) {
+          box.dataset.confirmBound = '1';
+          box.addEventListener('click', function (e) {
+            var btn = e.target.closest('[data-confirm]');
+            if (!btn) return;
+            DB.rpc('sa_confirm_completion', { p_token: DB.token(), p_booking: btn.getAttribute('data-id'), p_done: btn.getAttribute('data-confirm') === 'yes' })
+              .then(function () { return renderMine(); });
+          });
+        }
       });
     });
   }

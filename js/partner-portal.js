@@ -98,27 +98,30 @@
       '</form>';
   }
 
-  function subscriptionCard(role, state, sub) {
-    var pre = role === 'priest' ? 'priest' : 'cook';
-    var lo = SASettings.int('sub_' + pre + '_fee_min');
-    var hi = SASettings.int('sub_' + pre + '_fee_max');
-    var step = SASettings.int('sub_fee_step') || 50;
-    var fees = [];
-    for (var f0 = lo; f0 <= hi; f0 += step) fees.push(f0);
-    if (fees[fees.length - 1] !== hi) fees.push(hi);
-    var cur = sub ? sub.monthly_fee_inr : lo;
-    var feeOpts = fees.map(function (f) {
-      return '<option value="' + f + '"' + (f === cur ? ' selected' : '') + '>₹' + f + '</option>';
-    }).join('');
+  // One plan for priests and cooks: free trial, then Starter (1-5 completed orders) or Standard (6+).
+  function subscriptionCard(role, state) {
+    var after = state.standardAfter || 5;
+    var trialDays = SASettings.int('sub_trial_days');
+    var starter = SASettings.int('sub_starter_fee');
+    var standard = SASettings.int('sub_standard_fee');
+    var tierLabel = state.tier === 'standard' ? bi('நிலையான திட்டம்', 'Standard plan')
+      : state.tier === 'starter' ? bi('தொடக்கத் திட்டம்', 'Starter plan')
+      : bi('இலவச சோதனைக் காலம்', 'Free trial');
     return '<div class="sub-card">' +
-      '<h2>' + bi('கட்டண நிலை (கூட்டாளர் மட்டும்)', 'Subscription (partner only)') + '</h2>' +
-      '<p>' + bi('முடிந்த நிகழ்ச்சிகள்', 'Completed events') + ': <strong>' + state.completed + ' / ' + SASettings.int('sub_free_events') + '</strong></p>' +
-      (state.freeUntil ? '<p>' + bi('இலவசம் வரை', 'Free until') + ': <strong>' + esc(state.freeUntil) + '</strong></p>' : '') +
-      (state.billingStart ? '<p>' + bi('கட்டணம் தொடங்கும் நாள்', 'Billing starts') + ': <strong>' + esc(state.billingStart) + '-01</strong></p>' : '') +
+      '<h2>' + bi('திட்டம் & கட்டணம் (கூட்டாளர் மட்டும்)', 'Plan & fee (partner only)') + '</h2>' +
+      '<p>' + bi('தற்போதைய திட்டம்', 'Current plan') + ': <strong>' + tierLabel + '</strong>' +
+        (state.fee ? ' · <strong>₹' + state.fee + '</strong> / ' + bi('மாதம்', 'month') : ' · ₹0') + '</p>' +
+      '<p>' + bi('முடிந்த ஆர்டர்கள்', 'Completed orders') + ': <strong>' + state.completed + '</strong></p>' +
+      (state.tier === 'trial'
+        ? '<p>' + bi('முதல் 1 ஆர்டர் முடிந்து, ' + trialDays + ' நாட்கள் கழித்த பின் கட்டணம் தொடங்கும்.', 'Free until your first completed order AND ' + trialDays + ' days after registration have both passed.') +
+          ' <strong>' + bi('சோதனை முடியும் நாள்', 'Trial ends') + ': ' + esc(state.trialEnd) + '</strong></p>'
+        : '') +
+      (state.billingStart ? '<p>' + bi('கட்டணம் தொடங்கும் மாதம்', 'Billing starts') + ': <strong>' + esc(state.billingStart) + '-01</strong></p>' : '') +
+      '<p class="soon">' + bi('1 முதல் ' + after + ' ஆர்டர்கள்: ₹' + starter + ' / மாதம். ' + (after + 1) + '-ஆவது ஆர்டரிலிருந்து: ₹' + standard + ' / மாதம்.',
+        'Orders 1 to ' + after + ': ₹' + starter + ' / month. From order ' + (after + 1) + ': ₹' + standard + ' / month.') + '</p>' +
+      '<p class="soon">' + bi('UPI மூலம் செலுத்திய பின், பரிவர்த்தனை எண் அல்லது ஸ்கிரீன்ஷாட்டை நிர்வாகத்திற்கு அனுப்பவும்.',
+        'After paying by UPI, send the transaction ID or a screenshot to the admin.') + '</p>' +
       note(STATE_MSG[state.status] || 'free', state.status === 'hidden') +
-      '<label class="field"><span class="ta">மாதக் கட்டணம்</span><span class="en">Monthly fee</span>' +
-        '<select name="fee" data-action="fee-select">' + feeOpts + '</select></label>' +
-      '<button type="button" class="btn btn-outline" data-action="save-fee">' + bi('கட்டணத்தைச் சேமி', 'Save fee') + '</button>' +
       '</div>';
   }
 
@@ -151,8 +154,8 @@
       actions = '<button type="button" class="btn" data-action="accept" data-id="' + esc(b.id) + '">' + bi('ஏற்கிறேன்', 'Accept') + '</button> ' +
         '<button type="button" class="btn btn-outline" data-action="decline" data-id="' + esc(b.id) + '">' + bi('நிராகரி', 'Decline') + '</button>';
     } else if (b.status === 'accepted') {
-      actions = '<button type="button" class="btn" data-action="complete" data-id="' + esc(b.id) + '">' + bi('நிகழ்ச்சி முடிந்தது', 'Mark completed') + '</button> ' +
-        '<button type="button" class="btn btn-outline" data-action="cancel" data-id="' + esc(b.id) + '">' + bi('ரத்து', 'Cancel') + '</button>';
+      actions = '<p class="soon">' + bi('நிகழ்ச்சி முடிந்த பின் வாடிக்கையாளர் உறுதிப்படுத்துவார்.', 'The customer confirms completion after the event.') + '</p>' +
+        '<button type="button" class="btn btn-outline" data-action="cancel" data-id="' + esc(b.id) + '">' + bi('முடியவில்லை / ரத்து', 'Could not finalise / Cancel') + '</button>';
     }
     return '<article class="pooja-card">' +
       '<strong>' + esc(b.customer_name) + '</strong>' +
@@ -202,7 +205,7 @@
         ctx = { role: p.role, profile: p, state: r.state, subscription: r.subscription, mobile: u.mobile };
         box.innerHTML = '<h1>' + bi(esc(p.name_ta || p.name_en), esc(p.name_en || p.name_ta)) + '</h1>' +
           '<h2>' + bi('சுயவிவரம்', 'Profile') + '</h2>' + profileForm(p.role, p) +
-          (SASettings.bool('subscriptions_enabled') ? subscriptionCard(p.role, r.state, r.subscription) + payCard(r) : '') +
+          (SASettings.bool('subscriptions_enabled') ? subscriptionCard(p.role, r.state) + payCard(r) : '') +
           '<h2>' + bi('முன்பதிவு கோரிக்கைகள்', 'Booking requests') + '</h2>' +
           '<p class="soon">' + bi(MSG.accept_note[0], MSG.accept_note[1]) + '</p>' +
           (r.bookings.length ? '<div class="pooja-grid">' + r.bookings.map(bookingRow).join('') + '</div>'
@@ -227,11 +230,10 @@
     if (act === 'photo-del') { photo.value = ''; photo.shown = ''; var im = document.getElementById('photo-prev'); im.hidden = true; im.removeAttribute('src'); return; }
     if (act === 'accept') return setStatus(id, 'accepted').then(next);
     if (act === 'decline') return setStatus(id, 'declined').then(next);
-    if (act === 'complete') return setStatus(id, 'completed').then(next);
-    if (act === 'cancel') return setStatus(id, 'cancelled').then(next);
-    if (act === 'save-fee') {
-      var fee = parseInt(document.querySelector('select[name="fee"]').value, 10);
-      return DB.rpc('sa_set_fee', { p_token: DB.token(), p_fee: fee }).then(next);
+    if (act === 'cancel') {
+      var why = window.prompt('ரத்துக்கான காரணம் (குறைந்தது 3 எழுத்துகள்) / Reason for cancelling (at least 3 characters):');
+      if (!why || why.trim().length < 3) return;
+      return DB.rpc('sa_set_booking_status', { p_token: DB.token(), p_booking: id, p_status: 'cancelled', p_reason: why.trim() }).then(next);
     }
   });
 

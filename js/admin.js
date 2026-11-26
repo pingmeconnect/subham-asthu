@@ -367,6 +367,11 @@
         '<div class="badges"><span class="badge">' + bi(PD.ROLE[p.role][0], PD.ROLE[p.role][1]) + '</span>' +
           (p.is_hidden ? '<span class="badge">' + bi('மறைக்கப்பட்டது', 'Hidden') + '</span>' : '') +
           '<span class="badge">' + esc(p.status) + '</span></div>' +
+        (fullP[p.id] && fullP[p.id].plan ? '<p>🧾 ' + esc(fullP[p.id].plan.tier || 'trial') + ' · ' +
+          bi('முடிந்த ஆர்டர்கள்', 'Completed orders') + ': ' + fullP[p.id].plan.completed +
+          ' · ' + bi('சோதனை முடிவு', 'Trial ends') + ': ' + esc(fullP[p.id].plan.trialEnd || '-') +
+          (fullP[p.id].plan.billingStart ? ' · ' + bi('கட்டணம் தொடக்கம்', 'Billing from') + ': ' + esc(fullP[p.id].plan.billingStart) : '') +
+          ' · ₹' + (fullP[p.id].plan.fee || 0) + '</p>' : '') +
         (fullP[p.id] ? '<label class="field"><span class="ta">சரிபார்ப்பு நிலை</span><span class="en">Verification level</span><select data-verify="' + esc(p.id) + '">' +
           [0, 1, 2, 3].map(function (n) { return '<option value="' + n + '"' + (fullP[p.id].verify_level === n ? ' selected' : '') + '>' + (n ? n + ' · ' + PD.VERIFY[n][1] : '0 · ' + 'Not verified') + '</option>'; }).join('') + '</select></label>' : '') +
         '<div class="ad-btns">' +

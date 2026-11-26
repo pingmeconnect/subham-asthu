@@ -7,6 +7,7 @@
   // [Tamil, English]
   var MSG = {
     ok_registered: ['பதிவு முடிந்தது. வரவேற்கிறோம்!', 'Registration complete. Welcome!'],
+    plan_agree_required: ['தொடர சந்தா விதிமுறைகளை ஏற்கவும்.', 'Please agree to the subscription terms to continue.'],
     reset_sent: ['விவரங்கள் பொருந்தினால், பதிவு செய்த மின்னஞ்சலுக்கு 6 இலக்கக் குறியீடு அனுப்பப்படும்.', 'If the details match, a 6-digit code will be sent to your registered email.'],
     ok_reset: ['PIN மாற்றப்பட்டது. இப்போது உள்நுழையலாம்.', 'PIN updated. You can now log in.'],
     invalid_name: ['பெயரை உள்ளிடவும்.', 'Enter your name.'],
@@ -103,6 +104,9 @@
   $('register-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var f = this, out = f.querySelector('.form-msg'), d = new FormData(f);
+    if ((d.get('role') === 'priest' || d.get('role') === 'cook') && d.get('plan_agree') !== 'on') {
+      return show(out, 'plan_agree_required', true);
+    }
     A.register({
       name: d.get('name'), mobile: d.get('mobile'), email: d.get('email'),
       role: d.get('role'), pin: d.get('pin'), pin2: d.get('pin2'),
