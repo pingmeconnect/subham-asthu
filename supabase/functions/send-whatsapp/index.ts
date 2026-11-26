@@ -4,7 +4,7 @@
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are provided automatically to Edge Functions.
 //
 // Each Meta template must have its body variables {{1}}, {{2}}... in EXACTLY the order listed below.
-// Template name in Meta = the template key (e.g. booking_confirmed).
+// Template name in Meta = WA_TEMPLATE_PREFIX (default "sa_") + the template key, e.g. sa_booking_confirmed.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 
@@ -36,7 +36,8 @@ Deno.serve(async (req) => {
   const phoneId = Deno.env.get("WA_PHONE_NUMBER_ID");
   const token = Deno.env.get("WA_ACCESS_TOKEN");
   const apiVersion = Deno.env.get("WA_API_VERSION") ?? "v21.0";
-  const langCode = Deno.env.get("WA_LANG_CODE") ?? "en";
+  const langCode = Deno.env.get("WA_LANG_CODE") ?? "en_US";
+  const namePrefix = Deno.env.get("WA_TEMPLATE_PREFIX") ?? "sa_";
   if (!phoneId || !token) {
     return Response.json({ ok: false, error: "whatsapp_not_configured" }, { status: 500 });
   }
@@ -64,7 +65,7 @@ Deno.serve(async (req) => {
       to: toMetaNumber(row.to_addr),
       type: "template",
       template: {
-        name: row.template,
+        name: namePrefix + row.template,
         language: { code: langCode },
         components: parameters.length ? [{ type: "body", parameters }] : [],
       },

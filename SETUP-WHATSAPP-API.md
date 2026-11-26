@@ -9,22 +9,22 @@ The site queues each WhatsApp message in the database. The `send-whatsapp` funct
 
 | Template name (Meta) | Body variables, in order |
 |---|---|
-| `order_received` | {{1}} pooja |
-| `order_confirmed` | {{1}} pooja, {{2}} shop, {{3}} shop phone |
-| `order_unavailable` | {{1}} pooja |
-| `booking_confirmed` | {{1}} partner, {{2}} pooja, {{3}} date, {{4}} phone |
-| `reminder_1day` | {{1}} pooja, {{2}} date, {{3}} partner, {{4}} phone |
-| `partner_approved` | {{1}} partner |
+| `sa_order_received` | {{1}} pooja |
+| `sa_order_confirmed` | {{1}} pooja, {{2}} shop, {{3}} shop phone |
+| `sa_order_unavailable` | {{1}} pooja |
+| `sa_booking_confirmed` | {{1}} partner, {{2}} pooja, {{3}} date, {{4}} phone |
+| `sa_reminder_1day` | {{1}} pooja, {{2}} date, {{3}} partner, {{4}} phone |
+| `sa_partner_approved` | {{1}} partner |
 
-Use the same template name as the key (for example `booking_confirmed`). If your template name differs, rename it in Meta or tell me and I'll change the code.
+Names are the key with an `sa_` prefix (for example `sa_booking_confirmed`), which matches your existing templates. `sa_partner_approved` still needs creating: English, Utility, body `{{1}}, your profile on Subham Asthu is now live. Customers in your service area can now find and book you.`
 
 ## 2. Supabase side
 1. Run `migration_v13_whatsapp_api.sql` in the SQL Editor (it should show 5).
 2. Set the secrets (Supabase CLI or Dashboard > Edge Functions > Secrets):
    ```
-   supabase secrets set WA_PHONE_NUMBER_ID=123456789012345 WA_ACCESS_TOKEN=EAAG... WA_LANG_CODE=en
+   supabase secrets set WA_PHONE_NUMBER_ID=123456789012345 WA_ACCESS_TOKEN=EAAG... WA_LANG_CODE=en_US
    ```
-   `WA_LANG_CODE` must match the language of the templates you created in Meta (`en`, `en_US`, or `ta`).
+   `WA_LANG_CODE` must match the language code of your templates exactly. Your templates show English, which is usually `en_US`; open one in Meta to confirm the code. Default in the function is `en_US`.
 3. Deploy: `supabase functions deploy send-whatsapp --no-verify-jwt`
 4. Test once: open the function URL with POST, or run the schedule below. The response shows `sent` and `failed` counts.
 5. Optional, every minute: uncomment and run the `cron.schedule` block at the end of migration v13, after replacing `YOUR_PROJECT_REF` and `YOUR_ANON_KEY`. Enable the `pg_net` and `pg_cron` extensions first.
