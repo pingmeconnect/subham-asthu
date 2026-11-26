@@ -1,17 +1,18 @@
 /* Subham Astu — WhatsApp message previews (Phase 5/7). The database queues and renders the live
    messages from app_settings (sa_queue_wa). This file only previews the same templates for the
-   Admin screen, using the sample values stored in settings. Exactly four triggers:
+   Admin screen, using the sample values stored in settings. Five triggers:
      1  order_received                      Samagri order received
      2  order_confirmed / order_unavailable Samagri order final status
      3  booking_confirmed                   Priest/Cook accepted; direct contact shared
-     4  reminder_1day                       One day before the event */
+     4  reminder_1day                       One day before the event
+     0  partner_approved                    Priest/Cook profile approved and live (sent on approval) */
 (function () {
   'use strict';
 
   var PREFIX = 'சுபம் அஸ்து:';
 
   // Template keys map to settings keys wa_tpl_<key> ({ta, en}).
-  var KEYS = ['order_received', 'order_confirmed', 'order_unavailable', 'booking_confirmed', 'reminder_1day'];
+  var KEYS = ['order_received', 'order_confirmed', 'order_unavailable', 'booking_confirmed', 'reminder_1day', 'partner_approved'];
 
   // Admin screen labels (UI text only).
   var TITLES = {
@@ -19,7 +20,8 @@
     order_confirmed: ['2a · ஆர்டர் உறுதி / அனுப்பப்பட்டது', '2a · Order confirmed / dispatched'],
     order_unavailable: ['2b · ஆர்டர் கிடைக்கவில்லை', '2b · Order unavailable'],
     booking_confirmed: ['3 · முன்பதிவு உறுதி', '3 · Booking confirmed'],
-    reminder_1day: ['4 · 1 நாள் முன் நினைவூட்டல்', '4 · One-day reminder']
+    reminder_1day: ['4 · 1 நாள் முன் நினைவூட்டல்', '4 · One-day reminder'],
+    partner_approved: ['0 · சுயவிவரம் அங்கீகரிக்கப்பட்டது (நேரலை)', '0 · Profile approved and live']
   };
 
   function fill(text, data, i) {

@@ -64,7 +64,7 @@
     ['calendar', '🗓', 'பூஜை தேதிகள் (பஞ்சாங்கம்)', 'Pooja dates (calendar)'],
     ['customers', '👥', 'வாடிக்கையாளர்கள்', 'Customers'],
     ['combos', '🎁', 'சிறப்பு நாள் தொகுப்புகள் (Combos)', 'Special-day combos'],
-    ['messages', '💬', 'தானியங்கி செய்திகள் (4 வகை)', 'Automatic messages (4 kinds)'],
+    ['messages', '💬', 'தானியங்கி செய்திகள் (5 வகை)', 'Automatic messages (5 kinds)'],
     ['soon', '🔔', 'விரைவில் வரும் உரைகள்', 'Coming-soon texts'],
     ['helpmsgs', '✉', 'உதவி & பரிந்துரைகள்', 'Help & suggestions'],
     ['helprequests', '🛟', 'உதவி மையம் கோரிக்கைகள்', 'Help Centre requests'],
@@ -421,7 +421,7 @@
         '<div class="ad-btns">' + send('ta', 'WhatsApp - தமிழ்') + send('en', 'WhatsApp - English') + '</div></article>';
     }).join('');
     return '<h1>' + bi('WhatsApp செய்திகள்', 'WhatsApp messages') + '</h1>' +
-      '<p>' + bi('ஒவ்வொரு செய்தியும் "சுபம் அஸ்து:" என்ற முன்னொட்டுடன் தொடங்கும். நான்கு தூண்டுதல்கள் மட்டுமே உள்ளன.', 'Every message starts with "சுபம் அஸ்து:". There are exactly four triggers.') + '</p>' +
+      '<p>' + bi('ஒவ்வொரு செய்தியும் "சுபம் அஸ்து:" என்ற முன்னொட்டுடன் தொடங்கும். ஐந்து தூண்டுதல்கள் மட்டுமே உள்ளன.', 'Every message starts with "சுபம் அஸ்து:". There are exactly five triggers.') + '</p>' +
       '<div class="pooja-grid">' + previews + '</div>' +
       '<div class="action-row">' +
         '<button type="button" class="btn btn-outline" data-act="test-messages">' + bi('சோதனைச் செய்திகளை அனுப்பு (எனக்கு)', 'Queue test messages (to me)') + '</button>' +
