@@ -11,7 +11,7 @@ declare
 begin
   select count(*) into v_pending from partner_profiles where not is_approved and not is_sample;
   select count(*) into v_requested from service_bookings where status = 'requested';
-  select count(*) into v_orders from samagri_orders where status = 'waiting_for_confirmed' or status = 'waiting_for_confirmation';
+  select count(*) into v_orders from samagri_orders where status = 'waiting_for_confirmation';
   select count(*) into v_cancel from service_bookings where status = 'cancelled' and event_date >= v_today;
   select count(*) into v_wa_failed from outbox where channel = 'whatsapp' and status = 'failed';
   return 'Subham Asthu daily summary, ' || to_char(v_today, 'DD Mon YYYY') || E'\n\n' ||
