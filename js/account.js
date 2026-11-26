@@ -113,11 +113,35 @@
       consent: d.get('consent') === 'on', marketing: false, hp: d.get('website')
     }).then(function (r) {
       if (!r.ok) return show(out, r.error, true);
+      var role = d.get('role');
       f.reset();
       show(out, 'ok_registered', false);
+      if (role === 'priest' || role === 'cook') showPartnerSavedPopup(role);
       return refresh();
     }).catch(function (err) { fail(out, err); });
   });
+
+  // Popup after a priest/cook registers: saved, waiting for admin approval, WhatsApp on approval.
+  function showPartnerSavedPopup(role) {
+    var dlg = document.getElementById('partner-saved-dim');
+    if (!dlg) {
+      dlg = document.createElement('div');
+      dlg.id = 'partner-saved-dim';
+      dlg.className = 'soon-dim';
+      dlg.hidden = true;
+      dlg.innerHTML = '<div class="soon-box" role="dialog" aria-modal="true" aria-labelledby="ps-t">' +
+        '<h2 id="ps-t"><span class="ta">பதிவு சேமிக்கப்பட்டது ✔</span><span class="en">Registration saved ✔</span></h2>' +
+        '<p><span class="ta">உங்கள் பதிவு சேமிக்கப்பட்டது. நிர்வாகம் உங்கள் சுயவிவரத்தை சரிபார்க்கும்.</span><span class="en">Your registration is saved. The admin will review your profile.</span></p>' +
+        '<p><span class="ta">அங்கீகரிக்கப்பட்ட பின் WhatsApp மூலம் உறுதிப்படுத்தல் வரும்.</span><span class="en">You will get a WhatsApp confirmation once the admin approves you.</span></p>' +
+        '<p><span class="ta">அதன் பின்பே உங்கள் சுயவிவரம் வாடிக்கையாளர்களுக்கு நேரலையாகும்.</span><span class="en">Only then does your profile go live for customers.</span></p>' +
+        '<div class="soon-act"><button type="button" class="btn" id="ps-ok"><span class="ta">சரி</span><span class="en">OK</span></button></div>' +
+        '</div>';
+      document.body.appendChild(dlg);
+      dlg.querySelector('#ps-ok').addEventListener('click', function () { dlg.hidden = true; });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.hidden = true; });
+    }
+    dlg.hidden = false;
+  }
 
   $('reset-request-form').addEventListener('submit', function (e) {
     e.preventDefault();
