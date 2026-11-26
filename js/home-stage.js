@@ -75,7 +75,7 @@
     var eh=$('sa-tb-email'),ea=$('sa-tb-email-a');
     if(eh){if(em){eh.textContent=em;ea.setAttribute('href','mailto:'+em);setIcons('i-mail',true);}else{eh.textContent='';ea.removeAttribute('href');setIcons('i-mail',false);}}
     // help centre → WhatsApp support when configured
-    var hc=$('sa-q-help');if(hc){if(num.length===10){hc.setAttribute('href','https://wa.me/91'+num);hc.setAttribute('target','_blank');hc.setAttribute('rel','noopener');}else{hc.setAttribute('href','#about');hc.removeAttribute('target');}}
+    var hc=$('sa-q-help');if(hc){if(num.length===10){hc.setAttribute('href','https://wa.me/91'+num);hc.setAttribute('target','_blank');hc.setAttribute('rel','noopener');}else{hc.setAttribute('href','#help');hc.removeAttribute('target');}}
     // login state
     var lg=$('sa-tb-login');if(lg){lg.textContent=S.user?(en?'Account':'கணக்கு'):(en?'Login':'Login');}
     // next special day card
