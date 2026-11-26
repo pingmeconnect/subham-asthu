@@ -6,7 +6,7 @@
   // unit -> [Tamil, English, step]
   var UNIT = {
     gm: ['கிராம்', 'g', 50], kg: ['கிலோ', 'kg', 0.25], ml: ['மி.லி', 'ml', 50], ltr: ['லிட்டர்', 'L', 0.5],
-    pcs: ['எண்ணம்', 'pcs', 1], pkt: ['பாக்கெட்', 'packet', 1], bunch: ['கட்டு', 'bunch', 1], set: ['செட்', 'set', 1]
+    pcs: ['எண்', 'pcs', 1], pkt: ['பாக்கெட்', 'packet', 1], bunch: ['கட்டு', 'bunch', 1], set: ['செட்', 'set', 1]
   };
 
   var ITEMS = {

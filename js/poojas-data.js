@@ -21,7 +21,6 @@
     ['krithigai', 'daily_monthly', 'கிருத்திகை', 'Krithigai', false, true, 'daily'],
     ['ekadashi', 'daily_monthly', 'ஏகாதசி', 'Ekadashi', false, true, 'daily'],
     ['thiruvilakku-pooja', 'daily_monthly', 'திருவிளக்கு பூஜை', 'Thiruvilakku Pooja', false, true, 'daily'],
-    ['weekly-home-pooja', 'daily_monthly', 'வாராந்திர வெள்ளி/செவ்வாய் வீட்டு பூஜை', 'Weekly Friday/Tuesday Home Pooja', false, true, 'daily'],
 
     ['varalakshmi-vratam', 'annual_vratam', 'வரலட்சுமி விரதம்', 'Varalakshmi Vratam', false, true, 'vratam'],
     ['vinayagar-chaturthi', 'annual_vratam', 'விநாயகர் சதுர்த்தி', 'Vinayagar Chaturthi', false, true, 'vratam'],
@@ -42,9 +41,6 @@
     ['masa-sashti', 'daily_monthly', 'மாத சஷ்டி', 'Masa Sashti', false, true, 'daily'],
     ['amavasya-pitru', 'daily_monthly', 'அமாவாசை பித்ரு பூஜை', 'Amavasya Pitru Pooja', false, true, 'daily'],
     ['guru-purnima', 'annual_vratam', 'குரு பூர்ணிமா', 'Guru Purnima', false, true, 'vratam'],
-    ['maattu-pongal', 'annual_vratam', 'மாட்டுப் பொங்கல்', 'Maattu Pongal', false, true, 'vratam'],
-    ['rama-navami', 'annual_vratam', 'ஸ்ரீ ராம நவமி', 'Sri Rama Navami', false, true, 'vratam'],
-    ['hanuman-jayanthi', 'annual_vratam', 'ஸ்ரீ அனுமன் ஜெயந்தி', 'Sri Hanuman Jayanthi', false, true, 'vratam'],
     ['avani-avittam', 'annual_vratam', 'ஆவணி அவிட்டம்', 'Avani Avittam (Upakarma)', false, true, 'vratam'],
     ['chitra-pournami', 'annual_vratam', 'சித்ரா பௌர்ணமி', 'Chitra Pournami', false, true, 'vratam'],
     ['karadaiyan-nonbu', 'annual_vratam', 'காரடையான் நோன்பு', 'Karadaiyan Nonbu', false, true, 'vratam'],
@@ -138,7 +134,7 @@
         ['வாத்தியார் கலசம் ஸ்தாபனம் செய்வார்; குடும்பத்தினர் அமரவும்.', 'The priest will establish the kalasam; family members sit down.'],
         ['வாத்தியார் ஹோமத்தை நடத்தும்போது அமைதியாக பங்கேற்கவும்.', 'Participate calmly while the priest conducts the homa.'],
         ['பூர்ணாஹுதிக்குப் பின் தீபாராதனை செய்து அனைவரும் வணங்கவும்.', 'After purnahuti, perform deeparadhana and pray together.'],
-        ['பிரசாதம் பெற்றுக் கொண்டு, தட்சணையை வாத்தியாருடன் பேசி நேரடியாக வழங்கவும்.', 'Receive prasadam; settle dakshina directly with the priest.']
+        ['பிரசாதம் பெற்றுக் கொண்டு, தட்சிணையை வாத்தியாருடன் பேசி நேரடியாக வழங்கவும்.', 'Receive prasadam; settle dakshina directly with the priest.']
       ]
     },
     puja: {
@@ -164,7 +160,7 @@
         ['பூ, பழம், பால்', 'Flowers, fruits & milk'],
         ['நெய், பஞ்சுத் திரி, விளக்கு', 'Ghee, wicks & lamp'],
         ['அரிசி, எள், தர்ப்பை', 'Rice, sesame & darbha grass'],
-        ['தட்சணை (வாத்தியாருடன் பேசி முடிவு)', 'Dakshina (agreed with the priest)']
+        ['தட்சிணை (வாத்தியாருடன் பேசி முடிவு)', 'Dakshina (agreed with the priest)']
       ],
       steps: [
         ['சடங்கு நடைபெறும் இடத்தை சுத்தம் செய்து தயார் செய்யவும்.', 'Clean and prepare the place where the rite will be held.'],

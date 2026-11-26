@@ -10,6 +10,7 @@
     order:    ['பூஜைப் பொருட்கள் ஆன்லைன் ஆர்டர்', 'Online pooja-items order'],
     astrology:['ஜோதிடர் ஆலோசனை', 'Astrologer consultation'],
     matching: ['திருமணப் பொருத்தம் (ஜாதகம்)', 'Marriage horoscope matching'],
+    temple:   ['திருக்கோவில் தரிசனம்', 'Temple darshan'],
     general:  ['இந்த சேவை', 'This service']
   };
   var last = '#home', box = null;

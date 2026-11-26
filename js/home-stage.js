@@ -16,7 +16,7 @@
     'அடுத்த நிகழ்வுகள்':'Next Events','முழு விவரம் →':'Full details →','அடுத்த விசேஷம்':'Next special day',
     'எங்கள் சேவைகள்':'Our Services','வழிபாடு சேவைகள்':'Worship Services','ஆன்மிக வழிகாட்டி':'Spiritual Guide','திருக்கோவில்':'Temple','தரிசனம்':'Darshan',
     'ஜோதிடர் ஆலோசனை':'Astrologer Consultation','முதல் கேள்வி இலவசம்':'First question FREE','புதியது':'NEW','ஜோதிடர் ஆலோசனை — முதல் கேள்வி இலவசம்!':'Astrologer Consultation — first question FREE!',
-    'ஏன் சுபம் அஸ்து?':'Why Subham Astu?','நம்பகமான சேவை':'Trusted Service','உறுதியான நம்பிக்கை':'Assured trust','ஆன்மிக வழிகாட்டல்':'Spiritual Guidance','ஆழ்ந்த அறிவு':'Deep knowledge','பாரம்பரிய மரபு':'Traditional Heritage','நமது பண்பாடு':'Our culture','பெரிய சமூக ஆதரவு':'Strong Community Support','ஒன்றிணைந்த சமுகம்':'United community',
+    'ஏன் சுபம் அஸ்து?':'Why Subham Astu?','நம்பகமான சேவை':'Trusted Service','உறுதியான நம்பிக்கை':'Assured trust','ஆன்மிக வழிகாட்டல்':'Spiritual Guidance','ஆழ்ந்த அறிவு':'Deep knowledge','பாரம்பரிய மரபு':'Traditional Heritage','நமது பண்பாடு':'Our culture','பெரிய சமூக ஆதரவு':'Strong Community Support','ஒன்றிணைந்த சமூகம்':'United community',
     '“நல்லதே நடக்கட்டும், எல்லோரும் வளமுடன் வாழ்க!”':'“May good things happen; may everyone live in prosperity!”',
     'எங்களைப் பற்றி':'About Us','கேள்விகள்':'FAQ','பொறுப்புத் துறப்பு':'Disclaimers','தனியுரிமை':'Privacy'
   };

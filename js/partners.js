@@ -24,7 +24,7 @@
     fail: ['முன்பதிவு அனுப்ப முடியவில்லை. மீண்டும் முயற்சிக்கவும்.', 'Could not send the request. Please try again.'],
     none: ['பொருந்தும் வாத்தியார் / சமையல்காரர் இல்லை.', 'No priests or cooks match these filters.'],
     waiting: ['வாத்தியார் / சமையல்காரர் ஏற்ற பின் தொலைபேசி எண் காட்டப்படும்.', 'The phone number appears after the partner accepts.'],
-    call: ['நேரடியாக அழைத்துத் தட்சணையை முடிவு செய்யவும்.', 'Call to agree the dakshina directly.'],
+    call: ['நேரடியாக அழைத்துத் தட்சிணையை முடிவு செய்யவும்.', 'Call to agree the dakshina directly.'],
     time_bad: ['நிகழ்ச்சி நேரத்தைத் தேர்ந்தெடுக்கவும்.', 'Choose the event time.'],
     area_bad: ['பகுதி / நகர் பெயரை உள்ளிடவும்.', 'Please enter the area / nagar name.'],
     address_bad: ['நிகழ்ச்சி நடக்கும் இடத்தின் முகவரியை முழுமையாக (குறைந்தது 10 எழுத்துகள்) உள்ளிடவும்.', 'Enter the full address of the venue (at least 10 characters).'],

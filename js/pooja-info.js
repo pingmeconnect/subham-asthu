@@ -8,7 +8,7 @@
     'If you cannot do it, do not worry. Light a lamp and pray sincerely; you can do it next time.');
   var MISS_YEAR = r('இந்த ஆண்டு செய்ய இயலவில்லை என்றால், அன்று விளக்கேற்றிப் பிரார்த்தித்து, அடுத்த ஆண்டு சிறப்பாகச் செய்யலாம். தேவையென்றால் உங்கள் குடும்ப வாத்தியாரிடம் கேளுங்கள்.',
     'If you miss it this year, light a lamp and pray that day and do it fully next year. Ask your family priest if in doubt.');
-  var OLD = r('உங்கள் குடும்ப வழக்கப்படி: வீட்டில் தீட்டு / புலா காலம் இருந்தால் பூஜையைத் தள்ளி வைத்து, வீட்டுப் பெரியவர்களிடம் கேட்டு முடிவு செய்யவும். ராகு காலத்தில் பூஜையைத் தொடங்க வேண்டாம்.',
+  var OLD = r('உங்கள் குடும்ப வழக்கப்படி: வீட்டில் தீட்டு / புலால் காலம் இருந்தால் பூஜையைத் தள்ளி வைத்து, வீட்டுப் பெரியவர்களிடம் கேட்டு முடிவு செய்யவும். ராகு காலத்தில் பூஜையைத் தொடங்க வேண்டாம்.',
     'Follow your family custom: if the house is in a period of ritual impurity, postpone and ask the elders. Avoid starting the pooja in Rahu Kalam.');
 
   var I = {
@@ -138,7 +138,7 @@
       why: r('வேதக் கல்வியில் உறுதி, ஒழுக்கம், தூய்மை வேண்டிச் செய்யப்படுகிறது.', 'Done for steadiness in Vedic study, discipline and purity.'),
       miss: MISS_YEAR,
       avoid: r('மந்திர உச்சரிப்பில் ஐயம் இருந்தால் வாத்தியாரிடம் உறுதி செய்யவும்.', 'If unsure of a mantra, check with your priest.'),
-      give: r('வாத்தியாருக்குத் தட்சணை; ஏழைகளுக்கு அன்னதானம்.', 'Dakshina to the priest; food for the needy.'),
+      give: r('வாத்தியாருக்குத் தட்சிணை; ஏழைகளுக்கு அன்னதானம்.', 'Dakshina to the priest; food for the needy.'),
       temples: r('ஆற்றங்கரை / குளக்கரை உபாகர்ம இடங்கள்.', 'Riverside and tank-side upakarma spots.'),
       tips: [r('முறைகள் சாகைக்குச் சாகை வேறுபடும்; வாத்தியார் வழிகாட்டுதலே சிறந்தது.', 'Methods differ by shakha; your priest\'s guidance is best.')]
     },
@@ -559,7 +559,7 @@
     start: r('நல்ல நேரம் (முகூர்த்தம்) உங்கள் வாத்தியாருடன் பேசி முடிவு செய்யவும்.', 'Fix the auspicious time with your priest.'),
     who: r('குடும்பத்தினர் கலந்து கொள்ள, வாத்தியார் நடத்துவார்.', 'The family takes part; the priest conducts it.'),
     avoid: r('பஞ்சாங்கப்படி நாள், நேரம் தேர்ந்தெடுக்கவும்; ராகு காலம், எமகண்டத்தில் தொடங்க வேண்டாம். வீட்டில் தீட்டு இருந்தால் வாத்தியாரிடம் கேட்கவும்.', 'Choose the day and time by the panchangam; do not start in Rahu Kalam or Yamagandam. If the house has ritual impurity, ask your priest.'),
-    give: r('தட்சணை, சமையல் ஏற்பாடு போன்றவற்றை வாத்தியாரிடம் / சமையல்காரரிடம் நேரடியாகத் தொலைபேசியில் பேசி முடிவு செய்யுங்கள்.', 'Settle dakshina and food arrangements directly with the priest or cook by phone.'),
+    give: r('தட்சிணை, சமையல் ஏற்பாடு போன்றவற்றை வாத்தியாரிடம் / சமையல்காரரிடம் நேரடியாகத் தொலைபேசியில் பேசி முடிவு செய்யுங்கள்.', 'Settle dakshina and food arrangements directly with the priest or cook by phone.'),
     tips: [r('பூஜைக்கு 2–3 நாள் முன்பே வாத்தியாரை முன்பதிவு செய்யவும்.', 'Book the priest 2–3 days ahead.'),
       r('சாமான் பட்டியலை வாத்தியாரிடம் காட்டி உறுதி செய்யவும்.', 'Show the samagri list to the priest and confirm it.')]
   };
