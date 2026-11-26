@@ -3,7 +3,7 @@
   'use strict';
 
   var LANG_KEY = 'subham-asthu-lang';
-  var PAGES = ['home', 'poojas', 'order', 'pooja', 'bookings', 'partner', 'about', 'faq', 'disclaimers', 'privacy', 'downloads', 'panchang', 'rasi', 'astrology', 'astro-admin', 'login', 'admin'];
+  var PAGES = ['home', 'poojas', 'order', 'pooja', 'bookings', 'partner', 'about', 'help', 'faq', 'disclaimers', 'privacy', 'downloads', 'panchang', 'rasi', 'astrology', 'astro-admin', 'login', 'admin'];
   var root = document.documentElement;
 
   function readStored(key) {
@@ -54,7 +54,7 @@
   // Installable app: a small service worker caches the pages so the app opens fast, even on a weak network.
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js?v=32').catch(function () { /* optional */ });
+      navigator.serviceWorker.register('sw.js?v=33').catch(function () { /* optional */ });
     });
   }
 
