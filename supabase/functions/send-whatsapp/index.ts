@@ -30,7 +30,21 @@ function toMetaNumber(to: string): string {
   return digits.length === 10 ? "91" + digits : digits;
 }
 
+const CORS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
+  const res = await handle(req);
+  const headers = new Headers(res.headers);
+  Object.entries(CORS).forEach(([k, v]) => headers.set(k, v));
+  return new Response(res.body, { status: res.status, headers });
+});
+
+async function handle(req: Request): Promise<Response> {
   if (req.method !== "POST") return new Response("POST only", { status: 405 });
 
   const phoneId = Deno.env.get("WA_PHONE_NUMBER_ID");
@@ -103,4 +117,4 @@ Deno.serve(async (req) => {
     }
   }
   return Response.json({ ok: true, sent, failed, skipped, checked: rows?.length ?? 0 });
-});
+}
