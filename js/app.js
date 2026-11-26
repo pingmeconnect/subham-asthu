@@ -54,7 +54,7 @@
   // Installable app: a small service worker caches the pages so the app opens fast, even on a weak network.
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js?v=29').catch(function () { /* optional */ });
+      navigator.serviceWorker.register('sw.js?v=30').catch(function () { /* optional */ });
     });
   }
 

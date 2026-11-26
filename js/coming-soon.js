@@ -11,6 +11,7 @@
     astrology:['ஜோதிடர் ஆலோசனை', 'Astrologer consultation'],
     matching: ['திருமணப் பொருத்தம் (ஜாதகம்)', 'Marriage horoscope matching'],
     temple:   ['திருக்கோவில் தரிசனம்', 'Temple darshan'],
+    spiritual:['ஆன்மிக வழிகாட்டி', 'Spiritual guide'],
     general:  ['இந்த சேவை', 'This service']
   };
   var last = '#home', box = null;
@@ -39,7 +40,11 @@
   }
   function show(kind) {
     if (!box) build();
-    box.querySelector('#soon-t').innerHTML = bi(TEXT[kind] || TEXT.general);
+    // Admin can change each service's text (Admin > விரைவில் வரும் உரைகள்); the built-in text is the fallback.
+    var fallback = TEXT[kind] || TEXT.general, key = 'text_soon_' + kind;
+    var ta = (window.SASettings && SASettings.text(key, 'ta')) || fallback[0];
+    var en = (window.SASettings && SASettings.text(key, 'en')) || fallback[1];
+    box.querySelector('#soon-t').innerHTML = bi([ta, en]);
     box.hidden = false;
     var b = box.querySelector('.btn-outline'); if (b) b.focus();
   }

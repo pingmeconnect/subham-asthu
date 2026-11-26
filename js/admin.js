@@ -43,6 +43,7 @@
   var offer = { id: null, title: '', ta: '', en: '', image: '', lang: 'ta', off: {}, sent: {}, q: '' };
   var custQ = '', adminUser = null, calRows = [];
   var fullP = {}, followData = null, bookPrefs = {}, offersList = [], editVendor = null, editOffer = null, offerImage = null, partnerPhoto = null;
+  var contactData = { messages: [], new_count: 0 };
   var tab = 'home'; // home | orders | bookings | people | stores | poojas | messages | settings
   var orderFilter = 'waiting_for_confirmation';
   var bookingFilter = 'soon';
@@ -63,6 +64,8 @@
     ['customers', '👥', 'வாடிக்கையாளர்கள்', 'Customers'],
     ['combos', '🎁', 'சிறப்பு நாள் தொகுப்புகள் (Combos)', 'Special-day combos'],
     ['messages', '💬', 'தானியங்கி செய்திகள் (4 வகை)', 'Automatic messages (4 kinds)'],
+    ['soon', '🔔', 'விரைவில் வரும் உரைகள்', 'Coming-soon texts'],
+    ['helpmsgs', '✉', 'உதவி & பரிந்துரைகள்', 'Help & suggestions'],
     ['settings', '⚙', 'அமைப்புகள்', 'Settings']
   ];
 
@@ -102,7 +105,8 @@
     return Promise.all([DB.rpc('sa_admin_dashboard', { p_token: t }), soft('sa_admin_list_vendors_full'), soft('sa_admin_list_partners_full'),
       tab === 'combos' ? soft('sa_admin_list_offers') : Promise.resolve(null),
       tab === 'followup' ? soft('sa_admin_followup') : Promise.resolve(null),
-      tab === 'bookings' ? soft('sa_admin_booking_prefs') : Promise.resolve(null)]).then(function (res) {
+      tab === 'bookings' ? soft('sa_admin_booking_prefs') : Promise.resolve(null),
+      tab === 'helpmsgs' ? soft('sa_admin_list_contact') : Promise.resolve(null)]).then(function (res) {
       var d = res[0];
       if (d && d.ok && res[1] && res[1].ok) d.vendors = res[1].vendors;
       fullP = {};
@@ -110,6 +114,7 @@
       offersList = res[3] && res[3].ok ? res[3].offers : [];
       followData = res[4] && res[4].ok ? res[4] : null;
       bookPrefs = res[5] && res[5].ok ? res[5].prefs : {};
+      contactData = res[6] && res[6].ok ? res[6] : { messages: [], new_count: 0 };
       return d;
     });
   }
@@ -871,6 +876,8 @@
     if (tab === 'calendar') return calendarSection(d);
     if (tab === 'customers') return customersSection(d);
     if (tab === 'offers') return offersSection(d);
+    if (tab === 'soon') return soonSection();
+    if (tab === 'helpmsgs') return helpMsgsSection();
     if (tab === 'settings') return securityCards(d) + settingsSection();
     return homeSection(d);
   }
@@ -969,8 +976,39 @@
     }).join('') + '</fieldset>';
   }
 
+  // Coming-soon texts: one {ta, en} text per service, shown to visitors when the service is not open yet.
+  function soonSection() {
+    var rows = SASettings.rows().filter(function (r) { return r.group === 'coming_soon'; });
+    return '<h1>' + bi('விரைவில் வரும் உரைகள்', 'Coming-soon texts') + '</h1>' +
+      '<p class="soon">' + bi('ஒரு சேவை இன்னும் திறக்கப்படாதபோது பார்வையாளருக்குக் காட்டப்படும் பெயர். மாற்றியதும் சேமிக்கவும்.',
+        'The name shown to a visitor when a service is not open yet. Save after changing.') + '</p>' +
+      '<form id="soon-form" novalidate>' + rows.map(settingField).join('') +
+      '<div class="action-row"><button type="submit" class="btn">' + bi('சேமி', 'Save') + '</button></div>' +
+      '<p class="form-msg" role="status" aria-live="polite"></p></form>';
+  }
+
+  // Help & suggestions sent from the site. Status: new / read / replied.
+  function helpMsgsSection() {
+    var KIND = { help: ['உதவி', 'Help'], suggestion: ['பரிந்துரை', 'Suggestion'], complaint: ['குறை', 'Complaint'] };
+    var STATUS = [['new', 'புதியது', 'New'], ['read', 'படித்தது', 'Read'], ['replied', 'பதில் அனுப்பியது', 'Replied']];
+    var items = (contactData.messages || []).map(function (m) {
+      var when = new Date(m.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+      var k = KIND[m.kind] || KIND.help;
+      return '<div class="ad-card' + (m.status === 'new' ? ' is-hot' : '') + '">' +
+        '<p><strong>' + esc(m.name) + '</strong> · ' + phoneLine(m.mobile) + ' · ' + bi(k[0], k[1]) + ' · ' + esc(when) + '</p>' +
+        '<p>' + esc(m.message) + '</p>' +
+        '<div class="ad-btns">' + STATUS.map(function (st) {
+          return '<button type="button" class="btn' + (m.status === st[0] ? '' : ' btn-outline') + '" data-act="contact-status" data-id="' +
+            esc(m.id) + '" data-st="' + st[0] + '">' + bi(st[1], st[2]) + '</button>';
+        }).join('') + '</div></div>';
+    }).join('');
+    return '<h1>' + bi('உதவி & பரிந்துரைகள்', 'Help & suggestions') + '</h1>' +
+      '<p class="soon">' + bi('புதியவை: ' + (contactData.new_count || 0), 'New: ' + (contactData.new_count || 0)) + '</p>' +
+      (items || '<p>' + bi('இன்னும் செய்திகள் இல்லை.', 'No messages yet.') + '</p>');
+  }
+
   function settingsSection() {
-    var rows = SASettings.rows().filter(function (r) { return r.key !== 'wa_sample'; });
+    var rows = SASettings.rows().filter(function (r) { return r.key !== 'wa_sample' && r.group !== 'coming_soon'; });
     var out = '<h1>' + bi('அமைப்புகள்', 'Settings') + '</h1>' +
       '<p class="soon">' + bi('மாற்றங்கள் சேமித்த உடனே செயலிக்குள் நடைமுறைக்கு வரும்.', 'Changes take effect in the app as soon as you save.') + '</p>' +
       '<form id="settings-form" novalidate>';
@@ -1031,6 +1069,10 @@
     if (!b || !last) return;
     var act = b.getAttribute('data-act');
     var id = b.getAttribute('data-id');
+    if (act === 'contact-status') {
+      return after(DB.rpc('sa_admin_set_contact_status', { p_token: DB.token(), p_id: id, p_status: b.getAttribute('data-st') }),
+        NOTICE.saved[0], NOTICE.saved[1]).then(function () { return render(); });
+    }
     if (act === 'tab') {
       tab = b.getAttribute('data-tab');
       var f = b.getAttribute('data-filter');
@@ -1171,6 +1213,7 @@
       });
       return after(DB.rpc('sa_admin_save_pooja_content', { p_token: DB.token(), p_slug: pcSlug, p_content: content }), NOTICE.saved[0], NOTICE.saved[1]);
     }
+    if (e.target.id === 'soon-form') { e.preventDefault(); saveSettings(e.target); return; }
     if (e.target.id === 'settings-form') {
       e.preventDefault();
       saveSettings(e.target);
