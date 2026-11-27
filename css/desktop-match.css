@@ -44,4 +44,26 @@
   /* Hero: banner runs to the right edge of the screen */
   #sa-v2 .v2-hero { padding: 0 !important; }
   #sa-v2 .v2-hero .v2-row > div:last-child { right: 0; width: 66%; }
+
+  /* Nav icons from the existing icon set */
+  #sa-v2 .v2-nav a { display: inline-flex; align-items: center; gap: 6px; }
+  #sa-v2 .v2-nav a::before { content: ""; width: 20px; height: 20px; flex: 0 0 20px; background: center / contain no-repeat; }
+  #sa-v2 .v2-nav a:nth-child(1)::before { background-image: url("../img/home-new/i-home.png"); }
+  #sa-v2 .v2-nav a:nth-child(2)::before { background-image: url("../img/home-new/i-ganesha-line.png"); }
+  #sa-v2 .v2-nav a:nth-child(3)::before { background-image: url("../img/home-new/i-clock.png"); }
+  #sa-v2 .v2-nav a:nth-child(4)::before { background-image: url("../img/home-new/i-cal.png"); }
+  #sa-v2 .v2-nav a:nth-child(5)::before { background-image: url("../img/home-new/i-temple.png"); }
+  #sa-v2 .v2-nav a:nth-child(6)::before { background-image: url("../img/home-new/i-user.png"); }
+  #sa-v2 .v2-nav a:nth-child(7)::before { background-image: url("../img/home-new/i-temple.png"); }
+  #sa-v2 .v2-nav a:nth-child(8)::before { background-image: url("../img/home-new/i-phone.png"); }
+
+  /* Gold ornaments either side of the announcement text */
+  #sa-v2 .v2-ann { position: relative; }
+  #sa-v2 .v2-ann::before, #sa-v2 .v2-ann::after { content: ""; position: absolute; top: 50%; transform: translateY(-50%); width: 120px; height: 16px; background: center / contain no-repeat; }
+  #sa-v2 .v2-ann::before { left: 22%; background-image: url("../img/home-new/orn-h.png"); }
+  #sa-v2 .v2-ann::after { right: 22%; background-image: url("../img/home-new/orn-h.png"); transform: translateY(-50%) scaleX(-1); }
+
+  /* Hero text centred over the left half */
+  #sa-v2 .v2-hero .v2-row > div:first-child { text-align: center; margin: 0 auto; }
+  #sa-v2 .v2-hero .v2-row > div:first-child p { margin-left: auto; margin-right: auto; }
 }
