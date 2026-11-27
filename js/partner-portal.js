@@ -197,7 +197,7 @@
           '<li>' + bi('பதிவு செய்யும்போது வகையாக "வாத்தியார்" அல்லது "சமையல்காரர்" தேர்ந்தெடுங்கள்.', 'While signing up, choose the role "Priest" or "Cook".') + '</li>' +
           '<li>' + bi('உங்கள் சுயவிவரம் மற்றும் சேவைப் பகுதியை நிரப்புங்கள். சரிபார்த்த பின் பட்டியலில் தெரியும்.', 'Complete your profile and service area. Your listing appears after review.') + '</li>' +
           '</ol>' +
-          '<p class="join-actions"><a class="btn" href="#login"><span class="ta">பதிவு செய்ய / உள்நுழைய</span><span class="en">Sign up / Log in</span></a></p>' +
+          '<p class="join-actions"><a class="btn" href="#login" data-join-role="priest"><span class="ta">வாத்தியாராகப் பதிவு</span><span class="en">Sign up as Priest</span></a> <a class="btn btn-outline" href="#login" data-join-role="cook"><span class="ta">சமையல்காரராகப் பதிவு</span><span class="en">Sign up as Cook</span></a></p>' +
           '<p class="soon">' + bi('ஏற்கெனவே வாத்தியார் அல்லது சமையல்காரராக பதிவு செய்திருந்தால் உள்நுழையவும்.', 'Already registered as a priest or cook? Log in to open your portal.') + '</p>';
         return;
       }

@@ -194,5 +194,19 @@
   });
 
   setView('login');
+  // Join page buttons: open Register with the role already chosen
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-join-role]');
+    if (a) sessionStorage.setItem('sa_join_role', a.getAttribute('data-join-role'));
+  });
+  function applyJoinRole() {
+    var r = sessionStorage.getItem('sa_join_role');
+    if (!r) return;
+    sessionStorage.removeItem('sa_join_role');
+    setView('register');
+    var sel = document.querySelector('#register-form select[name="role"]');
+    if (sel) sel.value = r;
+  }
+  window.addEventListener('hashchange', function () { if (location.hash === '#login') applyJoinRole(); });
   refresh();
 })();
