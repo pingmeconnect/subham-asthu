@@ -66,4 +66,5 @@
   /* Hero text centred over the left half */
   #sa-v2 .v2-hero .v2-row > div:first-child { text-align: center; margin: 0 auto; }
   #sa-v2 .v2-hero .v2-row > div:first-child p { margin-left: auto; margin-right: auto; }
+  #sa-v2 .v2-hero .v2-row > div:first-child h1, #sa-v2 .v2-hero .v2-row > div:first-child p { text-align: center; }
 }
