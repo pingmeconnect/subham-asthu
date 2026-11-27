@@ -151,3 +151,10 @@
   #sa-v2 details.v2-m-menu{width:auto;flex:0 0 auto;position:relative}
   #sa-v2 .v2-m-menu summary{justify-content:center;width:40px;font-size:26px;min-height:40px}
 }
+
+/* Desktop: all six quick tiles in one row (no gap) */
+@media (min-width:900px){
+  #sa-v2 .v2-quick-group{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+  #sa-v2 .v2-quick-group > .v2-quick,#sa-v2 .v2-quick-group > .v2-quick-soon{display:contents}
+  #sa-v2 .v2-soon-h{display:none}
+}
