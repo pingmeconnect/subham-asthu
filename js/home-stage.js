@@ -20,6 +20,9 @@
     '“நல்லதே நடக்கட்டும், எல்லோரும் வளமுடன் வாழ்க!”':'“May good things happen; may everyone live in prosperity!”',
     'எங்களைப் பற்றி':'About Us','கேள்விகள்':'FAQ','பொறுப்புத் துறப்பு':'Disclaimers','தனியுரிமை':'Privacy'
   };
+  /* reverse map: English value -> Tamil key, so a label left in English always returns to Tamil */
+  var REV={};Object.keys(EN).forEach(function(k){REV[norm(EN[k])]=k;});
+  function tamilOf(t){var n=norm(t);return REV[n]||t;}
   var TA_MON=['ஜனவரி','பிப்ரவரி','மார்ச்','ஏப்ரல்','மே','ஜூன்','ஜூலை','ஆகஸ்ட்','செப்டம்பர்','அக்டோபர்','நவம்பர்','டிசம்பர்'];
   var EN_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
@@ -45,7 +48,7 @@
         var lim=parseFloat(e.getAttribute('data-w'));
         if(lim&&e.offsetWidth>lim*1.0){e.style.fontSize=(parseFloat(e.getAttribute('data-fs0')||e.style.fontSize)*lim*1.0/e.offsetWidth).toFixed(2)+'px';}
       }else{
-        e.textContent=ta;
+        e.textContent=tamilOf(ta);
         if(e.hasAttribute('data-fs0'))e.style.fontSize=e.getAttribute('data-fs0');
       }
     });
