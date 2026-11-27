@@ -100,5 +100,5 @@
 
 /* Tile pictures (same images as desktop) */
 #sa-v2 .ti{display:block;object-fit:contain;margin:0 auto}
-#sa-v2 .v2-qcard .ti{width:44px;height:44px}
-#sa-v2 .v2-scard .ti{width:72px;height:72px}
+#sa-v2 .v2-qcard .ti{width:64px;height:64px}
+#sa-v2 .v2-scard .ti{width:96px;height:96px}
