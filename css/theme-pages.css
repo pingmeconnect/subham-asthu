@@ -81,3 +81,6 @@ body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer .wrap{width:m
 body:not(:has(.page[data-page="home"]:not([hidden]))) .site-footer .wrap > *{margin-left:auto!important;margin-right:auto!important}
 body:not(:has(.page[data-page="home"]:not([hidden]))) .footer-static p{margin-left:auto!important;margin-right:auto!important;text-align:center}
 body:not(:has(.page[data-page="home"]:not([hidden]))) .soon,body:not(:has(.page[data-page="home"]:not([hidden]))) .od-notes li,body:not(:has(.page[data-page="home"]:not([hidden]))) .dl-note{padding:10px 14px}
+
+/* Success messages (e.g. "code will be sent") show as a green box, even where the maroon rule above applies. */
+body:not(:has(.page[data-page="home"]:not([hidden]))) .form-msg.is-ok { color: #1F6B2A; background: #E6F4E6; border: 1px solid #2E8B3E; border-radius: 10px; padding: 10px 14px; }
