@@ -867,22 +867,11 @@
             <label class="field"><span class="ta">மின்னஞ்சல் (PIN மீட்புக்கு)</span><span class="en">Email (for PIN recovery)</span>
               <input name="email" type="email" autocomplete="email" required></label>
             <label class="field"><span class="ta">பதிவு வகை</span><span class="en">Registering as</span>
-              <select name="role" required onchange="this.form.querySelector('[data-plan-box]').hidden = !(this.value === 'priest' || this.value === 'cook')">
+              <select name="role" required>
                 <option value="customer">வாடிக்கையாளர் (Customer)</option>
                 <option value="priest">வாத்தியார் (Priest)</option>
                 <option value="cook">சமையல்காரர் (Cook)</option>
               </select></label>
-            <div class="plan-box" data-plan-box hidden>
-              <h3><span class="ta">சந்தா திட்டம் (வாத்தியார் & சமையல்காரர்)</span><span class="en">Membership & subscription plan (Priests & Cooks)</span></h3>
-              <ul>
-                <li><span class="ta">பூஜ்ஜிய கமிஷன்: தட்சிணை / சமையல் கட்டணத்தில் 100% உங்களுக்கே.</span><span class="en">Zero commission: keep 100% of your dakshina / cooking charges.</span></li>
-                <li><span class="ta">இலவசம்: முதல் 1 முடிந்த ஆர்டர் மற்றும் 2 மாதங்கள் — இரண்டும் முடிந்த பின்பே கட்டணம்.</span><span class="en">Free until BOTH your first completed order AND 2 months have passed.</span></li>
-                <li><span class="ta">தொடக்கத் திட்டம்: 1 முதல் 5 முடிந்த ஆர்டர்கள் வரை ₹299 / மாதம்.</span><span class="en">Starter: up to 5 completed orders, ₹299 / month.</span></li>
-                <li><span class="ta">நிலையான திட்டம்: 6-ஆவது முடிந்த ஆர்டரிலிருந்து ₹499 / மாதம் (நிலையானது).</span><span class="en">Standard: from the 6th completed order, ₹499 / month (fixed).</span></li>
-              </ul>
-              <label class="check-row"><input type="checkbox" name="plan_agree">
-                <span><span class="ta">நான் Sankalpam சந்தா விதிமுறைகளைப் படித்து ஏற்கிறேன் (0% கமிஷன்; முதல் முடிந்த ஆர்டர் மற்றும் 2 மாதங்கள் இரண்டும் முடிந்த பின் கட்டணம்; 1–5 ஆர்டர்கள் ₹299/மாதம்; 6-ஆவது ஆர்டரிலிருந்து ₹499/மாதம்).</span><span class="en">I have read and agree to the Sankalpam subscription terms (0% commission; paid only after BOTH the first completed order and 2 months have passed; ₹299/month for 1–5 completed orders; ₹499/month from the 6th).</span></span></label>
-            </div>
             <label class="field"><span class="ta">புதிய PIN (4 அல்லது 6 இலக்கம்)</span><span class="en">Create PIN (4 or 6 digits)</span>
               <input name="pin" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
             <label class="field"><span class="ta">PIN-ஐ மீண்டும் உள்ளிடவும்</span><span class="en">Confirm PIN</span>
@@ -1010,7 +999,7 @@
   <script src="js/extras.js?v=14" defer></script>
   <script src="js/settings.js?v=14" defer></script>
   <script src="js/auth.js?v=14" defer></script>
-  <script src="js/account.js?v=15" defer></script>
+  <script src="js/account.js?v=16" defer></script>
   <script src="js/poojas-data.js?v=14" defer></script>
   <script src="js/self-poojas.js?v=14" defer></script>
   <script src="js/pooja-info.js?v=14" defer></script>

@@ -104,9 +104,6 @@
   $('register-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var f = this, out = f.querySelector('.form-msg'), d = new FormData(f);
-    if ((d.get('role') === 'priest' || d.get('role') === 'cook') && d.get('plan_agree') !== 'on') {
-      return show(out, 'plan_agree_required', true);
-    }
     A.register({
       name: d.get('name'), mobile: d.get('mobile'), email: d.get('email'),
       role: d.get('role'), pin: d.get('pin'), pin2: d.get('pin2'),
