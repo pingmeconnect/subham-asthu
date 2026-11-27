@@ -166,3 +166,7 @@
   #sa-v2 .v2-quick-group > .v2-quick,#sa-v2 .v2-quick-group > .v2-quick-soon{display:contents}
   #sa-v2 .v2-soon-h{display:none}
 }
+
+/* Mobile menu dropdown: keep it fully inside the screen */
+#sa-v2 details.v2-m-menu ul{box-sizing:border-box;left:auto !important;right:0 !important;width:min(220px,calc(100vw - 24px)) !important;grid-template-columns:1fr !important;max-width:calc(100vw - 24px)}
+#sa-v2 details.v2-m-menu li a{white-space:normal}
