@@ -199,17 +199,23 @@
     var a = e.target.closest && e.target.closest('[data-join-role]');
     if (a) sessionStorage.setItem('sa_join_role', a.getAttribute('data-join-role'));
   });
+  var roleSel = document.querySelector('#register-form select[name="role"]');
+  var roleAll = roleSel ? roleSel.innerHTML : '';
+  function resetRoles() { if (roleSel) roleSel.innerHTML = roleAll; }
   function applyJoinRole() {
     var r = sessionStorage.getItem('sa_join_role');
-    if (!r) return;
+    if (!r) return false;
     sessionStorage.removeItem('sa_join_role');
+    resetRoles();
     setView('register');
-    var sel = document.querySelector('#register-form select[name="role"]');
-    if (sel) {
-      [].slice.call(sel.options).forEach(function (o) { if (o.value !== r) o.remove(); });
-      sel.value = r;
+    if (roleSel) {
+      [].slice.call(roleSel.options).forEach(function (o) { if (o.value !== r) o.remove(); });
+      roleSel.value = r;
     }
+    return true;
   }
-  window.addEventListener('hashchange', function () { if (location.hash === '#login') applyJoinRole(); });
+  window.addEventListener('hashchange', function () {
+    if (location.hash === '#login' && !applyJoinRole()) resetRoles();
+  });
   refresh();
 })();
