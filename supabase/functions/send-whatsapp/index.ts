@@ -1,4 +1,4 @@
-// Subham Astu: sends queued WhatsApp messages through the WhatsApp Business Cloud API (approved templates).
+// Sankalpam: sends queued WhatsApp messages through the WhatsApp Business Cloud API (approved templates).
 // Deploy: supabase functions deploy send-whatsapp --no-verify-jwt
 // Secrets: supabase secrets set WA_PHONE_NUMBER_ID=... WA_ACCESS_TOKEN=... [WA_LANG_CODE=en] [WA_API_VERSION=v21.0]
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are provided automatically to Edge Functions.
@@ -52,6 +52,8 @@ async function handle(req: Request): Promise<Response> {
   const apiVersion = Deno.env.get("WA_API_VERSION") ?? "v21.0";
   const langCode = Deno.env.get("WA_LANG_CODE") ?? "en_US";
   const namePrefix = Deno.env.get("WA_TEMPLATE_PREFIX") ?? "sa_";
+  // Meta template names that differ from the key (the old booking template was deleted and re-created).
+  const NAME_OVERRIDE: Record<string, string> = { booking_confirmed: "sa_booking_confirmed_2" };
   if (!phoneId || !token) {
     return Response.json({ ok: false, error: "whatsapp_not_configured" }, { status: 500 });
   }
@@ -79,7 +81,7 @@ async function handle(req: Request): Promise<Response> {
       to: toMetaNumber(row.to_addr),
       type: "template",
       template: {
-        name: namePrefix + row.template,
+        name: NAME_OVERRIDE[row.template] ?? namePrefix + row.template,
         language: { code: langCode },
         components: parameters.length ? [{ type: "body", parameters }] : [],
       },
