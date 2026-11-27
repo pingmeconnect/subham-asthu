@@ -1,0 +1,12 @@
+/* Desktop-only refinements (>= 900px). Mobile is not affected. */
+@media (min-width: 900px) {
+  /* Announcement strip: deep maroon, gold centred text, about 46px */
+  #sa-v2 .v2-ann, .sa-ticker { min-height: 46px; background: #52070D; color: #E5A51B; border-bottom: 2px solid #E5A51B; display: flex; align-items: center; justify-content: center; }
+
+  /* Header: about 120px, ivory, gold border below */
+  #sa-v2 .v2-hdr { min-height: 120px; background: #FFF8E9; border-bottom: 3px solid #E5A51B; }
+
+  /* Ganesha hero: about 330px, gold edge */
+  #sa-v2 .v2-hero { min-height: 330px; display: flex; align-items: center; border-bottom: 3px solid #E5A51B; }
+
+}
