@@ -3,7 +3,6 @@
 
   var DB = window.SADB;
   var A = window.SAAuth;
-  var WA = window.SAWA;
   var PD = window.SAPartners;
   var bi = PD.bi, esc = PD.esc;
   var C = window.SAContent;
@@ -64,7 +63,6 @@
     ['calendar', '🗓', 'பூஜை தேதிகள் (பஞ்சாங்கம்)', 'Pooja dates (calendar)'],
     ['customers', '👥', 'வாடிக்கையாளர்கள்', 'Customers'],
     ['combos', '🎁', 'சிறப்பு நாள் தொகுப்புகள் (Combos)', 'Special-day combos'],
-    ['messages', '💬', 'தானியங்கி செய்திகள் (5 வகை)', 'Automatic messages (5 kinds)'],
     ['soon', '🔔', 'விரைவில் வரும் உரைகள்', 'Coming-soon texts'],
     ['helpmsgs', '✉', 'உதவி & பரிந்துரைகள்', 'Help & suggestions'],
     ['helprequests', '🛟', 'உதவி மையம் கோரிக்கைகள்', 'Help Centre requests'],
@@ -178,7 +176,6 @@
         tile(d.counts.priests, 'வாத்தியார்கள்', 'Priests') +
         tile(d.counts.cooks, 'சமையல்காரர்கள்', 'Cooks') +
         tile(d.counts.stores, 'கடைகள்', 'Pooja stores') +
-        tile(d.counts.optin || 0, 'ஆஃபர் பெற விரும்புவோர்', 'Want offers') +
       '</div>';
   }
 
@@ -400,49 +397,6 @@
         bi('பிரிவு', 'Category') + '</th><th></th></tr></thead><tbody>' + poojas + '</tbody></table></div>';
   }
 
-  // ---------- WhatsApp alerts ----------
-  function waSection(d) {
-    var previews = WA.KEYS.map(function (k) {
-      var t = WA.TITLES[k];
-      return '<article class="pooja-card"><strong>' + bi(t[0], t[1]) + '</strong>' +
-        '<pre class="wa-text"><span class="ta">' + esc(WA.preview(k, 'ta')) + '</span>' +
-        '<span class="en">' + esc(WA.preview(k, 'en')) + '</span></pre></article>';
-    }).join('');
-    var log = d.wa.map(function (m) {
-      var sent = m.status === 'sent';
-      var send = function (lang, label) {
-        return '<a class="btn' + (lang === 'ta' ? '' : ' btn-outline') + ' ad-small" target="_blank" rel="noopener" data-act="wa-open" data-id="' + esc(m.id) + '" href="' +
-          esc(waLink(m.to_addr, lang === 'ta' ? m.text_ta : m.text_en)) + '">' + label + '</a>';
-      };
-      return '<article class="ad-card"><div class="ad-card-top"><strong>' + esc(m.template) + '</strong>' +
-        '<span class="badge' + (sent ? '' : ' ad-wait') + '">' + (sent ? bi('அனுப்பப்பட்டது', 'Sent') : bi('அனுப்ப வேண்டும்', 'To send')) + '</span></div>' +
-        '<p>+91 ' + esc(m.to_addr) + ' · ' + esc((m.created_at || '').slice(0, 16).replace('T', ' ')) + '</p>' +
-        '<pre class="wa-text">' + esc(m.text_ta || m.text_en || '') + '</pre>' +
-        '<div class="ad-btns">' + send('ta', 'WhatsApp - தமிழ்') + send('en', 'WhatsApp - English') + '</div></article>';
-    }).join('');
-    return '<h1>' + bi('WhatsApp செய்திகள்', 'WhatsApp messages') + '</h1>' +
-      '<p>' + bi('ஒவ்வொரு செய்தியும் "Sankalpam:" என்ற முன்னொட்டுடன் தொடங்கும். ஐந்து தூண்டுதல்கள் மட்டுமே உள்ளன.', 'Every message starts with "Sankalpam:". There are exactly five triggers.') + '</p>' +
-      '<div class="pooja-grid">' + previews + '</div>' +
-      '<div class="action-row">' +
-        '<button type="button" class="btn btn-outline" data-act="test-messages">' + bi('சோதனைச் செய்திகளை அனுப்பு (எனக்கு)', 'Queue test messages (to me)') + '</button>' +
-        '<button type="button" class="btn" data-act="api-send">' + bi('WhatsApp API மூலம் அனுப்பு', 'Send via WhatsApp API') + '</button>' +
-        '<button type="button" class="btn btn-outline" data-act="run-reminders">' + bi('நாளைய நினைவூட்டல்கள்', "Queue tomorrow's reminders") + '</button>' +
-      '</div>' +
-      '<h3>' + bi('அனுப்ப வேண்டிய செய்திகள்', 'Messages to send') + '</h3>' +
-      '<p class="soon">' + bi('கீழே உள்ள பச்சை பொத்தானை அழுத்தினால் WhatsApp திறக்கும்; செய்தி தயாராக எழுதப்பட்டிருக்கும். "Send" மட்டும் அழுத்தவும்.', 'Tap a button below: WhatsApp opens with the message already written. Just press Send.') + '</p>' +
-      (log || '<p>' + bi('இன்னும் செய்திகள் இல்லை.', 'No messages yet.') + '</p>');
-  }
-
-
-
-  // ---------- WhatsApp link helper (free: opens the admin's own WhatsApp with the text ready) ----------
-  function waLink(mobile, text) {
-    var n = String(mobile || '').replace(/\D/g, '');
-    if (n.length === 10) n = '91' + n;
-    return 'https://wa.me/' + n + '?text=' + encodeURIComponent(text || '');
-  }
-
-
   // ---------- Pooja dates (shown to customers: coming poojas and date search) ----------
   function calendarSection(d) {
     var opts = d.poojas.map(function (p) {
@@ -477,11 +431,8 @@
 
   // ---------- Customers ----------
   function customersSection(d) {
-    var optin = d.customers.filter(function (c) { return c.marketing_ok; }).length;
     return '<h1>' + bi('வாடிக்கையாளர்கள்', 'Customers') + '</h1>' +
-      '<p class="soon">' + bi('"ஆஃபர்" பெட்டி டிக் செய்யப்பட்டவர்களுக்கு மட்டுமே ஆஃபர் செய்திகள் அனுப்பப்படும். யாராவது "STOP" என்றால் இங்கே நிறுத்தவும்.', 'Offer messages go only to customers with the offers box ticked. If someone replies STOP, switch them off here.') + '</p>' +
-      '<div class="stat-grid"><div class="stat"><strong>' + d.customers.length + '</strong><span>' + bi('மொத்தம்', 'Total') + '</span></div>' +
-      '<div class="stat"><strong>' + optin + '</strong><span>' + bi('ஆஃபர் பெறுவோர்', 'Want offers') + '</span></div></div>' +
+      '<div class="stat-grid"><div class="stat"><strong>' + d.customers.length + '</strong><span>' + bi('மொத்தம்', 'Total') + '</span></div></div>' +
       '<label class="field"><span class="ta">பெயர் / எண் தேடு</span><span class="en">Search name or number</span><input id="cust-q" type="text" value="' + esc(custQ) + '"></label>' +
       '<div id="cust-list"></div>';
   }
@@ -492,113 +443,8 @@
       return !q || (c.name || '').toLowerCase().indexOf(q) >= 0 || String(c.mobile || '').indexOf(q) >= 0;
     }).slice(0, 200);
     $('cust-list').innerHTML = rows.length ? rows.map(function (c) {
-      return '<article class="ad-card ad-row"><div><strong>' + esc(c.name) + '</strong><br>' + phoneLine(c.mobile) + '</div>' +
-        '<label class="check-row"><input type="checkbox" data-act="cust-optin" data-id="' + esc(c.id) + '"' + (c.marketing_ok ? ' checked' : '') + '> ' +
-        bi('ஆஃபர் அனுப்பலாம்', 'Send offers') + '</label></article>';
+      return '<article class="ad-card ad-row"><div><strong>' + esc(c.name) + '</strong><br>' + phoneLine(c.mobile) + '</div></article>';
     }).join('') : '<p class="ad-empty">' + bi('வாடிக்கையாளர்கள் இல்லை.', 'No customers found.') + '</p>';
-  }
-
-  // ---------- Offers / combo messages ----------
-  function footerText(lang) {
-    var r = SASettings.rows().filter(function (x) { return x.key === 'offer_footer'; })[0];
-    var v = r && r.value;
-    return (v && typeof v === 'object' ? v[lang] : v) || '';
-  }
-
-  function offerMessage() {
-    var body = (offer.lang === 'ta' ? offer.ta : offer.en) || offer.ta || offer.en || '';
-    var foot = footerText(offer.lang);
-    return 'Sankalpam:\n' + body.trim() +
-      (offer.image ? '\n\n' + offer.image.trim() : '') + (foot ? '\n\n' + foot : '');
-  }
-
-  function offersSection(d) {
-    var saved = d.campaigns.map(function (c) {
-      return '<article class="ad-card ad-row"><div><strong>' + esc(c.title) + '</strong></div><div class="ad-btns">' +
-        '<button type="button" class="btn btn-outline ad-small" data-act="offer-load" data-id="' + esc(c.id) + '">' + bi('திற', 'Open') + '</button>' +
-        '<button type="button" class="btn btn-outline ad-small" data-act="offer-del" data-id="' + esc(c.id) + '">' + bi('நீக்கு', 'Delete') + '</button></div></article>';
-    }).join('');
-    return '<h1>' + bi('ஆஃபர் / தொகுப்பு செய்தி', 'Offer / combo message') + '</h1>' +
-      '<ol class="ad-steps"><li>' + bi('செய்தியை எழுதவும் (தமிழ் / English).', 'Write the message (Tamil / English).') + '</li>' +
-      '<li>' + bi('விருப்பமானால் படத்தின் இணைப்பைச் சேர்க்கவும்.', 'Optionally add a picture link.') + '</li>' +
-      '<li>' + bi('வேண்டாதவர்களை டிக் நீக்கவும்.', 'Untick anyone you do not want to send to.') + '</li>' +
-      '<li>' + bi('ஒவ்வொருவர் பெயருக்கும் அருகில் "அனுப்பு" அழுத்தவும்.', 'Press "Send" next to each name.') + '</li></ol>' +
-      '<div class="ad-card"><label class="field"><span class="ta">தலைப்பு (உங்களுக்கு மட்டும்)</span><span class="en">Title (only you see this)</span>' +
-        '<input id="off-title" type="text" maxlength="80" value="' + esc(offer.title) + '"></label>' +
-      '<label class="field"><span class="ta">தமிழ் செய்தி</span><span class="en">Tamil message</span><textarea id="off-ta" rows="5" maxlength="1500">' + esc(offer.ta) + '</textarea></label>' +
-      '<label class="field"><span class="ta">English செய்தி</span><span class="en">English message</span><textarea id="off-en" rows="5" maxlength="1500">' + esc(offer.en) + '</textarea></label>' +
-      '<label class="field"><span class="ta">படத்தின் இணைப்பு (https://...) - விருப்பம்</span><span class="en">Picture link (https://...) - optional</span><input id="off-image" type="url" value="' + esc(offer.image) + '"></label>' +
-      '<p class="soon">' + bi('குறிப்பு: WhatsApp இணைப்பில் படத்தை நேரடியாக இணைக்க முடியாது. படத்தின் இணைப்பு செய்தியில் சேரும்; அல்லது அனுப்பிய பின் படத்தை நீங்களே இணைக்கலாம்.', 'Note: WhatsApp links cannot attach a picture themselves. The picture link is added to the text, or you can attach the picture by hand before pressing Send.') + '</p>' +
-      '<div id="off-img-prev"></div>' +
-      '<div class="ad-btns"><button type="button" class="btn" data-act="offer-save">💾 ' + bi('சேமி', 'Save message') + '</button>' +
-      '<button type="button" class="btn btn-outline" data-act="offer-new">+ ' + bi('புதிய செய்தி', 'New message') + '</button>' +
-      '<button type="button" class="btn btn-outline" data-act="offer-copy">' + bi('நகலெடு', 'Copy text') + '</button></div></div>' +
-      (saved ? '<h3>' + bi('சேமித்த செய்திகள்', 'Saved messages') + '</h3>' + saved : '') +
-      '<h2>' + bi('யாருக்கு அனுப்புவது', 'Who to send to') + '</h2>' +
-      '<div class="ad-chips"><button type="button" class="ad-chip' + (offer.lang === 'ta' ? ' is-on' : '') + '" data-act="offer-lang" data-value="ta">தமிழில் அனுப்பு</button>' +
-      '<button type="button" class="ad-chip' + (offer.lang === 'en' ? ' is-on' : '') + '" data-act="offer-lang" data-value="en">Send in English</button></div>' +
-      '<pre class="wa-text" id="off-preview"></pre>' +
-      '<div id="off-recipients"></div>';
-  }
-
-  function offerRecipients(d) {
-    var list = d.customers.filter(function (c) { return c.marketing_ok; });
-    var on = list.filter(function (c) { return !offer.off[c.id]; });
-    var msg = offerMessage();
-    $('off-preview').textContent = msg;
-    var prev = $('off-img-prev');
-    prev.innerHTML = /^https:\/\//.test(offer.image) ? '<img class="ad-img-prev" alt="" src="' + esc(offer.image) + '">' : '';
-    if (!list.length) {
-      $('off-recipients').innerHTML = '<p class="ad-empty">' + bi('இன்னும் யாரும் ஆஃபர் பெற ஒப்புக்கொள்ளவில்லை.', 'No customer has agreed to offers yet.') + '</p>';
-      return;
-    }
-    $('off-recipients').innerHTML =
-      '<p><strong>' + on.length + '</strong> / ' + list.length + ' ' + bi('பேருக்கு அனுப்ப தேர்வு', 'selected to receive') + '</p>' +
-      '<div class="ad-btns"><button type="button" class="btn btn-outline ad-small" data-act="offer-all" data-value="1">' + bi('அனைவரையும் தேர்வு செய்', 'Tick all') + '</button>' +
-      '<button type="button" class="btn btn-outline ad-small" data-act="offer-all" data-value="0">' + bi('அனைவரையும் நீக்கு', 'Untick all') + '</button>' +
-      '<button type="button" class="btn btn-outline ad-small" data-act="offer-csv">⬇ ' + bi('தொடர்பு கோப்பு (WhatsApp Broadcast)', 'Contacts file (WhatsApp Broadcast)') + '</button></div>' +
-      list.map(function (c) {
-        var done = !!offer.sent[c.id];
-        return '<article class="ad-card ad-row"><label class="check-row"><input type="checkbox" data-act="offer-pick" data-id="' + esc(c.id) + '"' + (offer.off[c.id] ? '' : ' checked') + '> <span><strong>' +
-          esc(c.name) + '</strong><br>+91 ' + esc(c.mobile) + '</span></label>' +
-          (offer.off[c.id] ? '' : '<a class="btn ad-small' + (done ? ' btn-outline' : ' ad-ok') + '" target="_blank" rel="noopener" data-act="offer-send" data-id="' + esc(c.id) + '" href="' +
-            esc(waLink(c.mobile, msg)) + '">' + (done ? '✔ ' + bi('அனுப்பப்பட்டது', 'Sent') : bi('அனுப்பு', 'Send')) + '</a>') + '</article>';
-      }).join('');
-  }
-
-  function loadSent() {
-    if (!offer.id) { offer.sent = {}; return Promise.resolve(); }
-    return DB.rpc('sa_admin_offer_sent', { p_token: DB.token(), p_campaign: offer.id }).then(function (r) {
-      offer.sent = {};
-      (r.sent || []).forEach(function (u) { offer.sent[u] = true; });
-    });
-  }
-
-  function saveOffer() {
-    if (!offer.title.trim() || !(offer.ta.trim() || offer.en.trim())) return Promise.resolve(showNotice(NOTICE.offer_need[0], NOTICE.offer_need[1], true));
-    return DB.rpc('sa_admin_save_campaign', { p_token: DB.token(), p_id: offer.id, p_title: offer.title, p_ta: offer.ta, p_en: offer.en, p_image: offer.image })
-      .then(function (r) {
-        if (!r.ok) throw new Error(r.error);
-        offer.id = r.id || offer.id;
-        return render();
-      }).then(function () { showNotice(NOTICE.offer_saved[0], NOTICE.offer_saved[1], false); })
-      .catch(function () { showNotice(NOTICE.fail[0], NOTICE.fail[1], true); });
-  }
-
-  function csvDownload() {
-    var list = last.customers.filter(function (c) { return c.marketing_ok && !offer.off[c.id]; });
-    var out = [];
-    for (var i = 0; i < list.length; i += 256) {
-      var part = list.slice(i, i + 256);
-      var rows = ['Name,Phone'].concat(part.map(function (c) { return '"' + String(c.name).replace(/"/g, '""') + '",+91' + c.mobile; }));
-      out.push(rows.join('\n'));
-    }
-    out.forEach(function (txt, i) {
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(new Blob(['﻿' + txt], { type: 'text/csv' }));
-      a.download = 'sankalpam-contacts-' + (i + 1) + '.csv';
-      document.body.appendChild(a); a.click(); a.remove();
-    });
   }
 
   // ---------- Admin security + payment details (inside Settings) ----------
@@ -773,7 +619,7 @@
       '<form id="vendor-form" class="vendor-form" novalidate>' + (e ? '<input type="hidden" name="id" value="' + esc(e.id) + '">' : '') +
         '<h3>' + (e ? bi('கடையைத் திருத்து', 'Edit store') : bi('புதிய கடை', 'New store')) + '</h3>' +
         '<label class="field"><span class="ta">கடையின் பெயர்</span><span class="en">Shop name</span><input name="name" type="text" value="' + val('name') + '" required></label>' +
-        '<label class="field"><span class="ta">முதன்மை / WhatsApp எண்</span><span class="en">Main / WhatsApp number</span><input name="phone" type="tel" inputmode="numeric" maxlength="14" value="' + val('phone') + '" required></label>' +
+        '<label class="field"><span class="ta">முதன்மை எண்</span><span class="en">Main number</span><input name="phone" type="tel" inputmode="numeric" maxlength="14" value="' + val('phone') + '" required></label>' +
         '<label class="field"><span class="ta">இரண்டாவது எண் (விருப்பம் — காப்பு)</span><span class="en">Second number (optional — backup)</span><input name="phone2" type="tel" inputmode="numeric" maxlength="14" value="' + val('phone2') + '"></label>' +
         '<label class="field"><span class="ta">PIN குறியீடு</span><span class="en">PIN code</span><input name="pin" type="text" inputmode="numeric" maxlength="6" value="' + val('pin_code') + '" required></label>' +
         '<label class="field"><span class="ta">பகுதி / ஊர்</span><span class="en">Area / locality</span><input name="area" type="text" maxlength="80" value="' + val('area_name') + '"></label>' +
@@ -882,10 +728,8 @@
     if (tab === 'combos') return combosSection(d);
     if (tab === 'poojas') return poojasSection(d);
     if (tab === 'poojacontent') return poojaContentSection(d);
-    if (tab === 'messages') return waSection(d);
     if (tab === 'calendar') return calendarSection(d);
     if (tab === 'customers') return customersSection(d);
-    if (tab === 'offers') return offersSection(d);
     if (tab === 'soon') return soonSection();
     if (tab === 'helpmsgs') return helpMsgsSection();
     if (tab === 'helprequests') return helpRequestsSection();
@@ -924,7 +768,6 @@
         if (tab === 'bookings') renderBookings(d);
         if (tab === 'people') renderPeople(d);
         if (tab === 'customers') renderCustomers(d);
-        if (tab === 'offers') return loadSent().then(function () { offerRecipients(d); });
       });
     });
   }
@@ -949,40 +792,12 @@
   }
 
   // Trigger 4: one-day reminders for tomorrow's accepted bookings.
-  function runReminders() {
-    return DB.rpc('sa_admin_queue_reminders', { p_token: DB.token() }).then(function (r) {
-      var n = r.count || 0;
-      return after(Promise.resolve({ ok: true }), n + ' நினைவூட்டல்கள் வரிசையில் சேர்க்கப்பட்டன.', n + ' reminder(s) added to the queue.');
-    });
-  }
-
-  // Sends queued WhatsApp messages now through the approved templates (Edge Function "send-whatsapp").
-  function apiSendWhatsapp() {
-    var c = window.SA_CONFIG;
-    return fetch(c.SUPABASE_URL + '/functions/v1/send-whatsapp', {
-      method: 'POST',
-      headers: { 'apikey': c.SUPABASE_KEY, 'Content-Type': 'application/json' },
-      body: '{}'
-    }).then(function (r) { return r.json(); }).then(function (j) {
-      if (!j || j.ok === false) throw new Error(j && j.error || 'send_failed');
-      var ta = 'அனுப்பப்பட்டது: ' + j.sent + ' · தோல்வி: ' + j.failed;
-      var en = 'Sent: ' + j.sent + ' · Failed: ' + j.failed;
-      return render().then(function () { showNotice(ta, en, j.failed > 0); });
-    }).catch(function () { showNotice(NOTICE.fail[0], NOTICE.fail[1], true); });
-  }
-
-  function testMessages() {
-    return after(DB.rpc('sa_admin_queue_test', { p_token: DB.token() }), NOTICE.test_sent[0], NOTICE.test_sent[1]);
-  }
-
   // ---------- Settings & rules: every value below is saved to the database and read live by the app ----------
   var GROUP_TITLE = {
     subscription: ['சந்தா விதிகள்', 'Subscription rules'],
     security: ['முன்பதிவு & பாதுகாப்பு', 'Booking & security rules'],
     content: ['உள்ளடக்கம் & உரைகள்', 'Content & texts'],
-    whatsapp: ['WhatsApp எச்சரிக்கைகள்', 'WhatsApp alerts'],
-    payment: ['கட்டணம்', 'Payment'],
-    offers: ['ஆஃபர் செய்தி', 'Offer message']
+    payment: ['கட்டணம்', 'Payment']
   };
 
   function settingField(r) {
@@ -1063,7 +878,7 @@
   }
 
   function settingsSection() {
-    var rows = SASettings.rows().filter(function (r) { return r.key !== 'wa_sample' && r.group !== 'coming_soon'; });
+    var rows = SASettings.rows().filter(function (r) { return r.key !== 'wa_sample' && r.group !== 'coming_soon' && r.group !== 'whatsapp' && r.group !== 'offers'; });
     var out = '<h1>' + bi('அமைப்புகள்', 'Settings') + '</h1>' +
       '<p class="soon">' + bi('மாற்றங்கள் சேமித்த உடனே செயலிக்குள் நடைமுறைக்கு வரும்.', 'Changes take effect in the app as soon as you save.') + '</p>' +
       '<form id="settings-form" novalidate>';
@@ -1168,7 +983,7 @@
     }
     if (act === 'booking-status') {
       var st = b.getAttribute('data-status');
-      if (st === 'accepted' && !ask('இந்த முன்பதிவை ஏற்கவா? வாடிக்கையாளருக்கு WhatsApp செய்தி செல்லும்.', 'Accept this booking? The customer gets a WhatsApp message.')) return;
+      if (st === 'accepted' && !ask('இந்த முன்பதிவை ஏற்கவா?', 'Accept this booking?')) return;
       return after(DB.rpc('sa_admin_set_booking_status', { p_token: DB.token(), p_booking: id, p_status: st }), NOTICE.saved[0], NOTICE.saved[1]);
     }
     if (act === 'pc-lang') {
@@ -1213,50 +1028,9 @@
         showNotice(NOTICE.fees_queued[0], NOTICE.fees_queued[1], false);
       }).catch(function () { showNotice(NOTICE.fail[0], NOTICE.fail[1], true); });
     }
-    if (act === 'wa-open') { DB.rpc('sa_admin_wa_mark_sent', { p_token: DB.token(), p_id: id }); b.textContent = '✔ ' + b.textContent; return; }
-    if (act === 'cust-optin') {
-      return DB.rpc('sa_admin_set_marketing', { p_token: DB.token(), p_user: id, p_on: b.checked }).then(function () {
-        last.customers.forEach(function (c) { if (c.id === id) c.marketing_ok = b.checked; });
-      });
-    }
-    if (act === 'offer-lang') { offer.lang = b.getAttribute('data-value'); return render(); }
-    if (act === 'offer-pick') { if (b.checked) delete offer.off[id]; else offer.off[id] = true; return offerRecipients(last); }
-    if (act === 'offer-all') {
-      offer.off = {};
-      if (b.getAttribute('data-value') === '0') last.customers.forEach(function (c) { offer.off[c.id] = true; });
-      return offerRecipients(last);
-    }
-    if (act === 'offer-send') {
-      offer.sent[id] = true;
-      if (offer.id) DB.rpc('sa_admin_mark_offer_sent', { p_token: DB.token(), p_campaign: offer.id, p_user: id });
-      b.className = 'btn btn-outline ad-small'; b.textContent = '✔ Sent';
-      return;
-    }
-    if (act === 'offer-save') return saveOffer();
-    if (act === 'offer-new') { offer = { id: null, title: '', ta: '', en: '', image: '', lang: offer.lang, off: {}, sent: {}, q: '' }; return render(); }
-    if (act === 'offer-load') {
-      var c = last.campaigns.filter(function (x) { return x.id === id; })[0];
-      if (!c) return;
-      offer = { id: c.id, title: c.title, ta: c.text_ta, en: c.text_en, image: c.image_url || '', lang: offer.lang, off: {}, sent: {}, q: '' };
-      return render();
-    }
-    if (act === 'offer-del') {
-      if (!ask('இந்தச் செய்தியை நீக்கவா?', 'Delete this saved message?')) return;
-      if (offer.id === id) offer = { id: null, title: '', ta: '', en: '', image: '', lang: offer.lang, off: {}, sent: {}, q: '' };
-      return after(DB.rpc('sa_admin_delete_campaign', { p_token: DB.token(), p_id: id }), NOTICE.offer_deleted[0], NOTICE.offer_deleted[1]);
-    }
-    if (act === 'offer-copy') {
-      var txt = offerMessage();
-      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { showNotice(NOTICE.copied[0], NOTICE.copied[1], false); });
-      return;
-    }
-    if (act === 'offer-csv') return csvDownload();
     if (act === 'date-del') {
       return DB.rpc('sa_admin_delete_pooja_date', { p_token: DB.token(), p_id: id }).then(function () { return render(); });
     }
-    if (act === 'run-reminders') return runReminders();
-    if (act === 'test-messages') return testMessages();
-    if (act === 'api-send') return apiSendWhatsapp();
   });
 
   box.addEventListener('change', function (e) {
@@ -1322,8 +1096,6 @@
 
   box.addEventListener('input', function (e) {
     if (!last) return;
-    var offMap = { 'off-title': 'title', 'off-ta': 'ta', 'off-en': 'en', 'off-image': 'image' };
-    if (offMap[e.target.id]) { offer[offMap[e.target.id]] = e.target.value; return offerRecipients(last); }
     if (e.target.id === 'cust-q') { custQ = e.target.value; return renderCustomers(last); }
     if (e.target.id === 'order-pin') {
       pinFilter.order = digits(e.target.value);

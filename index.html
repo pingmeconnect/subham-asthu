@@ -541,11 +541,10 @@
       <div class="support">
         <div>
           <h2><span class="ta">உதவி &amp; நேரடி விசாரணை</span><span class="en">Support &amp; Direct Enquiry</span></h2>
-          <p class="ta">சந்தேகமா? WhatsApp-இல் கேளுங்கள் அல்லது கேள்விகள் பக்கத்தைப் பாருங்கள்.</p>
-          <p class="en">Questions? Message us on WhatsApp or see the FAQ.</p>
+          <p class="ta">சந்தேகமா? கேள்விகள் பக்கத்தைப் பாருங்கள் அல்லது தொடர்பு பக்கத்தில் எழுதுங்கள்.</p>
+          <p class="en">Questions? See the FAQ or write to us on the Contact page.</p>
         </div>
         <div class="support-actions">
-          <a id="support-wa" class="btn" href="#" hidden target="_blank" rel="noopener"><span class="ta">WhatsApp ஆதரவு</span><span class="en">WhatsApp Support</span></a>
           <a class="btn btn-outline" href="#faq"><span class="ta">கேள்விகள்</span><span class="en">FAQ</span></a>
         </div>
       </div>
@@ -867,22 +866,11 @@
             <label class="field"><span class="ta">மின்னஞ்சல் (PIN மீட்புக்கு)</span><span class="en">Email (for PIN recovery)</span>
               <input name="email" type="email" autocomplete="email" required></label>
             <label class="field"><span class="ta">பதிவு வகை</span><span class="en">Registering as</span>
-              <select name="role" required onchange="this.form.querySelector('[data-plan-box]').hidden = !(this.value === 'priest' || this.value === 'cook')">
+              <select name="role" required>
                 <option value="customer">வாடிக்கையாளர் (Customer)</option>
                 <option value="priest">வாத்தியார் (Priest)</option>
                 <option value="cook">சமையல்காரர் (Cook)</option>
               </select></label>
-            <div class="plan-box" data-plan-box hidden>
-              <h3><span class="ta">சந்தா திட்டம் (வாத்தியார் & சமையல்காரர்)</span><span class="en">Membership & subscription plan (Priests & Cooks)</span></h3>
-              <ul>
-                <li><span class="ta">பூஜ்ஜிய கமிஷன்: தட்சிணை / சமையல் கட்டணத்தில் 100% உங்களுக்கே.</span><span class="en">Zero commission: keep 100% of your dakshina / cooking charges.</span></li>
-                <li><span class="ta">இலவசம்: முதல் 1 முடிந்த ஆர்டர் மற்றும் 2 மாதங்கள் — இரண்டும் முடிந்த பின்பே கட்டணம்.</span><span class="en">Free until BOTH your first completed order AND 2 months have passed.</span></li>
-                <li><span class="ta">தொடக்கத் திட்டம்: 1 முதல் 5 முடிந்த ஆர்டர்கள் வரை ₹299 / மாதம்.</span><span class="en">Starter: up to 5 completed orders, ₹299 / month.</span></li>
-                <li><span class="ta">நிலையான திட்டம்: 6-ஆவது முடிந்த ஆர்டரிலிருந்து ₹499 / மாதம் (நிலையானது).</span><span class="en">Standard: from the 6th completed order, ₹499 / month (fixed).</span></li>
-              </ul>
-              <label class="check-row"><input type="checkbox" name="plan_agree">
-                <span><span class="ta">நான் Sankalpam சந்தா விதிமுறைகளைப் படித்து ஏற்கிறேன் (0% கமிஷன்; முதல் முடிந்த ஆர்டர் மற்றும் 2 மாதங்கள் இரண்டும் முடிந்த பின் கட்டணம்; 1–5 ஆர்டர்கள் ₹299/மாதம்; 6-ஆவது ஆர்டரிலிருந்து ₹499/மாதம்).</span><span class="en">I have read and agree to the Sankalpam subscription terms (0% commission; paid only after BOTH the first completed order and 2 months have passed; ₹299/month for 1–5 completed orders; ₹499/month from the 6th).</span></span></label>
-            </div>
             <label class="field"><span class="ta">புதிய PIN (4 அல்லது 6 இலக்கம்)</span><span class="en">Create PIN (4 or 6 digits)</span>
               <input name="pin" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" required></label>
             <label class="field"><span class="ta">PIN-ஐ மீண்டும் உள்ளிடவும்</span><span class="en">Confirm PIN</span>
@@ -936,7 +924,7 @@
         <ul>
           <li><span class="ta">உங்களை வாத்தியார், சமையல்காரர், பூஜை சாமான் கடைகளுடன் இணைக்க.</span><span class="en">To connect you with priests, cooks and pooja stores.</span></li>
           <li><span class="ta">PIN மறந்தால் மின்னஞ்சல் மூலம் மீட்க.</span><span class="en">To reset your PIN by email if you forget it.</span></li>
-          <li><span class="ta">ஆர்டர் / முன்பதிவு நிலை பற்றி WhatsApp செய்திகள் அனுப்ப (4 வகை மட்டும்).</span><span class="en">To send WhatsApp updates about your order or booking (4 kinds only).</span></li>
+          <li><span class="ta">ஆர்டர் / முன்பதிவு நிலை பற்றி மின்னஞ்சல் அனுப்ப (4 வகை மட்டும்).</span><span class="en">To send email updates about your order or booking (4 kinds only).</span></li>
         </ul>
 
         <h2><span class="ta">யாருக்குத் தெரியும்</span><span class="en">Who can see it</span></h2>
@@ -1008,24 +996,23 @@
   <script src="js/config.js?v=14" defer></script>
   <script src="js/db.js?v=14" defer></script>
   <script src="js/extras.js?v=14" defer></script>
-  <script src="js/settings.js?v=14" defer></script>
+  <script src="js/settings.js?v=15" defer></script>
   <script src="js/auth.js?v=14" defer></script>
-  <script src="js/account.js?v=15" defer></script>
+  <script src="js/account.js?v=16" defer></script>
   <script src="js/poojas-data.js?v=14" defer></script>
   <script src="js/self-poojas.js?v=14" defer></script>
   <script src="js/pooja-info.js?v=14" defer></script>
   <script src="js/order-items.js?v=14" defer></script>
-  <script src="js/order.js?v=14" defer></script>
+  <script src="js/order.js?v=15" defer></script>
   <script src="js/pooja-content.js?v=14" defer></script>
   <script src="js/pooja.js?v=14" defer></script>
   <script src="js/partners-data.js?v=14" defer></script>
   <script src="js/subscription.js?v=14" defer></script>
-  <script src="js/whatsapp.js?v=15" defer></script>
   <script src="js/partners.js?v=14" defer></script>
   <script src="js/partner-portal.js?v=15" defer></script>
-  <script src="js/admin.js?v=18" defer></script>
+  <script src="js/admin.js?v=19" defer></script>
   <script src="js/home-extras.js?v=1" defer></script>
-  <script src="js/home-stage.js?v=5" defer></script>
+  <script src="js/home-stage.js?v=6" defer></script>
   <script src="js/app.js?v=14" defer></script>
   <script src="js/ui.js?v=14" defer></script>
   <script src="js/panchang-core.js?v=1" defer></script>
@@ -1033,8 +1020,8 @@
   <script src="js/panchang.js?v=1" defer></script>
   <script src="js/calendar.js?v=1" defer></script>
   <script src="js/astro-places.js?v=2" defer></script>
-  <script src="js/astro.js?v=2" defer></script>
-  <script src="js/astro-admin.js?v=1" defer></script>
+  <script src="js/astro.js?v=3" defer></script>
+  <script src="js/astro-admin.js?v=2" defer></script>
   <script src="js/astro-promo.js?v=1" defer></script>
   <script src="js/downloads.js?v=1" defer></script>
   <script src="js/ticker.js?v=1" defer></script>

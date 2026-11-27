@@ -341,7 +341,7 @@
       '<div class="as-row"><span class="as-l">' + bi('பதில் மொழி', 'Reply language') + '</span><b>' + (S.lang === 'en' ? 'English' : 'தமிழ்') + '</b></div></div>' +
       '<h3>' + bi('உங்கள் கேள்விகள்', 'Your questions') + '</h3><ol class="as-ql">' + qs.map(function (q) { return '<li>' + esc(q) + '</li>'; }).join('') + '</ol>' +
       '<div class="as-price"><span>' + (fe ? bi('இந்தக் கோரிக்கை இலவசம்', 'This request is FREE') : bi('கட்டணம்: ₹' + info.price + ' (UPI)', 'Fee: ₹' + info.price + ' (UPI)')) + '</span>' +
-      '<span>' + bi('ஜோதிடர் தனிப்பட்ட முறையில் பார்த்து 48 மணி நேரத்திற்குள் இணையதளத்தில் பதில் தருவார்; WhatsApp-ல் தகவல் வரும்.', 'The astrologer reviews it personally and replies inside the website within 48 hours; you get a WhatsApp alert.') + '</span></div>' +
+      '<span>' + bi('ஜோதிடர் தனிப்பட்ட முறையில் பார்த்து 48 மணி நேரத்திற்குள் இணையதளத்தில் பதில் தருவார்.', 'The astrologer reviews it personally and replies inside the website within 48 hours.') + '</span></div>' +
       '<label class="as-chk"><input type="checkbox" name="consent"' + (S.consent ? ' checked' : '') + '> ' + bi('என் விவரங்கள் ஜோதிடரால் பார்க்கப்படுவதற்கு ஒப்புக்கொள்கிறேன்; இது வழிகாட்டுதல் மட்டுமே என்பதை அறிவேன்.', 'I agree that the astrologer may see my details, and I understand this is guidance only.') + '</label>' +
       '<p class="form-msg" id="as-m4" role="alert"></p>' +
       '<div class="as-nav"><button type="button" class="btn btn-outline" data-as="back">‹ ' + bi('பின்', 'Back') + '</button> <button type="button" class="btn" data-as="send"' + (busy ? ' disabled' : '') + '>' + bi('சமர்ப்பி', 'Submit') + '</button></div>';
@@ -352,7 +352,7 @@
     return '<div class="as-pay"><h3>' + bi('கட்டணம் ₹' + r.amount, 'Pay ₹' + r.amount) + '</h3>' +
       (upi ? '<p>UPI ID: <b id="as-upi">' + esc(upi) + '</b>' + (info.upi_name ? ' (' + esc(info.upi_name) + ')' : '') + '</p>' +
         '<p><a class="btn" href="' + esc(link) + '">' + bi('UPI ஆப்பில் செலுத்து', 'Pay in UPI app') + '</a></p>' :
-        '<p class="as-warn">' + bi('UPI விவரம் விரைவில் சேர்க்கப்படும். WhatsApp-ல் எங்களைத் தொடர்பு கொள்ளவும்.', 'UPI details will be added soon. Please contact us on WhatsApp.') + '</p>') +
+        '<p class="as-warn">' + bi('UPI விவரம் விரைவில் சேர்க்கப்படும்.', 'UPI details will be added soon.') + '</p>') +
       '<form class="as-ref" data-id="' + esc(r.id) + '"><label class="field"><span>' + bi('பணம் செலுத்திய பின் UPI பரிவர்த்தனை எண் (UTR)', 'After paying, your UPI transaction number (UTR)') + '</span><input name="ref" type="text" maxlength="40" value="' + esc(r.pay_ref || '') + '"></label>' +
       '<button class="btn btn-outline" type="submit">' + bi('எண்ணை அனுப்பு', 'Send reference') + '</button> <span class="form-msg"></span></form>' +
       '<p class="as-note">' + bi('பணம் உறுதியானதும் ஜோதிடர் பதிலைத் தொடங்குவார்.', 'The astrologer starts once the payment is confirmed.') + '</p></div>';
@@ -361,8 +361,8 @@
   function stepDone() {
     var r = result || {};
     return '<h1>' + bi('🙏 நன்றி!', '🙏 Thank you!') + '</h1>' +
-      '<p class="as-lead">' + (r.free ? bi('உங்கள் இலவசக் கேள்வி பெறப்பட்டது. ஜோதிடர் பார்த்து 48 மணி நேரத்திற்குள் இணையதளத்தில் பதில் தருவார்; WhatsApp-ல் தகவல் வரும்.',
-        'Your free question has been received. The astrologer will reply inside the website within 48 hours and you will get a WhatsApp alert.') :
+      '<p class="as-lead">' + (r.free ? bi('உங்கள் இலவசக் கேள்வி பெறப்பட்டது. ஜோதிடர் பார்த்து 48 மணி நேரத்திற்குள் இணையதளத்தில் பதில் தருவார்.',
+        'Your free question has been received. The astrologer will reply inside the website within 48 hours.') :
         bi('கோரிக்கை பெறப்பட்டது. கீழே கட்டணத்தைச் செலுத்தவும்.', 'Request received. Please pay below.')) + '</p>' +
       (r.free ? '' : payBlock(r)) +
       '<p><a class="btn" href="#astrology/my">' + bi('என் பலன்கள்', 'My readings') + '</a> <a class="btn btn-outline" href="#home">' + bi('முகப்பு', 'Home') + '</a></p>';

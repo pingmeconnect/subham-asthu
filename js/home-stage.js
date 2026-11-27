@@ -67,15 +67,15 @@
     var en=lang()==='en';
     // year
     var y=$('sa-year');if(y)y.textContent=new Date().getFullYear();
-    // contact (admin setting "support_whatsapp"; optional SA_CONFIG.SUPPORT_EMAIL / setting "support_email")
+    // contact phone (admin setting "support_whatsapp" holds the phone number; optional SA_CONFIG.SUPPORT_EMAIL / setting "support_email")
     var num=String(setting('support_whatsapp')||'').replace(/\D/g,'');
     var ph=$('sa-tb-phone'),pa=$('sa-tb-phone-a');
     if(ph){if(num.length===10){ph.textContent='+91 '+num.slice(0,5)+' '+num.slice(5);pa.setAttribute('href','tel:+91'+num);setIcons('i-phone',true);}else{ph.textContent='';pa.removeAttribute('href');setIcons('i-phone',false);}}
     var em=String(setting('support_email')||(window.SA_CONFIG&&window.SA_CONFIG.SUPPORT_EMAIL)||'').trim();
     var eh=$('sa-tb-email'),ea=$('sa-tb-email-a');
     if(eh){if(em){eh.textContent=em;ea.setAttribute('href','mailto:'+em);setIcons('i-mail',true);}else{eh.textContent='';ea.removeAttribute('href');setIcons('i-mail',false);}}
-    // help centre → WhatsApp support when configured
-    var hc=$('sa-q-help');if(hc){if(num.length===10){hc.setAttribute('href','https://wa.me/91'+num);hc.setAttribute('target','_blank');hc.setAttribute('rel','noopener');}else{hc.setAttribute('href','#help');hc.removeAttribute('target');}}
+    // help centre → Contact page
+    var hc=$('sa-q-help');if(hc){hc.setAttribute('href','#contact');hc.removeAttribute('target');hc.removeAttribute('rel');}
     // login state
     var lg=$('sa-tb-login');if(lg){lg.textContent=S.user?(en?'Account':'கணக்கு'):(en?'Login':'Login');}
     // next special day card
