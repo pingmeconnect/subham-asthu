@@ -191,8 +191,14 @@
     var box = $('portal-box');
     return SASettings.ready().then(function () { return A.currentUser(); }).then(function (u) {
       if (!u) {
-        box.innerHTML = '<p>' + bi(MSG.login[0], MSG.login[1]) + '</p>' +
-          '<p><a class="btn btn-outline" href="#login"><span class="ta">உள்நுழை</span><span class="en">Log in</span></a></p>';
+        box.innerHTML = '<h1>' + bi('வாத்தியார் / சமையல்காரராக இணையுங்கள்', 'Join as Priest / Cook') + '</h1>' +
+          '<ol class="join-steps">' +
+          '<li>' + bi('கணக்கு உருவாக்குங்கள்: மொபைல் எண், PIN, மின்னஞ்சல்.', 'Create an account: mobile number, PIN and email.') + '</li>' +
+          '<li>' + bi('பதிவு செய்யும்போது வகையாக "வாத்தியார்" அல்லது "சமையல்காரர்" தேர்ந்தெடுங்கள்.', 'While signing up, choose the role "Priest" or "Cook".') + '</li>' +
+          '<li>' + bi('உங்கள் சுயவிவரம் மற்றும் சேவைப் பகுதியை நிரப்புங்கள். சரிபார்த்த பின் பட்டியலில் தெரியும்.', 'Complete your profile and service area. Your listing appears after review.') + '</li>' +
+          '</ol>' +
+          '<p class="join-actions"><a class="btn" href="#login"><span class="ta">பதிவு செய்ய / உள்நுழைய</span><span class="en">Sign up / Log in</span></a></p>' +
+          '<p class="soon">' + bi('ஏற்கெனவே வாத்தியார் அல்லது சமையல்காரராக பதிவு செய்திருந்தால் உள்நுழையவும்.', 'Already registered as a priest or cook? Log in to open your portal.') + '</p>';
         return;
       }
       return DB.rpc('sa_partner_portal', { p_token: DB.token() }).then(function (r) {

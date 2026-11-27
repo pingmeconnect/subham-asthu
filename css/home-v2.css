@@ -178,3 +178,9 @@
   .page:not([data-page="home"]) .card h2{font-size:18px;line-height:1.35}
   .page:not([data-page="home"]) .card p,.page:not([data-page="home"]) .card li{font-size:15.5px;line-height:1.65}
 }
+
+/* Join as partner (logged-out view) */
+#portal-box .join-steps{margin:0 0 16px;padding-left:20px;line-height:1.6}
+#portal-box .join-steps li{margin-bottom:8px}
+#portal-box .join-actions{margin:8px 0 14px}
+#portal-box .join-actions .btn{display:inline-block;width:100%;text-align:center;box-sizing:border-box}
