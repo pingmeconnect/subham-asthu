@@ -1,5 +1,5 @@
 -- =====================================================================
--- Subham Asthu — migration: live app settings (run ONCE, after schema.sql).
+-- Sankalpam — migration: live app settings (run ONCE, after schema.sql).
 -- Moves every business rule, fee range, threshold, text, WhatsApp template and trigger switch
 -- into the app_settings table. The Admin Dashboard edits it; the app reads it on load.
 -- =====================================================================
@@ -45,13 +45,13 @@ on conflict (key) do nothing;
 
 -- ---------- default content (the approved texts that were hardcoded in index.html) ----------
 update app_settings set value = jsonb_build_object(
-  'ta', 'சுபம் அஸ்து என்பது வாத்தியார்கள், சமையல்காரர்கள் மற்றும் உள்ளூர் கடைகளை இணைக்கும் சேவைத் தளம் மட்டுமே. சடங்கு முறைகள், மந்திர உச்சரிப்புகள் அல்லது சமையல் சுவை/தரம் அந்தந்தச் சேவை வழங்குநர்களின் அனுபவம் மற்றும் வழக்கத்தைப் பொறுத்தது; அவற்றில் சுபம் அஸ்து தலையிடாது. தட்சணை, சமையல் கட்டணம் மற்றும் பேமெண்ட் விவரங்களை வாடிக்கையாளரும் சேவை வழங்குநரும் நேரடியாகப் பேசிக் கொள்ள வேண்டும். எதிர்பாராத சூழலில் சேவை வழங்குநர் வர இயலாமல் போனால் நேரடிப் பொறுப்பேற்க இயலாது என்றாலும், மாற்று ஏற்பாட்டுக்கு எங்களால் முடிந்த எல்லா உதவியையும் செய்வோம்.',
-  'en', 'Subham Asthu is only a platform that connects priests, cooks and local stores. Ritual procedures, mantra chanting, and the taste and quality of cooking depend on each service provider''s experience and customs, and Subham Asthu does not interfere with them. Dakshina, cooking charges and payment details must be discussed and settled directly between the customer and the service provider. If a service provider is unable to attend due to an unexpected situation, we cannot take direct responsibility, but we will do everything possible to help arrange an alternative.')
+  'ta', 'சங்கல்பம் என்பது வாத்தியார்கள், சமையல்காரர்கள் மற்றும் உள்ளூர் கடைகளை இணைக்கும் சேவைத் தளம் மட்டுமே. சடங்கு முறைகள், மந்திர உச்சரிப்புகள் அல்லது சமையல் சுவை/தரம் அந்தந்தச் சேவை வழங்குநர்களின் அனுபவம் மற்றும் வழக்கத்தைப் பொறுத்தது; அவற்றில் சங்கல்பம் தலையிடாது. தட்சணை, சமையல் கட்டணம் மற்றும் பேமெண்ட் விவரங்களை வாடிக்கையாளரும் சேவை வழங்குநரும் நேரடியாகப் பேசிக் கொள்ள வேண்டும். எதிர்பாராத சூழலில் சேவை வழங்குநர் வர இயலாமல் போனால் நேரடிப் பொறுப்பேற்க இயலாது என்றாலும், மாற்று ஏற்பாட்டுக்கு எங்களால் முடிந்த எல்லா உதவியையும் செய்வோம்.',
+  'en', 'Sankalpam is only a platform that connects priests, cooks and local stores. Ritual procedures, mantra chanting, and the taste and quality of cooking depend on each service provider''s experience and customs, and Sankalpam does not interfere with them. Dakshina, cooking charges and payment details must be discussed and settled directly between the customer and the service provider. If a service provider is unable to attend due to an unexpected situation, we cannot take direct responsibility, but we will do everything possible to help arrange an alternative.')
 where key = 'text_disclaimer_customer';
 
 update app_settings set value = jsonb_build_object(
-  'ta', 'சுபம் அஸ்து மூலம் வரும் வாய்ப்புகள் ஒரு இணைப்பு வசதி மட்டுமே. ஒப்புக்கொண்ட தேதியில் சரியான நேரத்தில் சேவை வழங்குவது வாடிக்கையாளர் நம்பிக்கைக்கு அவசியம். சாமான் ஆர்டர் உறுதி செய்யப்பட்ட பிறகு, டெலிவரி நேரம் மற்றும் விவரங்களை வாடிக்கையாளருடன் நேரடியாகப் பேசிக் கொள்ள வேண்டியது கடைக்காரரின் பொறுப்பு; அதில் சுபம் அஸ்து தலையிடாது.',
-  'en', 'Opportunities that come through Subham Asthu are only a connection facility. Serving on time, on the agreed date, is essential for customer trust. Once a samagri order is confirmed, it is the store''s responsibility to discuss delivery timing and details directly with the customer, and Subham Asthu does not interfere.')
+  'ta', 'சங்கல்பம் மூலம் வரும் வாய்ப்புகள் ஒரு இணைப்பு வசதி மட்டுமே. ஒப்புக்கொண்ட தேதியில் சரியான நேரத்தில் சேவை வழங்குவது வாடிக்கையாளர் நம்பிக்கைக்கு அவசியம். சாமான் ஆர்டர் உறுதி செய்யப்பட்ட பிறகு, டெலிவரி நேரம் மற்றும் விவரங்களை வாடிக்கையாளருடன் நேரடியாகப் பேசிக் கொள்ள வேண்டியது கடைக்காரரின் பொறுப்பு; அதில் சங்கல்பம் தலையிடாது.',
+  'en', 'Opportunities that come through Sankalpam are only a connection facility. Serving on time, on the agreed date, is essential for customer trust. Once a samagri order is confirmed, it is the store''s responsibility to discuss delivery timing and details directly with the customer, and Sankalpam does not interfere.')
 where key = 'text_disclaimer_partner';
 
 update app_settings set value = jsonb_build_object(
@@ -60,8 +60,8 @@ update app_settings set value = jsonb_build_object(
 where key = 'text_pdf_watermark';
 
 update app_settings set value = jsonb_build_object(
-  'ta', 'சுபம் அஸ்து என்பது பரணி இன்னோவேஷன்ஸ் நிறுவனத்தின் தயாரிப்பு — சென்னை – 600 126',
-  'en', 'Subham Asthu is a product of Bharani Innovations, Chennai – 600 126')
+  'ta', 'சங்கல்பம் என்பது பரணி இன்னோவேஷன்ஸ் நிறுவனத்தின் தயாரிப்பு — சென்னை – 600 126',
+  'en', 'Sankalpam is a product of Bharani Innovations, Chennai – 600 126')
 where key = 'text_footer';
 
 -- ---------- WhatsApp templates move from wa_templates into app_settings ----------
@@ -263,8 +263,8 @@ begin
   end if;
   insert into outbox (channel, template, ref, to_addr, text_ta, text_en)
   values ('whatsapp', p_template, p_ref, '+91 ' || p_mobile,
-          'சுபம் அஸ்து: ' || sa_tpl(p_template, 0, p_data),
-          'சுபம் அஸ்து: ' || sa_tpl(p_template, 1, p_data))
+          'Sankalpam: ' || sa_tpl(p_template, 0, p_data),
+          'Sankalpam: ' || sa_tpl(p_template, 1, p_data))
   on conflict (channel, ref) do nothing;
   return found;
 end $$;
@@ -322,8 +322,8 @@ begin
      where id = v_u.id;
     insert into outbox (channel, template, ref, to_addr, text_ta, text_en)
     values ('email', 'pin_reset', 'reset:' || encode(gen_random_bytes(8), 'hex'), v_u.email,
-      'சுபம் அஸ்து PIN மீட்புக் குறியீடு: ' || v_code || ' (' || sa_setting_int('security_reset_minutes') || ' நிமிடங்கள்)',
-      'Subham Asthu PIN reset code: ' || v_code || ' (valid ' || sa_setting_int('security_reset_minutes') || ' minutes)');
+      'சங்கல்பம் PIN மீட்புக் குறியீடு: ' || v_code || ' (' || sa_setting_int('security_reset_minutes') || ' நிமிடங்கள்)',
+      'Sankalpam PIN reset code: ' || v_code || ' (valid ' || sa_setting_int('security_reset_minutes') || ' minutes)');
   end if;
   return json_build_object('ok', true, 'sent', true);
 end $$;

@@ -1,5 +1,5 @@
 -- =====================================================================
--- Subham Asthu — live Supabase database.
+-- Sankalpam — live Supabase database.
 -- Run once in the SQL editor on an empty project (drop old tables first if any exist).
 -- The browser holds only the publishable key. Every table is locked (RLS on, no policies,
 -- no grants to anon). The app reaches data only through the sa_* functions below, which
@@ -267,8 +267,8 @@ begin
      where id = v_u.id;
     insert into outbox (channel, template, ref, to_addr, text_ta, text_en)
     values ('email', 'pin_reset', 'reset:' || encode(gen_random_bytes(8), 'hex'), v_u.email,
-      'சுபம் அஸ்து PIN மீட்புக் குறியீடு: ' || v_code || ' (15 நிமிடங்கள் செல்லுபடியாகும்)',
-      'Subham Asthu PIN reset code: ' || v_code || ' (valid 15 minutes)');
+      'சங்கல்பம் PIN மீட்புக் குறியீடு: ' || v_code || ' (15 நிமிடங்கள் செல்லுபடியாகும்)',
+      'Sankalpam PIN reset code: ' || v_code || ' (valid 15 minutes)');
   end if;
   return json_build_object('ok', true, 'sent', true);
 end $$;
@@ -351,7 +351,7 @@ begin
                            'freeUntil', to_char(v_free_until, 'YYYY-MM-DD'), 'billingStart', v_bs);
 end $$;
 
--- ---------- WhatsApp queue: exactly four triggers, each text prefixed 'சுபம் அஸ்து:' ----------
+-- ---------- WhatsApp queue: exactly four triggers, each text prefixed 'Sankalpam:' ----------
 create or replace function sa_tpl(p_template text, p_i int, p_data jsonb) returns text
 language plpgsql stable set search_path = public as $$
 declare
@@ -375,8 +375,8 @@ language plpgsql security definer set search_path = public as $$
 begin
   insert into outbox (channel, template, ref, to_addr, text_ta, text_en)
   values ('whatsapp', p_template, p_ref, '+91 ' || p_mobile,
-          'சுபம் அஸ்து: ' || sa_tpl(p_template, 0, p_data),
-          'சுபம் அஸ்து: ' || sa_tpl(p_template, 1, p_data))
+          'Sankalpam: ' || sa_tpl(p_template, 0, p_data),
+          'Sankalpam: ' || sa_tpl(p_template, 1, p_data))
   on conflict (channel, ref) do nothing;
   return found;
 end $$;
@@ -887,7 +887,7 @@ with p as (
   select lpad((('x' || encode(extensions.gen_random_bytes(4), 'hex'))::bit(32)::bigint % 1000000)::text, 6, '0') as pin
 ), ins as (
   insert into users (name, mobile, email, role, pin_hash)
-  select 'Admin', '9000000099', 'admin@subhamasthu.test', 'admin', crypt(p.pin, gen_salt('bf', 10)) from p
+  select 'Admin', '9000000099', 'admin@sankalpam.test', 'admin', crypt(p.pin, gen_salt('bf', 10)) from p
   returning id
 )
 select 'Admin mobile 9000000099 · PIN: ' || p.pin || '  (save it now; it is not stored anywhere else)' as admin_login
