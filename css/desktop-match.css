@@ -67,4 +67,9 @@
   #sa-v2 .v2-hero .v2-row > div:first-child { text-align: center; margin: 0 auto; }
   #sa-v2 .v2-hero .v2-row > div:first-child p { margin-left: auto; margin-right: auto; }
   #sa-v2 .v2-hero .v2-row > div:first-child h1, #sa-v2 .v2-hero .v2-row > div:first-child p { text-align: center; }
+  /* Hero: full-width banner as the background, text centred over it, dark left gradient for legibility */
+  #sa-v2 .v2-hero { background: linear-gradient(90deg, rgba(74,10,15,0.9) 0, rgba(74,10,15,0.35) 38%, rgba(74,10,15,0) 55%), url("../img/home-new/hero-bg.jpg") center / cover no-repeat, #4a0a0f !important; min-height: 330px; }
+  #sa-v2 .v2-hero .v2-row { padding-left: 0 !important; }
+  #sa-v2 .v2-hero .v2-row > div:last-child { display: none !important; }
+  #sa-v2 .v2-hero .v2-row > div:first-child { max-width: 620px; margin-left: max(24px, calc((100% - 1180px) / 2 + 24px)); }
 }
