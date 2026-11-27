@@ -97,3 +97,8 @@
 /* Highlighted option (Astrology) */
 #sa-v2 .v2-hl{background:linear-gradient(180deg,#fff3d6,#f6d98f);border:2px solid #c9973f;box-shadow:0 3px 10px rgba(122,10,16,.18)}
 #sa-v2 .v2-hl strong,#sa-v2 .v2-hl b{color:#5c0c12}
+
+/* Tile pictures (same images as desktop) */
+#sa-v2 .ti{display:block;object-fit:contain;margin:0 auto}
+#sa-v2 .v2-qcard .ti{width:44px;height:44px}
+#sa-v2 .v2-scard .ti{width:72px;height:72px}
