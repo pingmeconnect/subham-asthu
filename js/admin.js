@@ -1019,9 +1019,9 @@
     var STATUS = [['new', 'புதியது', 'New'], ['read', 'படித்தது', 'Read'], ['replied', 'பதில் அனுப்பியது', 'Replied']];
     var items = (contactData.messages || []).map(function (m) {
       var when = new Date(m.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-      var k = KIND[m.kind] || KIND.help;
+      var k = KIND[m.kind] || [m.kind, m.kind];
       return '<div class="ad-card' + (m.status === 'new' ? ' is-hot' : '') + '">' +
-        '<p><strong>' + esc(m.name) + '</strong> · ' + phoneLine(m.mobile) + ' · ' + bi(k[0], k[1]) + ' · ' + esc(when) + '</p>' +
+        '<p><strong>' + esc(m.name) + '</strong> · ' + phoneLine(m.mobile) + (m.email ? ' · ' + esc(m.email) : '') + ' · ' + bi(k[0], k[1]) + ' · ' + esc(when) + ' · ' + esc(m.id.slice(0, 8).toUpperCase()) + '</p>' +
         '<p>' + esc(m.message) + '</p>' +
         '<div class="ad-btns">' + STATUS.map(function (st) {
           return '<button type="button" class="btn' + (m.status === st[0] ? '' : ' btn-outline') + '" data-act="contact-status" data-id="' +
