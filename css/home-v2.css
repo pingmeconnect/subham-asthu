@@ -229,3 +229,13 @@
   #sa-v2 .v2-hero .v2-btn{margin-left:0}
   #sa-v2 .v2-qcard{background:#fffdf7;border:1px solid #ecdcb8;border-top:3px solid #c9973f;border-radius:4px 4px 14px 14px;box-shadow:0 6px 18px rgba(92,12,18,.08)}
 }
+
+/* Desktop fill: use the full screen width, spread card grids to fill rows */
+@media (min-width:900px){
+  #sa-v2 .v2-sec{max-width:none;padding:32px clamp(24px,4vw,72px)}
+  #sa-v2 .v2-hero{padding:56px clamp(24px,4vw,72px)}
+  #sa-v2 .v2-rasi{grid-template-columns:repeat(4,1fr)}
+  #sa-v2 .v2-svc{grid-template-columns:repeat(4,1fr)}
+  #sa-v2 .v2-steps{grid-template-columns:repeat(3,1fr)}
+  #sa-v2 .v2-quick{grid-template-columns:repeat(6,1fr)}
+}
