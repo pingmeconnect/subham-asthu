@@ -170,3 +170,11 @@
 /* Mobile menu dropdown: keep it fully inside the screen */
 #sa-v2 details.v2-m-menu ul{box-sizing:border-box;left:auto !important;right:0 !important;width:min(220px,calc(100vw - 24px)) !important;grid-template-columns:1fr !important;max-width:calc(100vw - 24px)}
 #sa-v2 details.v2-m-menu li a{white-space:normal}
+
+/* Inner pages on phones: smaller text and padding so pages fit the screen without looking zoomed */
+@media (max-width:559px){
+  .page:not([data-page="home"]) .card{padding:18px 16px}
+  .page:not([data-page="home"]) .card h1{font-size:23px;line-height:1.35}
+  .page:not([data-page="home"]) .card h2{font-size:18px;line-height:1.35}
+  .page:not([data-page="home"]) .card p,.page:not([data-page="home"]) .card li{font-size:15.5px;line-height:1.65}
+}
