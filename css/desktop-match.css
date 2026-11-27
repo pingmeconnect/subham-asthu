@@ -25,4 +25,9 @@
   #sa-v2 .v2-hero .v2-row > div:last-child { position: absolute; right: 0; top: 0; bottom: 0; width: 62%; }
   #sa-v2 .v2-hero img.art { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; aspect-ratio: auto; border-radius: 0; object-fit: cover; margin: 0; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%); mask-image: linear-gradient(90deg, transparent 0, #000 22%); }
   #sa-v2 .v2-hero h1 { font-size: 38px; }
+
+  /* Hero edge to edge: text keeps the centred content column, banner runs to the screen edges */
+  #sa-v2 .v2-hero .v2-row { max-width: none; width: 100%; padding-left: max(24px, calc((100% - 1180px) / 2 + 24px)); }
+  #sa-v2 .v2-hero .v2-row > div:last-child { right: 0; width: 64%; }
+  #sa-v2 .v2-hero .v2-row > div:first-child { max-width: 500px; }
 }
