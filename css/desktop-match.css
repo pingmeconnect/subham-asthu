@@ -14,4 +14,8 @@
   #sa-v2 .v2-quick-group .v2-qcard { display: grid !important; grid-template-columns: 96px minmax(0, 1fr); column-gap: 18px; align-items: center; min-height: 136px; padding: 18px 22px; text-align: left; border: 2px solid #E5A51B; border-radius: 18px; background: linear-gradient(180deg, #FFF8E9, #FFF1D0); box-shadow: 0 8px 22px rgba(82, 7, 13, 0.16), inset 0 0 0 4px #FFF8E9; }
   #sa-v2 .v2-quick-group .v2-qcard img.ti { grid-row: 1 / span 3; width: 96px; height: 96px; margin: 0; }
   #sa-v2 .v2-quick-group .v2-qcard strong, #sa-v2 .v2-quick-group .v2-qcard small { display: block; }
+
+
+  /* Header: larger Sankalpam logo */
+  #sa-v2 .v2-hdr img { width: 84px; height: auto; }
 }
