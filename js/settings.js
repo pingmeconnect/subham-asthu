@@ -31,12 +31,6 @@
       if (!v || typeof v !== 'object') return;
       el.innerHTML = '<p class="ta">' + esc(v.ta) + '</p><p class="en">' + esc(v.en) + '</p>';
     });
-    var support = document.getElementById('support-wa');
-    if (support) {
-      var num = get('support_whatsapp');
-      support.hidden = !num;
-      if (num) support.setAttribute('href', 'https://wa.me/91' + esc(num));
-    }
   }
 
   var ready = DB.rpc('sa_get_settings', {}).then(function (list) {
