@@ -11,7 +11,10 @@ body .site-footer .footer-copy{margin:6px 0 0;font-size:12px;opacity:.85;color:#
  body .site-footer .footer-links{max-width:none;grid-template-columns:repeat(4,auto);justify-content:center;gap:0 24px;text-align:center}
  body .site-footer .footer-links a{justify-content:center}
 }
-.contact-form{display:grid;gap:12px;max-width:520px}
+.contact-form{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;max-width:520px;width:100%;box-sizing:border-box}
+.contact-form label{min-width:0}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;max-width:100%;box-sizing:border-box}
+.contact-form button{width:100%}
 .contact-form label{display:grid;gap:4px;font-weight:600;color:#7a0a10}
 .contact-form input,.contact-form select,.contact-form textarea{font:inherit;padding:10px;border:1px solid #c9973f;border-radius:8px;background:#fff;color:#4a1014;font-weight:400}
 .contact-form .form-note{font-size:13px;color:#7a5a4a;margin:0}
