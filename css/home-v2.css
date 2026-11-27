@@ -155,7 +155,7 @@
 
 /* Mobile header: menu button on the same row as the language switch */
 @media (max-width:559px){
-  #sa-v2 .v2-m-hdr{flex-wrap:nowrap}
+  #sa-v2 .v2-m-hdr{flex-wrap:wrap}
   #sa-v2 details.v2-m-menu{width:auto;flex:0 0 auto;position:relative}
   #sa-v2 .v2-m-menu summary{justify-content:center;width:40px;font-size:26px;min-height:40px}
 }
