@@ -209,3 +209,11 @@
   #sa-v2 .v2-panel,#sa-v2 .v2-rcard,#sa-v2 .v2-scard{border-radius:16px;box-shadow:0 2px 10px rgba(92,12,18,.06)}
   #sa-v2 .v2-hdr{padding:14px 24px}
 }
+
+/* Desktop finish: gold medallions for tile pictures, gold title accents, gold hero edges */
+@media (min-width:900px){
+  #sa-v2 .v2-hero{border-top:3px solid #d9a440;border-bottom:3px solid #d9a440}
+  #sa-v2 .v2-sech h2{position:relative;padding-bottom:10px}
+  #sa-v2 .v2-sech h2::after{content:"";position:absolute;left:0;bottom:0;width:48px;height:3px;border-radius:2px;background:#c9973f}
+  #sa-v2 .v2-qcard .ti{width:76px;height:76px;padding:12px;border-radius:50%;object-fit:contain;background:radial-gradient(circle at 50% 40%,#fff6dc,#f4dca0);box-shadow:inset 0 0 0 1px #e4c07a}
+}
