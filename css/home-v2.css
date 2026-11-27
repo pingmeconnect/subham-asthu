@@ -93,3 +93,7 @@
   #sa-v2 .v2-prow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   #sa-v2 .v2-about-row{display:grid;grid-template-columns:1.3fr .7fr;gap:16px}
 }
+
+/* Highlighted option (Astrology) */
+#sa-v2 .v2-hl{background:linear-gradient(180deg,#fff3d6,#f6d98f);border:2px solid #c9973f;box-shadow:0 3px 10px rgba(122,10,16,.18)}
+#sa-v2 .v2-hl strong,#sa-v2 .v2-hl b{color:#5c0c12}
