@@ -205,7 +205,10 @@
     sessionStorage.removeItem('sa_join_role');
     setView('register');
     var sel = document.querySelector('#register-form select[name="role"]');
-    if (sel) sel.value = r;
+    if (sel) {
+      [].slice.call(sel.options).forEach(function (o) { if (o.value !== r) o.remove(); });
+      sel.value = r;
+    }
   }
   window.addEventListener('hashchange', function () { if (location.hash === '#login') applyJoinRole(); });
   refresh();
