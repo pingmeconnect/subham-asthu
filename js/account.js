@@ -7,9 +7,9 @@
   // [Tamil, English]
   var MSG = {
     ok_registered: ['பதிவு முடிந்தது. வரவேற்கிறோம்!', 'Registration complete. Welcome!'],
-    plan_agree_required: ['தொடர சந்தா விதிமுறைகளை ஏற்கவும்.', 'Please agree to the subscription terms to continue.'],
-    reset_sent: ['விவரங்கள் பொருந்தினால், பதிவு செய்த மின்னஞ்சலுக்கு 6 இலக்கக் குறியீடு அனுப்பப்படும்.', 'If the details match, a 6-digit code will be sent to your registered email.'],
+    reset_sent: ['விவரங்கள் பொருந்தினால், பதிவு செய்த மின்னஞ்சலுக்கு மீட்பு இணைப்பு அனுப்பப்படும்.', 'If the details match, a reset link will be sent to your registered email. It is valid for 30 minutes.'],
     ok_reset: ['PIN மாற்றப்பட்டது. இப்போது உள்நுழையலாம்.', 'PIN updated. You can now log in.'],
+    reset_invalid: ['மீட்பு இணைப்பு தவறானது. புதிய இணைப்பைக் கோரவும்.', 'This reset link is not valid. Request a new one.'],
     invalid_name: ['பெயரை உள்ளிடவும்.', 'Enter your name.'],
     invalid_mobile: ['சரியான 10 இலக்க மொபைல் எண்ணை உள்ளிடவும்.', 'Enter a valid 10-digit mobile number.'],
     invalid_email: ['சரியான மின்னஞ்சலை உள்ளிடவும்.', 'Enter a valid email address.'],
@@ -20,9 +20,7 @@
     email_taken: ['இந்த மின்னஞ்சல் ஏற்கனவே பயன்பாட்டில் உள்ளது.', 'This email is already in use.'],
     invalid_credentials: ['மொபைல் எண் அல்லது PIN தவறு.', 'Mobile number or PIN is incorrect.'],
     locked: ['பல முறை தவறான PIN. சிறிது நேரம் கழித்து முயற்சிக்கவும்.', 'Too many wrong attempts. Please try again later.'],
-    reset_invalid_code: ['குறியீடு தவறு அல்லது பொருந்தவில்லை.', 'The code is incorrect or does not match.'],
-    reset_expired: ['குறியீட்டின் காலம் முடிந்தது. புதிய குறியீடு கோரவும்.', 'The code has expired. Request a new one.'],
-    reset_too_many: ['அதிக முயற்சிகள். புதிய குறியீடு கோரவும்.', 'Too many attempts. Request a new code.'],
+    reset_expired: ['மீட்பு இணைப்பின் காலம் முடிந்தது. புதிய இணைப்பைக் கோரவும்.', 'This reset link has expired. Request a new one.'],
     pin_weak: ['இந்த PIN எளிதில் ஊகிக்கக் கூடியது (எ.கா. 1234, 0000). வேறு PIN தேர்ந்தெடுக்கவும்.', 'That PIN is too easy to guess (like 1234 or 0000). Choose another.'],
     consent_needed: ['தொடர, தனியுரிமை அறிவிப்பை ஏற்கும் பெட்டியில் டிக் செய்யவும்.', 'Please tick the box to accept the privacy notice.'],
     busy: ['இப்போது பதிவு செய்ய முடியவில்லை. சிறிது நேரம் கழித்து முயற்சிக்கவும்.', 'Registration is busy right now. Please try again a little later.'],
@@ -104,9 +102,6 @@
   $('register-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var f = this, out = f.querySelector('.form-msg'), d = new FormData(f);
-    if ((d.get('role') === 'priest' || d.get('role') === 'cook') && d.get('plan_agree') !== 'on') {
-      return show(out, 'plan_agree_required', true);
-    }
     A.register({
       name: d.get('name'), mobile: d.get('mobile'), email: d.get('email'),
       role: d.get('role'), pin: d.get('pin'), pin2: d.get('pin2'),
@@ -132,7 +127,6 @@
       dlg.innerHTML = '<div class="soon-box" role="dialog" aria-modal="true" aria-labelledby="ps-t">' +
         '<h2 id="ps-t"><span class="ta">பதிவு சேமிக்கப்பட்டது ✔</span><span class="en">Registration saved ✔</span></h2>' +
         '<p><span class="ta">உங்கள் பதிவு சேமிக்கப்பட்டது. நிர்வாகம் உங்கள் சுயவிவரத்தை சரிபார்க்கும்.</span><span class="en">Your registration is saved. The admin will review your profile.</span></p>' +
-        '<p><span class="ta">அங்கீகரிக்கப்பட்ட பின் WhatsApp மூலம் உறுதிப்படுத்தல் வரும்.</span><span class="en">You will get a WhatsApp confirmation once the admin approves you.</span></p>' +
         '<p><span class="ta">அதன் பின்பே உங்கள் சுயவிவரம் வாடிக்கையாளர்களுக்கு நேரலையாகும்.</span><span class="en">Only then does your profile go live for customers.</span></p>' +
         '<div class="soon-act"><button type="button" class="btn" id="ps-ok"><span class="ta">சரி</span><span class="en">OK</span></button></div>' +
         '</div>';
@@ -146,22 +140,23 @@
   $('reset-request-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var f = this, out = f.querySelector('.form-msg'), d = new FormData(f);
-    A.requestPinReset(d.get('mobile'), d.get('email')).then(function (r) {
+    A.requestResetLink(d.get('mobile'), d.get('email')).then(function (r) {
       if (!r.ok) return show(out, r.error, true);
       show(out, 'reset_sent', false);
-      $('reset-confirm-form').hidden = false;
     }).catch(function (err) { fail(out, err); });
   });
 
-  $('reset-confirm-form').addEventListener('submit', function (e) {
+  // Reset page (#reset/<token>): the token comes from the link in the email. The page is only
+  // used once, and the token is never sent anywhere except this request.
+  $('reset-link-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var f = this, out = f.querySelector('.form-msg'), d = new FormData(f);
-    A.confirmPinReset(d.get('mobile'), d.get('code'), d.get('pin'), d.get('pin2')).then(function (r) {
+    var found = (location.hash || '').match(/^#reset\/([A-Za-z0-9]+)$/);
+    if (!found) return show(out, 'reset_invalid', true);
+    A.confirmResetLink(found[1], d.get('pin'), d.get('pin2')).then(function (r) {
       if (!r.ok) return show(out, r.error, true);
       f.reset();
-      f.hidden = true;
-      $('reset-request-form').reset();
-      $('reset-request-form').querySelector('.form-msg').innerHTML = '';
+      location.hash = '#login';
       setView('login');
       show($('login-form').querySelector('.form-msg'), 'ok_reset', false);
     }).catch(function (err) { fail(out, err); });
@@ -198,4 +193,20 @@
 
   setView('login');
   refresh();
+  // Registration: the Submit button stays disabled until the disclaimer consent box is ticked.
+  // The server also refuses registration without consent (sa_register), so this is only a UI guard.
+  (function wireConsentGate() {
+    function wire() {
+      var cb = document.querySelector('#register-form input[name="consent"]');
+      var form = document.getElementById('register-form');
+      var btn = form && form.querySelector('button[type="submit"]');
+      if (!cb || !btn) return;
+      function sync() { btn.disabled = !cb.checked; }
+      sync();
+      cb.addEventListener('change', sync);
+    }
+    if (document.readyState !== 'loading') wire();
+    else document.addEventListener('DOMContentLoaded', wire);
+  })();
+
 })();

@@ -6,7 +6,7 @@
 
   // Categories and prefilled questions. Question codes are checked by the database (letter + digit).
   var CATS = [
-    { code: 'booking', ta: 'வாத்தியார் / சமையல்காரர் முன்பதிவு', en: 'Priest / cook booking' },
+    { code: 'booking', ta: 'வாத்தியார் / சமையலர் முன்பதிவு', en: 'Priest / cook booking' },
     { code: 'order', ta: 'பூஜைப் பொருட்கள் ஆர்டர்', en: 'Pooja items order' },
     { code: 'guides', ta: 'வழிகாட்டி PDF', en: 'Guide PDF' },
     { code: 'panchang', ta: 'பஞ்சாங்கம் / ராசி பலன்', en: 'Panchang / Rasi palan' },

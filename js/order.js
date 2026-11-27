@@ -42,7 +42,7 @@
   }
 
   function stepper(n) {
-    var labels = [['சாமான்கள்', 'Items'], ['சரிபார்', 'Review'], ['முடிந்தது', 'Done']];
+    var labels = [['பொருட்கள்', 'Items'], ['சரிபார்', 'Review'], ['முடிந்தது', 'Done']];
     return '<ol class="od-steps">' + labels.map(function (l, i) {
       return '<li class="' + (i + 1 === n ? 'is-now' : i + 1 < n ? 'is-done' : '') + '"><b>' + (i + 1) + '</b>' + bi(l[0], l[1]) + '</li>';
     }).join('') + '</ol>';
@@ -51,7 +51,7 @@
   function head(p, n) {
     return '<a class="back" href="#pooja/' + esc(p.slug) + '">' + bi('← பூஜைப் பக்கம்', '← Pooja page') + '</a>' +
       '<header class="pj-head od-head"><h1>' + bi(esc(p.name_ta), esc(p.name_en)) + '</h1>' +
-      '<p class="pj-deity">🧺 ' + bi('பூஜை சாமான்கள் — ஆன்லைன் ஆர்டர்', 'Pooja samagri — online order') + '</p></header>' + stepper(n);
+      '<p class="pj-deity">🧺 ' + bi('பூஜைப் பொருட்கள் — ஆன்லைன் ஆர்டர்', 'Pooja samagri — online order') + '</p></header>' + stepper(n);
   }
 
   // ---------- Step 1: edit ----------
@@ -78,13 +78,13 @@
 
   function edit(box, p) {
     var priestNote = !p.is_self_pooja
-      ? '<p class="pj-note">' + bi('குறிப்பு: இந்தப் பட்டியல் பொதுவானது. உங்கள் வாத்தியார் அறிவுறுத்தலின்படியும் உங்கள் குடும்ப வழக்கப்படியும் சில சாமான்கள் மாறலாம். வாத்தியாரிடம் கேட்டு உறுதி செய்த பின் ஆர்டர் செய்யவும்.',
+      ? '<p class="pj-note">' + bi('குறிப்பு: இந்தப் பட்டியல் பொதுவானது. உங்கள் வாத்தியார் அறிவுறுத்தலின்படியும் உங்கள் குடும்ப வழக்கப்படியும் சில பொருட்கள் மாறலாம். வாத்தியாரிடம் கேட்டு உறுதி செய்த பின் ஆர்டர் செய்யவும்.',
         'Note: This list is general. Items may change as your priest advises and as per your family custom. Please confirm with your priest before ordering.') + '</p>' : '';
     box.innerHTML = '<div class="pj od" style="--cc:' + (st.color || '#702C35') + '">' + head(p, 1) +
-      '<section class="pj-card"><h2>1. ' + bi('சாமான்களைச் சரிபார்க்கவும்', 'Check your items') + '</h2>' +
+      '<section class="pj-card"><h2>1. ' + bi('பொருட்களைச் சரிபார்க்கவும்', 'Check your items') + '</h2>' +
       '<p class="od-help">' + bi('தேவையில்லாததை டிக் நீக்கவும்; அளவை மாற்றலாம்.', 'Untick what you do not need. You can change the quantity.') + '</p>' + priestNote +
       '<ul class="od-list" id="od-list">' + st.rows.map(rowHtml).join('') + '</ul>' +
-      '<div class="od-add"><label class="field"><span class="ta">பட்டியலில் இல்லாத சாமான் சேர்க்க</span><span class="en">Add an item that is not in the list</span>' +
+      '<div class="od-add"><label class="field"><span class="ta">பட்டியலில் இல்லாத பொருள் சேர்க்க</span><span class="en">Add an item that is not in the list</span>' +
       '<select id="od-pick"></select></label>' +
       '<button type="button" class="btn btn-outline" id="od-add">+ ' + bi('சேர்', 'Add') + '</button></div></section>' +
       '<section class="pj-card"><h2>2. ' + bi('கூடுதல் கருத்துகள்', 'Additional comments') + '</h2>' +

@@ -3,7 +3,7 @@
   'use strict';
 
   var LANG_KEY = 'subham-asthu-lang';
-  var PAGES = ['home', 'poojas', 'order', 'pooja', 'bookings', 'partner', 'about', 'help', 'faq', 'disclaimers', 'privacy', 'downloads', 'panchang', 'rasi', 'astrology', 'astro-admin', 'login', 'admin'];
+  var PAGES = ['home', 'poojas', 'order', 'pooja', 'bookings', 'partner', 'about', 'help', 'faq', 'disclaimers', 'privacy', 'terms', 'contact', 'reset', 'downloads', 'panchang', 'rasi', 'astrology', 'astro-admin', 'login', 'admin'];
   var root = document.documentElement;
 
   function readStored(key) {

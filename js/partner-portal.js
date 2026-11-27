@@ -13,7 +13,7 @@
   // [Tamil, English]
   var MSG = {
     login: ['பார்ட்னர் போர்ட்டலைப் பார்க்க உள்நுழையவும்.', 'Log in to open the Partner Portal.'],
-    partner_only: ['கூட்டாளர் போர்ட்டல் வாத்தியார் / சமையல்காரர்களுக்கானது.', 'The Partner Portal is for priests and cooks.'],
+    partner_only: ['கூட்டாளர் போர்ட்டல் வாத்தியார் / சமையலர்களுக்கானது.', 'The Partner Portal is for priests and cooks.'],
     saved: ['விவரங்கள் சேமிக்கப்பட்டன.', 'Details saved.'],
     phone2_bad: ['இரண்டாவது மொபைல் எண் (10 இலக்கம், முதல் எண்ணிலிருந்து வேறுபட்டது) கட்டாயம்.', 'A second mobile number (10 digits, different from your login number) is required.'],
     areas_bad: ['சேவை வழங்கும் குறைந்தது ஒரு PIN குறியீட்டை (தமிழ்நாடு / புதுச்சேரி) உள்ளிடவும்.', 'Enter at least one Tamil Nadu / Puducherry PIN code you serve.'],
@@ -168,17 +168,18 @@
       actions = '<button type="button" class="btn" data-action="accept" data-id="' + esc(b.id) + '">' + bi('ஏற்கிறேன்', 'Accept') + '</button> ' +
         '<button type="button" class="btn btn-outline" data-action="decline" data-id="' + esc(b.id) + '">' + bi('நிராகரி', 'Decline') + '</button>';
     } else if (b.status === 'accepted') {
-      actions = '<p class="soon">' + bi('நிகழ்ச்சி முடிந்த பின் வாடிக்கையாளர் உறுதிப்படுத்துவார்.', 'The customer confirms completion after the event.') + '</p>' +
+      actions = '<button type="button" class="btn" data-action="complete" data-id="' + esc(b.id) + '">' + bi('நிகழ்ச்சி முடிந்தது', 'Mark completed') + '</button> ' +
         '<button type="button" class="btn btn-outline" data-action="cancel" data-id="' + esc(b.id) + '">' + bi('முடியவில்லை / ரத்து', 'Could not finalise / Cancel') + '</button>';
     }
     return '<article class="pooja-card">' +
       '<strong>' + esc(b.customer_name) + '</strong>' +
       '<div class="badges"><span class="badge">' + bi(st[0], st[1]) + '</span>' +
-        (b.cook_addon ? '<span class="badge">' + bi('சமையல்காரர் கூடுதல்', 'Cook add-on') + '</span>' : '') + '</div>' +
+        (b.cook_addon ? '<span class="badge">' + bi('சமையலர் கூடுதல்', 'Cook add-on') + '</span>' : '') + '</div>' +
       '<p>' + esc(b.event_date) + (b.event_time ? ' · ' + esc(b.event_time) : '') + ' · ' + esc(b.pooja_en || '') + ' · PIN ' + esc(b.pin_code) + '</p>' +
       (b.prefs && b.prefs.area ? '<p>📍 <strong>' + bi('பகுதி', 'Area') + ':</strong> ' + esc(b.prefs.area) + '</p>' : '') +
       (b.venue_address ? '<p>🏠 <strong>' + bi('முழு முகவரி', 'Full address') + ':</strong> ' + esc(b.venue_address) + '</p>'
-        : (b.status === 'requested' ? '<p class="soon">' + bi('முழு முகவரி மற்றும் தொலைபேசி எண் ஏற்ற பின் காட்டப்படும்.', 'The full address and phone number show after you accept.') + '</p>' : '')) +
+        : (b.status === 'requested' ? '<p class="soon">' + bi('முழு முகவரி மற்றும் தொலைபேசி எண் ஏற்ற பின் காட்டப்படும்.', 'The full address and phone number show after you accept.') + '</p>'
+          : (b.status === 'accepted' ? '<p class="soon">' + bi('வாடிக்கையாளர் முழு முகவரியைப் பகிர தேர்வு செய்யவில்லை.', 'The customer did not choose to share the full address.') + '</p>' : ''))) +
       (b.customer_mobile ? '<p>📞 <strong>' + bi('வாடிக்கையாளர்', 'Customer') + ':</strong> ' + esc(b.customer_name || '') + ' · <a href="tel:+91' + esc(b.customer_mobile) + '">+91 ' + esc(b.customer_mobile) + '</a></p>'
         : '') +
       (b.prefs ? '<p class="soon"><strong>' + bi('வாடிக்கையாளர் விருப்பம்:', 'Customer wants:') + '</strong> ' + prefsText(b.prefs) + '</p>' : '') +
@@ -220,7 +221,7 @@
         box.innerHTML = '<h1>' + bi(esc(p.name_ta || p.name_en), esc(p.name_en || p.name_ta)) + '</h1>' +
           '<h2>' + bi('சுயவிவரம்', 'Profile') + '</h2>' + profileForm(p.role, p) +
           (SASettings.bool('subscriptions_enabled') ? subscriptionCard(p.role, r.state) + payCard(r) : '') +
-          '<h2>' + bi('முன்பதிவு கோரிக்கைகள்', 'Booking requests') + '</h2>' +
+          '<h2>' + bi('முன்பதிவுக் கோரிக்கைகள்', 'Booking requests') + '</h2>' +
           '<p class="soon">' + bi(MSG.accept_note[0], MSG.accept_note[1]) + '</p>' +
           (r.bookings.length ? '<div class="pooja-grid">' + r.bookings.map(bookingRow).join('') + '</div>'
             : '<p>' + bi(MSG.no_requests[0], MSG.no_requests[1]) + '</p>');
@@ -242,8 +243,16 @@
     if (act === 'area-add') { document.getElementById('area-rows').insertAdjacentHTML('beforeend', areaRow(null)); return; }
     if (act === 'area-del') { var rows = document.querySelectorAll('#area-rows .area-row'); if (rows.length > 1) b.closest('.area-row').remove(); return; }
     if (act === 'photo-del') { photo.value = ''; photo.shown = ''; var im = document.getElementById('photo-prev'); im.hidden = true; im.removeAttribute('src'); return; }
-    if (act === 'accept') return setStatus(id, 'accepted').then(next);
-    if (act === 'decline') return setStatus(id, 'declined').then(next);
+    if (act === 'accept') {
+      var share = window.confirm('உங்கள் முழு பெயர், முழு முகவரி மற்றும் தொலைபேசி எண்ணை வாடிக்கையாளருடன் பகிர்கிறீர்களா?\n\nOK = ஆம் / Yes     Cancel = இல்லை / No\n\nShare your full name, full address and phone number with the customer?');
+      return DB.rpc('sa_set_booking_status', { p_token: DB.token(), p_booking: id, p_status: 'accepted', p_share: share === true }).then(next);
+    }
+    if (act === 'complete') return DB.rpc('sa_provider_complete_booking', { p_token: DB.token(), p_booking: id }).then(next);
+    if (act === 'decline') {
+      var refuse = window.prompt('நிராகரிப்புக்கான காரணம் (குறைந்தது 3 எழுத்துகள்) / Reason for declining (at least 3 characters):');
+      if (!refuse || refuse.trim().length < 3) return;
+      return DB.rpc('sa_set_booking_status', { p_token: DB.token(), p_booking: id, p_status: 'declined', p_reason: refuse.trim() }).then(next);
+    }
     if (act === 'cancel') {
       var why = window.prompt('ரத்துக்கான காரணம் (குறைந்தது 3 எழுத்துகள்) / Reason for cancelling (at least 3 characters):');
       if (!why || why.trim().length < 3) return;

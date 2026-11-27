@@ -53,12 +53,12 @@
   // [key, icon, Tamil, English]
   var SECTIONS = [
     ['home', '🏠', 'முகப்பு', 'Home'],
-    ['orders', '📦', 'பூஜை சாமான் ஆர்டர்கள்', 'Samagri orders'],
+    ['orders', '📦', 'பூஜைப் பொருள் ஆர்டர்கள்', 'Samagri orders'],
     ['bookings', '📅', 'வாத்தியார் / சமையல் முன்பதிவுகள்', 'Priest & cook bookings'],
     ['followup', '📞', 'கருத்து & பின்தொடர்தல்', 'Feedback & follow-up'],
-    ['people', '🙏', 'வாத்தியார்கள் & சமையல்காரர்கள்', 'Priests & Cooks'],
-    ['addpeople', '➕', 'வாத்தியார் / சமையல்காரர் சேர்', 'Add priest / cook'],
-    ['stores', '🏪', 'சாமான் கடைகள்', 'Pooja stores'],
+    ['people', '🙏', 'வாத்தியார்கள் & சமையலர்கள்', 'Priests & Cooks'],
+    ['addpeople', '➕', 'வாத்தியார் / சமையலர் சேர்', 'Add priest / cook'],
+    ['stores', '🏪', 'பொருட்கள் கடைகள்', 'Pooja stores'],
     ['poojas', '🪔', 'பூஜை பட்டியல்', 'Pooja list'],
     ['poojacontent', '📝', 'பூஜை விவரங்கள் (திருத்த)', 'Pooja content (edit)'],
     ['calendar', '🗓', 'பூஜை தேதிகள் (பஞ்சாங்கம்)', 'Pooja dates (calendar)'],
@@ -164,7 +164,7 @@
       '<div class="ad-todo-grid">' +
         todoCard(waitingOrders(d).length, 'காத்திருக்கும் ஆர்டர்கள்', 'Orders waiting', 'உறுதி செய்ய வேண்டும்', 'Confirm or mark unavailable', 'orders', 'waiting_for_confirmation', true) +
         todoCard(soonBookings(d).length, 'இன்று / நாளை முன்பதிவுகள்', 'Bookings today / tomorrow', 'வாத்தியார் & சமையல்', 'Priests & cooks', 'bookings', 'soon', false) +
-        todoCard(toApprove(d).length, 'புதிய அங்கீகாரம்', 'New approvals', 'வாத்தியார் / சமையல்காரர்', 'Priests / cooks waiting', 'people', 'approve', true) +
+        todoCard(toApprove(d).length, 'புதிய அங்கீகாரம்', 'New approvals', 'வாத்தியார் / சமையலர்', 'Priests / cooks waiting', 'people', 'approve', true) +
         todoCard(feesDue(d).length, 'கட்டணம் நிலுவை', 'Fees pending', 'இந்த மாதம்', 'This month', 'people', 'fees', false) +
       '</div>' +
       '<p><a class="btn" href="#astro-admin">🔮 ' + bi('ஜோதிடர் ஆலோசனை கோரிக்கைகள்', 'Astrology consultation requests') + '</a></p>' +
@@ -176,7 +176,7 @@
       '<div class="stat-grid">' +
         tile(d.counts.customers, 'வாடிக்கையாளர்கள்', 'Customers') +
         tile(d.counts.priests, 'வாத்தியார்கள்', 'Priests') +
-        tile(d.counts.cooks, 'சமையல்காரர்கள்', 'Cooks') +
+        tile(d.counts.cooks, 'சமையலர்கள்', 'Cooks') +
         tile(d.counts.stores, 'கடைகள்', 'Pooja stores') +
         tile(d.counts.optin || 0, 'ஆஃபர் பெற விரும்புவோர்', 'Want offers') +
       '</div>';
@@ -193,7 +193,7 @@
   // ---------- Samagri orders ----------
   function ordersSection(d) {
     var n = function (s) { return d.orders.filter(function (o) { return o.status === s; }).length; };
-    return '<h1>' + bi('சாமான் ஆர்டர்கள்', 'Samagri orders') + '</h1>' +
+    return '<h1>' + bi('பொருட்கள் ஆர்டர்கள்', 'Samagri orders') + '</h1>' +
       chips('order', orderFilter, [
         ['waiting_for_confirmation', 'காத்திருக்கும்', 'Waiting', n('waiting_for_confirmation')],
         ['confirmed_dispatched', 'உறுதி', 'Confirmed', n('confirmed_dispatched')],
@@ -294,10 +294,7 @@
             (bookPrefs[b.id] ? '<p class="soon">' + prefsLine(bookPrefs[b.id]) + '</p>' : '') +
             (b.venue_address ? '<p>📍 ' + esc(b.venue_address) + '</p>' : '') +
             (b.notes ? '<p>📝 ' + esc(b.notes) + '</p>' : '') +
-            (b.status === 'requested' ? '<div class="ad-btns"><button type="button" class="btn ad-ok" data-act="booking-status" data-status="accepted" data-id="' + esc(b.id) + '">✔ ' + bi('ஏற்கிறேன்', 'Accept') + '</button>' +
-              '<button type="button" class="btn btn-outline" data-act="booking-status" data-status="declined" data-id="' + esc(b.id) + '">' + bi('நிராகரி', 'Decline') + '</button></div>'
-            : b.status === 'accepted' ? '<div class="ad-btns"><button type="button" class="btn btn-outline" data-act="booking-status" data-status="completed" data-id="' + esc(b.id) + '">' + bi('முடிந்தது', 'Completed') + '</button>' +
-              '<button type="button" class="btn btn-outline" data-act="booking-status" data-status="cancelled" data-id="' + esc(b.id) + '">' + bi('ரத்து', 'Cancel') + '</button></div>' : '') + '</article>';
+            '<p class="soon">' + bi('நிர்வாகி பார்வைக்கு மட்டும். ஏற்பு, நிராகரிப்பு மற்றும் நிறைவு வாத்தியார் / சமையலரால் மட்டுமே.', 'View only for admin. Accept, decline and completion are done by the priest or cook.') + '</p>' + '</article>';
         }).join('')
       : '<p class="ad-empty">' + bi('இந்தப் பட்டியலில் முன்பதிவுகள் இல்லை.', 'No bookings in this list.') + '</p>';
   }
@@ -340,7 +337,7 @@
 
   function peopleSection(d) {
     var all = realPartners(d);
-    return '<h1>' + bi('வாத்தியார் & சமையல்காரர்', 'Priests & Cooks') + '</h1>' +
+    return '<h1>' + bi('வாத்தியார் & சமையலர்', 'Priests & Cooks') + '</h1>' +
       chips('people', peopleFilter, [
         ['approve', 'அங்கீகாரம் நிலுவை', 'To approve', toApprove(d).length],
         ['fees', 'கட்டணம்', 'Fees due', feesDue(d).length],
@@ -628,7 +625,7 @@
     address_bad: ['முழு முகவரி தேவை (குறைந்தது 10 எழுத்துகள்).', 'A full address is needed (at least 10 characters).'],
     pins_bad: ['அருகிலுள்ள பகுதிகளின் PIN குறியீடுகள் சரியில்லை.', 'The nearby PIN codes are not valid.'],
     title_bad: ['தமிழ் மற்றும் ஆங்கிலத் தலைப்பு தேவை.', 'A Tamil and an English title are needed.'],
-    role_bad: ['வகை (வாத்தியார் / சமையல்காரர்) தேவை.', 'Role (priest / cook) is needed.'],
+    role_bad: ['வகை (வாத்தியார் / சமையலர்) தேவை.', 'Role (priest / cook) is needed.'],
     rows_bad: ['கோப்பில் வரிசைகள் இல்லை அல்லது 500-க்கு மேல் உள்ளன.', 'The file has no rows, or more than 500.']
   };
   function errNotice(code) {
@@ -716,11 +713,11 @@
     var langs = Object.keys(PD.LANGS).map(function (k) {
       return '<label class="check-row"><input type="checkbox" name="lang" value="' + k + '"' + (k === 'Tamil' ? ' checked' : '') + '> ' + bi(PD.LANGS[k][0], PD.LANGS[k][1]) + '</label>';
     }).join('');
-    return '<h1>' + bi('வாத்தியார் / சமையல்காரர் சேர்', 'Add priest / cook') + '</h1>' +
+    return '<h1>' + bi('வாத்தியார் / சமையலர் சேர்', 'Add priest / cook') + '</h1>' +
       '<p class="soon">' + bi('நிர்வாகம் சேர்ப்பவர்கள் உடனே அங்கீகரிக்கப்படுவார்கள். இவர்களுக்கு உள்நுழைவு இல்லை; முன்பதிவுகளை நிர்வாகம் "முன்பதிவுகள்" பகுதியில் ஏற்கும்.',
         'People added by admin are approved at once. They have no login; admin accepts their bookings in the Bookings section.') + '</p>' +
       '<form id="partner-form" class="vendor-form" novalidate>' +
-        '<label class="field"><span class="ta">வகை</span><span class="en">Role</span><select name="role" id="ap-role"><option value="priest">வாத்தியார் · Priest</option><option value="cook">சமையல்காரர் · Cook</option></select></label>' +
+        '<label class="field"><span class="ta">வகை</span><span class="en">Role</span><select name="role" id="ap-role"><option value="priest">வாத்தியார் · Priest</option><option value="cook">சமையலர் · Cook</option></select></label>' +
         '<label class="field"><span class="ta">பெயர் (ஆங்கிலம்)</span><span class="en">Name (English)</span><input name="name_en" type="text" maxlength="80"></label>' +
         '<label class="field"><span class="ta">பெயர் (தமிழ்)</span><span class="en">Name (Tamil)</span><input name="name_ta" type="text" maxlength="80"></label>' +
         '<label class="field"><span class="ta">மொபைல் எண்</span><span class="en">Mobile number</span><input name="phone" type="tel" inputmode="numeric" maxlength="14" required></label>' +
@@ -734,7 +731,7 @@
         '<button type="submit" class="btn">' + bi('சேர்', 'Add') + '</button>' +
       '</form>' +
       bulkCard('priests', 'வாத்தியார்கள் — Excel மூலம் பலரைச் சேர்', 'Priests — bulk upload from Excel') +
-      bulkCard('cooks', 'சமையல்காரர்கள் — Excel மூலம் பலரைச் சேர்', 'Cooks — bulk upload from Excel') +
+      bulkCard('cooks', 'சமையலர்கள் — Excel மூலம் பலரைச் சேர்', 'Cooks — bulk upload from Excel') +
       '<div id="bulk-msg"></div>';
   }
   function submitPartner(form) {
@@ -815,7 +812,7 @@
         '<button type="button" class="btn btn-outline" data-act="del-offer" data-id="' + esc(o.id) + '">' + bi('நீக்கு', 'Delete') + '</button></div></article>';
     }).join('');
     return '<h1>' + bi('சிறப்பு நாள் தொகுப்புகள்', 'Special-day combos') + '</h1>' +
-      '<p class="soon">' + bi('கோகுலாஷ்டமி, வரலட்சுமி போன்ற முக்கிய நாட்களுக்கான தொகுப்புகள் "பூஜை சாமான் ஆர்டர்" பக்கத்தில் வழக்கமான பட்டியலுக்கு மேலே தனியாகக் காட்டப்படும். விலை எதுவும் குறிப்பிட வேண்டாம்.',
+      '<p class="soon">' + bi('கோகுலாஷ்டமி, வரலட்சுமி போன்ற முக்கிய நாட்களுக்கான தொகுப்புகள் "பூஜைப் பொருள் ஆர்டர்" பக்கத்தில் வழக்கமான பட்டியலுக்கு மேலே தனியாகக் காட்டப்படும். விலை எதுவும் குறிப்பிட வேண்டாம்.',
         'Combos for major days (Gokulashtami, Varalakshmi…) show on the Order page above the regular list. Do not write any price.') + '</p>' +
       '<form id="combo-form" class="vendor-form" novalidate>' + (e ? '<input type="hidden" name="id" value="' + esc(e.id) + '">' : '') +
         '<label class="field"><span class="ta">தலைப்பு (தமிழ்)</span><span class="en">Title (Tamil)</span><input name="title_ta" type="text" maxlength="100" value="' + val('title_ta') + '" required></label>' +
@@ -1168,7 +1165,7 @@
     }
     if (act === 'booking-status') {
       var st = b.getAttribute('data-status');
-      if (st === 'accepted' && !ask('இந்த முன்பதிவை ஏற்கவா? வாடிக்கையாளருக்கு WhatsApp செய்தி செல்லும்.', 'Accept this booking? The customer gets a WhatsApp message.')) return;
+      if (st === 'accepted' && !ask('இந்த முன்பதிவை ஏற்கவா?', 'Accept this booking?')) return;
       return after(DB.rpc('sa_admin_set_booking_status', { p_token: DB.token(), p_booking: id, p_status: st }), NOTICE.saved[0], NOTICE.saved[1]);
     }
     if (act === 'pc-lang') {
