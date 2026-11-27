@@ -18,4 +18,11 @@
 
   /* Header: larger Sankalpam logo */
   #sa-v2 .v2-hdr img { width: 84px; height: auto; }
+
+  /* Hero: full-width banner. Ganesha image fills the right side, text stays on the left */
+  #sa-v2 .v2-hero { position: relative; min-height: 330px; overflow: hidden; display: flex; align-items: center; }
+  #sa-v2 .v2-hero .v2-row { position: relative; z-index: 1; width: 100%; max-width: 1180px; grid-template-columns: minmax(0, 46%) 1fr !important; }
+  #sa-v2 .v2-hero .v2-row > div:last-child { position: absolute; right: 0; top: 0; bottom: 0; width: 62%; }
+  #sa-v2 .v2-hero img.art { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; aspect-ratio: auto; border-radius: 0; object-fit: cover; margin: 0; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%); mask-image: linear-gradient(90deg, transparent 0, #000 22%); }
+  #sa-v2 .v2-hero h1 { font-size: 38px; }
 }
