@@ -234,5 +234,10 @@
   window.addEventListener('hashchange', function () {
     if (location.hash === '#login' && !applyJoinRole()) resetRoles();
   });
+  // Normal Log in / Sign up links (no join role): restore all three roles even when already on #login
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href="#login"]');
+    if (a && !a.hasAttribute('data-join-role')) resetRoles();
+  });
   refresh();
 })();
