@@ -11,7 +11,7 @@
   var EN={
     'முகப்பு':'Home','பதிவுகள்':'Poojas','வழிகாட்டி PDF':'Guides PDF','பஞ்சாங்கம்':'Panchang','ராசி பலன்':'Rasi Palan','சேவைகள்':'Services','உள்நுழைவு':'Log in','பூஜை பொருட்கள்':'Pooja Items',
     'எல்லாம் நன்மையாகட்டும்!':'May all be auspicious!',
-    'உங்கள் இல்லத்து மக்கள்':'For the auspicious','உங்கள் இல்லத்து மங்கள':'For the auspicious','சங்கல்பம்':'Sankalpam','நிகழ்வுகளுக்கு...':'occasions of your home...','சரியான நபர். சரியான இணைப்பு.':'The right person. The right connection.','தொடங்குங்கள் →':'Get Started →',
+    'உங்கள் இல்லத்து மக்கள்':'For the auspicious','உங்கள் இல்லத்து மங்கள':'For the auspicious','சங்கல்பம்':'Sankalpam','தனியுரிமைக் கொள்கை':'Privacy Policy','விதிமுறைகள்':'Terms & Conditions','எங்களைத் தொடர்பு கொள்ள':'Contact Us','நிகழ்வுகளுக்கு...':'occasions of your home...','சரியான நபர். சரியான இணைப்பு.':'The right person. The right connection.','தொடங்குங்கள் →':'Get Started →',
     'தினசரி, மாதாந்திரம்':'Daily, monthly','இன்றைய பலன்':"Today's reading",'பிரபலமான வழிகாட்டி':'Popular guides','உத்தரவாத பொருட்கள்':'Quality items','பூஜை & வழிபாடு சேவைகள்':'Pooja & worship services','உதவி மையம்':'Help Centre','எங்கள் தொடர்புகள்':'Contact us',
     'அடுத்த நிகழ்வுகள்':'Next Events','முழு விவரம் →':'Full details →','அடுத்த விசேஷம்':'Next special day',
     'எங்கள் சேவைகள்':'Our Services','வழிபாடு சேவைகள்':'Worship Services','ஆன்மிக வழிகாட்டி':'Spiritual Guide','திருக்கோவில்':'Temple','தரிசனம்':'Darshan',
@@ -41,6 +41,7 @@
   }
   function applyLang(){
     var en=lang()==='en';
+    var pills=st.querySelectorAll('a[data-set-lang]');[].forEach.call(pills,function(a){var on=a.getAttribute('data-set-lang')===(en?'en':'ta');a.style.border=on?'1.5px solid #e9c46f':'1.5px solid transparent';a.style.background=on?'#8a0f12':'transparent';});
     els.forEach(function(e){
       var ta=e.getAttribute('data-ta'),key=norm(ta);
       if(en&&EN[key]){
