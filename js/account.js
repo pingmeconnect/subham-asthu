@@ -194,26 +194,43 @@
   });
 
   setView('login');
-  // Join page buttons: open Register with the role already chosen
-  document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('[data-join-role]');
-    if (a) sessionStorage.setItem('sa_join_role', a.getAttribute('data-join-role'));
-  });
   var roleSel = document.querySelector('#register-form select[name="role"]');
   var roleAll = roleSel ? roleSel.innerHTML : '';
-  function resetRoles() { if (roleSel) roleSel.innerHTML = roleAll; }
+  var roleNote = null, roleHidden = null;
+  function resetRoles() {
+    if (roleSel) {
+      roleSel.innerHTML = roleAll;
+      roleSel.setAttribute('name', 'role');
+      var lbl = roleSel.closest('label'); if (lbl) lbl.hidden = false;
+    }
+    if (roleNote) { roleNote.remove(); roleNote = null; }
+    if (roleHidden) { roleHidden.remove(); roleHidden = null; }
+  }
+  // Join page sign-up: show only the chosen role, as a clear note (no dropdown)
   function applyJoinRole() {
     var r = sessionStorage.getItem('sa_join_role');
-    if (!r) return false;
+    if (!r || !roleSel) return false;
     sessionStorage.removeItem('sa_join_role');
     resetRoles();
     setView('register');
-    if (roleSel) {
-      [].slice.call(roleSel.options).forEach(function (o) { if (o.value !== r) o.remove(); });
-      roleSel.value = r;
-    }
+    var lbl = roleSel.closest('label');
+    if (lbl) lbl.hidden = true;
+    roleSel.removeAttribute('name');
+    roleHidden = document.createElement('input');
+    roleHidden.type = 'hidden'; roleHidden.name = 'role'; roleHidden.value = r;
+    roleSel.parentNode.insertBefore(roleHidden, roleSel);
+    roleNote = document.createElement('p');
+    roleNote.className = 'join-role-note';
+    roleNote.innerHTML = '<b><span class="ta">பதிவு வகை: ' + (r === 'cook' ? 'சமையல்காரர்' : 'வாத்தியார்') + '</span><span class="en">Registering as: ' + (r === 'cook' ? 'Cook' : 'Priest') + '</span></b>';
+    roleSel.parentNode.insertBefore(roleNote, roleHidden);
     return true;
   }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-join-role]');
+    if (!a) return;
+    sessionStorage.setItem('sa_join_role', a.getAttribute('data-join-role'));
+    if (location.hash === '#login') setTimeout(applyJoinRole, 0);
+  });
   window.addEventListener('hashchange', function () {
     if (location.hash === '#login' && !applyJoinRole()) resetRoles();
   });
