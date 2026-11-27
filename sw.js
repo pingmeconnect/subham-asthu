@@ -1,6 +1,6 @@
 /* Sankalpam — small offline-friendly service worker.
    Caches the page shell so the app opens fast. It never caches or answers any database call. */
-var CACHE = 'sankalpam-v54';
+var CACHE = 'sankalpam-v55';
 var SHELL = ['./', 'index.html', 'css/style.css', 'css/admin.css', 'css/theme.css', 'css/premium.css', 'css/theme-pages.css', 'css/home-stage.css', 'js/home-stage.js', 'js/reveal.js', 'js/glossary.js', 'js/textsize.js', 'js/coming-soon.js', 'js/downloads.js', 'js/panchang-core.js', 'js/astro-core.js', 'js/astro-places.js', 'js/astro.js', 'js/astro-admin.js', 'js/astro-promo.js', 'js/panchang.js', 'js/calendar.js', 'js/ticker.js', 'js/home-extras.js', 'manifest.json', 'img/logo.png', 'img/subham-astu-emblem.png', 'img/subham-astu-emblem-192.png', 'img/favicon-32.png', 'img/favicon-64.png', 'img/apple-touch-icon.png', 'img/icon-192.png', 'img/icon-512.png'];
 
 self.addEventListener('install', function (e) {
