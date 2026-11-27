@@ -118,7 +118,7 @@
     }).catch(function (err) { fail(out, err); });
   });
 
-  // Popup after a priest/cook registers: saved, waiting for admin approval, WhatsApp on approval.
+  // Popup after a priest/cook registers: saved, waiting for admin approval.
   function showPartnerSavedPopup(role) {
     var dlg = document.getElementById('partner-saved-dim');
     if (!dlg) {
@@ -129,7 +129,7 @@
       dlg.innerHTML = '<div class="soon-box" role="dialog" aria-modal="true" aria-labelledby="ps-t">' +
         '<h2 id="ps-t"><span class="ta">பதிவு சேமிக்கப்பட்டது ✔</span><span class="en">Registration saved ✔</span></h2>' +
         '<p><span class="ta">உங்கள் பதிவு சேமிக்கப்பட்டது. நிர்வாகம் உங்கள் சுயவிவரத்தை சரிபார்க்கும்.</span><span class="en">Your registration is saved. The admin will review your profile.</span></p>' +
-        '<p><span class="ta">அங்கீகரிக்கப்பட்ட பின் WhatsApp மூலம் உறுதிப்படுத்தல் வரும்.</span><span class="en">You will get a WhatsApp confirmation once the admin approves you.</span></p>' +
+        '<p><span class="ta">அங்கீகரிக்கப்பட்ட பின் உங்கள் டாஷ்போர்டில் உறுதிப்படுத்தல் தெரியும்.</span><span class="en">You will see the confirmation on your dashboard once the admin approves you.</span></p>' +
         '<p><span class="ta">அதன் பின்பே உங்கள் சுயவிவரம் வாடிக்கையாளர்களுக்கு நேரலையாகும்.</span><span class="en">Only then does your profile go live for customers.</span></p>' +
         '<div class="soon-act"><button type="button" class="btn" id="ps-ok"><span class="ta">சரி</span><span class="en">OK</span></button></div>' +
         '</div>';

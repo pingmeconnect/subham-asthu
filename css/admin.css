@@ -79,18 +79,6 @@
 }
 .admin-table th { color: var(--maroon); font-weight: 700; }
 
-/* Preview of a WhatsApp message (Tamil and English; CSS shows one at a time) */
-.wa-text {
-  margin: 8px 0 0;
-  padding: 12px 14px;
-  white-space: pre-wrap;
-  font: inherit;
-  font-size: 1rem;
-  line-height: 1.7;
-  background: #FFFEFB;
-  border: 1px solid var(--gold-soft);
-  border-radius: 10px;
-}
 
 /* ==========================================================
    Admin redesign (Step 1): Home cards, section menu, order / booking cards
@@ -164,7 +152,6 @@
 a.btn.ad-ok { background: #2E7D32; color: #fff; border-color: #2E7D32; }
 .ad-steps { padding-left: 22px; line-height: 1.7; }
 .ad-img-prev { max-width: 100%; max-height: 220px; border-radius: 10px; border: 1.5px solid var(--gold); margin: 8px 0; }
-.wa-text { white-space: pre-wrap; word-break: break-word; font-family: inherit; background: #FFFEFB; border: 1px solid var(--gold-soft, #E6D3A0); border-radius: 10px; padding: 10px 12px; }
 .ad-items { margin: 6px 0 8px; padding-left: 22px; line-height: 1.7; }
 
 .ad-langtabs { margin: 12px 0; display: flex; gap: 8px; }

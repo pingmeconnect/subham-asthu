@@ -1,6 +1,6 @@
 /* Sankalpam — mobile + PIN auth on Supabase (Phase 6).
    The database checks PINs (bcrypt), lockouts and reset codes. The browser keeps only the
-   session token. No SMS/WhatsApp OTP: email is the only PIN-reset channel. */
+   session token. No SMS OTP: email is the only PIN-reset channel. */
 (function () {
   'use strict';
 
