@@ -221,7 +221,7 @@
     roleSel.parentNode.insertBefore(roleHidden, roleSel);
     roleNote = document.createElement('p');
     roleNote.className = 'join-role-note';
-    roleNote.innerHTML = '<b><span class="ta">பதிவு வகை: ' + (r === 'cook' ? 'சமையல்காரர்' : 'வாத்தியார்') + '</span><span class="en">Registering as: ' + (r === 'cook' ? 'Cook' : 'Priest') + '</span></b>';
+    roleNote.innerHTML = '<b>' + (r === 'cook' ? 'சமையல்காரர் · Cook' : 'வாத்தியார் · Priest') + '</b>';
     roleSel.parentNode.insertBefore(roleNote, roleHidden);
     return true;
   }
