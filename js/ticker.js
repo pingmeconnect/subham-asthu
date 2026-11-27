@@ -7,7 +7,7 @@
   if (!C || !bar) return;
   var NOTES = [
     ['🪔 பூஜை வழிகாட்டிகள் (PDF) இலவசப் பதிவுடன் பதிவிறக்கலாம்', '🪔 Pooja guides (PDF) can be downloaded after a free registration'],
-    ['🙏 வாத்தியார், சமையல், பூஜைப் பொருட்கள், ஜோதிடர் சேவைகள் விரைவில்', '🙏 Purohit, cook, pooja-items and astrologer services coming soon']
+    ['🙏 வாத்தியார், சமையல், பூஜைப் பொருட்கள் சேவைகள் விரைவில்', '🙏 Purohit, cook and pooja-items services coming soon']
   ];
   var CITY = { lat: 13.0827, lon: 80.2707 };
   function t2(a) { return '<span class="ta">' + a[0] + '</span><span class="en">' + a[1] + '</span>'; }

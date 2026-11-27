@@ -224,8 +224,8 @@
     st = null;
     box.innerHTML = '<div class="pj od">' + head(p, 3) +
       '<section class="pj-card od-done"><h2>🙏 ' + bi('ஆர்டர் பதிவு செய்யப்பட்டது', 'Order received') + '</h2>' +
-      '<p>' + bi('உறுதிப்படுத்தலுக்காகக் காத்திருக்கிறது. கடை உறுதி செய்ததும் WhatsApp-இல் தெரிவிப்போம்.',
-        'It is waiting for confirmation. We will tell you on WhatsApp once a store confirms.') + '</p>' +
+      '<p>' + bi('உறுதிப்படுத்தலுக்காகக் காத்திருக்கிறது. கடை உறுதி செய்ததும் உங்கள் டாஷ்போர்டில் நிலை தெரியும்.',
+        'It is waiting for confirmation. You will see the update on your dashboard once a store confirms.') + '</p>' +
       '<div class="action-row"><a class="btn btn-wide" href="#poojas">' + bi('பூஜைப் பட்டியல்', 'Pooja list') + '</a></div></section></div>';
     window.scrollTo(0, 0);
   }
