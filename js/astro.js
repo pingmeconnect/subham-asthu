@@ -1,4 +1,4 @@
-/* Subham Astu — Astrologer Consultation (customer side).
+/* Sankalpam — Astrologer Consultation (customer side).
    Steps: 1 birth details -> 2 check chart -> 3 questions -> 4 review & send -> done.  "#astrology/my" = my readings.
    Shared helpers (kattam drawing, dasa text, reading view) are exposed as window.SAAstroUI for the admin page. */
 (function () {
@@ -348,7 +348,7 @@
   }
 
   function payBlock(r) {
-    var upi = info.upi_id, link = upi ? 'upi://pay?pa=' + encodeURIComponent(upi) + '&pn=' + encodeURIComponent(info.upi_name || 'Subham Astu') + '&am=' + r.amount + '&cu=INR&tn=' + encodeURIComponent('Astro ' + String(r.id).slice(0, 8)) : '';
+    var upi = info.upi_id, link = upi ? 'upi://pay?pa=' + encodeURIComponent(upi) + '&pn=' + encodeURIComponent(info.upi_name || 'Sankalpam') + '&am=' + r.amount + '&cu=INR&tn=' + encodeURIComponent('Astro ' + String(r.id).slice(0, 8)) : '';
     return '<div class="as-pay"><h3>' + bi('கட்டணம் ₹' + r.amount, 'Pay ₹' + r.amount) + '</h3>' +
       (upi ? '<p>UPI ID: <b id="as-upi">' + esc(upi) + '</b>' + (info.upi_name ? ' (' + esc(info.upi_name) + ')' : '') + '</p>' +
         '<p><a class="btn" href="' + esc(link) + '">' + bi('UPI ஆப்பில் செலுத்து', 'Pay in UPI app') + '</a></p>' :

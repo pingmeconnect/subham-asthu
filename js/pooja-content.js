@@ -1,4 +1,4 @@
-/* Subham Astu — editable pooja content. Built-in text (pooja-info.js) is the starting point;
+/* Sankalpam — editable pooja content. Built-in text (pooja-info.js) is the starting point;
    anything the admin saves in the database replaces that section. Each section is a list of points, Tamil and English apart. */
 (function () {
   'use strict';

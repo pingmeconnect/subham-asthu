@@ -1,4 +1,4 @@
-/* Subham Astu — Astrology admin page (#astro-admin): review the chart, write the reply, send, WhatsApp buttons. */
+/* Sankalpam — Astrology admin page (#astro-admin): review the chart, write the reply, send, WhatsApp buttons. */
 (function () {
   'use strict';
   var U = window.SAAstroUI, DB = window.SADB, A = window.SAAstro;
@@ -6,7 +6,7 @@
   if (!U || !DB || !box) return;
   var esc = U.esc, bi = U.bi;
   var data = null, open = null, filter = 'todo', msgs = '';
-  var SITE = 'subhamasthu.bharaniinnovations.in';
+  var SITE = 'sankalpam.pro';
 
   function wa(mobile, text) { return 'https://wa.me/91' + String(mobile).replace(/\D/g, '').slice(-10) + '?text=' + encodeURIComponent(text); }
   function two(n) { return n < 10 ? '0' + n : '' + n; }
@@ -62,7 +62,7 @@
       out += '<div class="as-pay"><b>' + bi('கட்டணம்', 'Payment') + ' ₹' + x.amount + '</b> — ' + (x.paid ? '<span class="as-badge s-answered">' + bi('பெறப்பட்டது', 'Received') + '</span>' : '<span class="as-badge s-awaiting_payment">' + bi('நிலுவை', 'Pending') + '</span>') +
         ' · UTR: <b>' + esc(x.pay_ref || '-') + '</b><br>' +
         '<button type="button" class="btn btn-outline" data-paid="' + (x.paid ? '0' : '1') + '" data-id="' + esc(x.id) + '">' + (x.paid ? bi('பெறவில்லை என குறி', 'Mark not paid') : bi('பணம் பெறப்பட்டது ✓', 'Mark paid ✓')) + '</button> ' +
-        (x.paid ? '' : '<a class="btn btn-outline" target="_blank" rel="noopener" href="' + esc(wa(x.mobile, 'வணக்கம் ' + p.name + ', உங்கள் ஜோதிட ஆலோசனைக்கான கட்டணம் ₹' + x.amount + ' இன்னும் பெறப்படவில்லை. UPI மூலம் செலுத்தி, இணையதளத்தில் பரிவர்த்தனை எண்ணை உள்ளிடவும். - சுபம் அஸ்து\n\nHello ' + p.name + ', your astrology consultation fee of Rs ' + x.amount + ' has not been received yet. Please pay by UPI and enter the transaction number on the website. - Subham Astu')) + '">' + bi('WhatsApp: கட்டண நினைவூட்டல்', 'WhatsApp: payment reminder') + '</a>') + '</div>';
+        (x.paid ? '' : '<a class="btn btn-outline" target="_blank" rel="noopener" href="' + esc(wa(x.mobile, 'வணக்கம் ' + p.name + ', உங்கள் ஜோதிட ஆலோசனைக்கான கட்டணம் ₹' + x.amount + ' இன்னும் பெறப்படவில்லை. UPI மூலம் செலுத்தி, இணையதளத்தில் பரிவர்த்தனை எண்ணை உள்ளிடவும். - சங்கல்பம்\n\nHello ' + p.name + ', your astrology consultation fee of Rs ' + x.amount + ' has not been received yet. Please pay by UPI and enter the transaction number on the website. - Sankalpam')) + '">' + bi('WhatsApp: கட்டண நினைவூட்டல்', 'WhatsApp: payment reminder') + '</a>') + '</div>';
     }
     // reply form
     var lng = rp.lang || p.lang || 'ta';
@@ -83,7 +83,7 @@
       '<button type="submit" class="btn" data-send="1">' + (x.status === 'answered' ? bi('புதுப்பித்து அனுப்பு', 'Update & send') : bi('வாடிக்கையாளருக்கு அனுப்பு', 'Send to customer')) + '</button></form>';
     if (x.status === 'answered') {
       out += '<p class="as-pay">' + bi('பதில் இணையதளத்தில் வெளியிடப்பட்டது. வாடிக்கையாளருக்கு WhatsApp தகவல்:', 'The reading is live on the site. Tell the customer on WhatsApp:') + '<br>' +
-        '<a class="btn" target="_blank" rel="noopener" href="' + esc(wa(x.mobile, 'வணக்கம் ' + p.name + ', உங்கள் ஜோதிட ஆலோசனை தயாராக உள்ளது. ' + SITE + ' இணையதளத்தில் உள்நுழைந்து "ஜோதிடர் ஆலோசனை > என் பலன்கள்" பகுதியில் பார்க்கவும். - சுபம் அஸ்து\n\nHello ' + p.name + ', your astrology reading is ready. Please log in at ' + SITE + ' and open "Astrologer Consultation > My readings" to view it. - Subham Astu')) + '">' + bi('WhatsApp: பலன் தயார்', 'WhatsApp: reading ready') + '</a> ' +
+        '<a class="btn" target="_blank" rel="noopener" href="' + esc(wa(x.mobile, 'வணக்கம் ' + p.name + ', உங்கள் ஜோதிட ஆலோசனை தயாராக உள்ளது. ' + SITE + ' இணையதளத்தில் உள்நுழைந்து "ஜோதிடர் ஆலோசனை > என் பலன்கள்" பகுதியில் பார்க்கவும். - சங்கல்பம்\n\nHello ' + p.name + ', your astrology reading is ready. Please log in at ' + SITE + ' and open "Astrologer Consultation > My readings" to view it. - Sankalpam')) + '">' + bi('WhatsApp: பலன் தயார்', 'WhatsApp: reading ready') + '</a> ' +
         '<a class="btn btn-outline" target="_blank" rel="noopener" href="' + esc(wa(x.mobile, 'வணக்கம் ' + p.name + ',')) + '">' + bi('WhatsApp: பேச', 'WhatsApp: chat') + '</a></p>' +
         '<details><summary>' + bi('வாடிக்கையாளர் பார்வை', 'Customer view') + '</summary>' + U.readingHtml(x) + '</details>';
     } else {

@@ -1,4 +1,4 @@
-/* Subham Astu — month calendar (tab inside the Panchang page).
+/* Sankalpam — month calendar (tab inside the Panchang page).
    Vrathams (Ekadashi, Pradosham, Sankatahara, Sashti, Krithigai, Amavasya, Pournami) are calculated on the phone with the
    panchang engine; festival dates come from the pooja calendar in the database (sa_pooja_dates) and override the
    calculated ones. Tap a date to see that day's panchang and poojas. */

@@ -1,4 +1,4 @@
-/* Subham Astu — Downloads page. Anyone can see the list and dates; the PDF itself needs a registered login.
+/* Sankalpam — Downloads page. Anyone can see the list and dates; the PDF itself needs a registered login.
    The PDF is fetched from a private store by the guide-download function, which stamps the customer's
    mobile ending on every page. There is no preview: the file only downloads. */
 (function () {
@@ -96,7 +96,7 @@
       return r.blob();
     }).then(function (b) {
       var a = document.createElement('a');
-      a.href = URL.createObjectURL(b); a.download = 'subham-astu-' + slug + '.pdf';
+      a.href = URL.createObjectURL(b); a.download = 'sankalpam-' + slug + '.pdf';
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
       say(card, bi('பதிவிறக்கம் தொடங்கியது ✔', 'Download started ✔'));

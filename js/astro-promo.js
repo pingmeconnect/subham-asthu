@@ -1,4 +1,4 @@
-/* Subham Astu — one friendly pop-up on the home page so every visitor knows about the Astrologer Consultation.
+/* Sankalpam — one friendly pop-up on the home page so every visitor knows about the Astrologer Consultation.
    Shows once a day, a moment after the home page opens. Never on other pages. */
 (function () {
   'use strict';

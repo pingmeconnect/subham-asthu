@@ -1,4 +1,4 @@
-/* Subham Astu — scroll reveal: text slides in from one side, pictures from the other. */
+/* Sankalpam — scroll reveal: text slides in from one side, pictures from the other. */
 (function () {
   'use strict';
   if (!('IntersectionObserver' in window)) return;

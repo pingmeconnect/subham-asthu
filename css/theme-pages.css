@@ -1,4 +1,4 @@
-/* Subham Astu — Premium Maroon & Gold theme for all pages except Home (scoped; see theme-pages source). */
+/* Sankalpam — Premium Maroon & Gold theme for all pages except Home (scoped; see theme-pages source). */
 body:not(:has(.page[data-page="home"]:not([hidden]))){
   --cream:#fef3de;--parchment:#fdebd0;--white:#fffaf0;
   --maroon:#6b0b12;--maroon-deep:#430d16;

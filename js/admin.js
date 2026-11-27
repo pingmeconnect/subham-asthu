@@ -421,7 +421,7 @@
         '<div class="ad-btns">' + send('ta', 'WhatsApp - தமிழ்') + send('en', 'WhatsApp - English') + '</div></article>';
     }).join('');
     return '<h1>' + bi('WhatsApp செய்திகள்', 'WhatsApp messages') + '</h1>' +
-      '<p>' + bi('ஒவ்வொரு செய்தியும் "சுபம் அஸ்து:" என்ற முன்னொட்டுடன் தொடங்கும். ஐந்து தூண்டுதல்கள் மட்டுமே உள்ளன.', 'Every message starts with "சுபம் அஸ்து:". There are exactly five triggers.') + '</p>' +
+      '<p>' + bi('ஒவ்வொரு செய்தியும் "Sankalpam:" என்ற முன்னொட்டுடன் தொடங்கும். ஐந்து தூண்டுதல்கள் மட்டுமே உள்ளன.', 'Every message starts with "Sankalpam:". There are exactly five triggers.') + '</p>' +
       '<div class="pooja-grid">' + previews + '</div>' +
       '<div class="action-row">' +
         '<button type="button" class="btn btn-outline" data-act="test-messages">' + bi('சோதனைச் செய்திகளை அனுப்பு (எனக்கு)', 'Queue test messages (to me)') + '</button>' +
@@ -508,7 +508,7 @@
   function offerMessage() {
     var body = (offer.lang === 'ta' ? offer.ta : offer.en) || offer.ta || offer.en || '';
     var foot = footerText(offer.lang);
-    return 'சுபம் அஸ்து:\n' + body.trim() +
+    return 'Sankalpam:\n' + body.trim() +
       (offer.image ? '\n\n' + offer.image.trim() : '') + (foot ? '\n\n' + foot : '');
   }
 
@@ -596,7 +596,7 @@
     out.forEach(function (txt, i) {
       var a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob(['﻿' + txt], { type: 'text/csv' }));
-      a.download = 'subham-astu-contacts-' + (i + 1) + '.csv';
+      a.download = 'sankalpam-contacts-' + (i + 1) + '.csv';
       document.body.appendChild(a); a.click(); a.remove();
     });
   }

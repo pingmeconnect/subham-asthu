@@ -1,4 +1,4 @@
-/* Subham Astu — WhatsApp message previews (Phase 5/7). The database queues and renders the live
+/* Sankalpam — WhatsApp message previews (Phase 5/7). The database queues and renders the live
    messages from app_settings (sa_queue_wa). This file only previews the same templates for the
    Admin screen, using the sample values stored in settings. Five triggers:
      1  order_received                      Samagri order received
@@ -9,7 +9,7 @@
 (function () {
   'use strict';
 
-  var PREFIX = 'சுபம் அஸ்து:';
+  var PREFIX = 'Sankalpam:';
 
   // Template keys map to settings keys wa_tpl_<key> ({ta, en}).
   var KEYS = ['order_received', 'order_confirmed', 'order_unavailable', 'booking_confirmed', 'reminder_1day', 'partner_approved'];

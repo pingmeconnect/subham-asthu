@@ -1,5 +1,5 @@
 /* ==========================================================
-   Subham Astu — Heritage Premium theme (design-only layer)
+   Sankalpam — Heritage Premium theme (design-only layer)
    Loaded AFTER style.css and admin.css. It restyles; it never
    changes markup behaviour, routes, IDs, data attributes or JS hooks.
    Palette: cream #FAF7F0 / parchment #F4EBDD / maroon #702C35 /
@@ -494,7 +494,7 @@ html[data-lang="en"] .pooja-card strong { font-family: var(--font-en); }
   .pj-back { display: none; }
 }
 
-/* ---- Home hero: Subham Asthu logo instead of the lamp photo ---- */
+/* ---- Home hero: Sankalpam logo instead of the lamp photo ---- */
 .hero::before { background-image: url("../img/subham-astu-emblem.png"); background-size: contain; background-position: 50% 50%; background-repeat: no-repeat;
   -webkit-mask-image: none; mask-image: none; width: 30%; }
 @media (max-width: 767px) {

@@ -1,4 +1,4 @@
-/* Subham Astu — pooja list, pooja detail, samagri order, branded PDF (Phase 3, logo Phase 5).
+/* Sankalpam — pooja list, pooja detail, samagri order, branded PDF (Phase 3, logo Phase 5).
    Public: list + detail + PDF. Login required only for the samagri order. */
 (function () {
   'use strict';
@@ -451,15 +451,15 @@
     page.innerHTML =
       '<div class="pdf-wm">' + watermark() + '</div>' +
       '<div class="pdf-head"><img class="pdf-logo" src="' + LOGO_SRC + '" alt="">' +
-      '<div class="pdf-brandbox"><div class="pdf-brand">சுபம் அஸ்து</div><div class="pdf-brand-en">SUBHAM ASTU</div>' +
+      '<div class="pdf-brandbox"><div class="pdf-brand">சங்கல்பம்</div><div class="pdf-brand-en">SANKALPAM</div>' +
       '<div class="pdf-tagline">எல்லாம் மங்களமாகட்டும்!</div></div>' +
       '<div class="pdf-pn"></div></div>' +
       '<div class="pdf-body">' + (first ? '' : '<div class="pdf-cont">' + titleHtml + '</div>') + '</div>' +
       '<div class="pdf-foot">' +
-        '<div class="pdf-foot-brand"><strong>சுபம் அஸ்து | SUBHAM ASTU</strong> <span class="pdf-foot-tag">எல்லாம் மங்களமாகட்டும்!</span></div>' +
+        '<div class="pdf-foot-brand"><strong>சங்கல்பம் | SANKALPAM</strong> <span class="pdf-foot-tag">எல்லாம் மங்களமாகட்டும்!</span></div>' +
         '<div>' + watermark() + '</div>' +
         '<div class="pdf-foot-meta"><span>' + (/^https?:/.test(location.protocol) ? esc(location.host) : '') + '</span>' +
-        '<span>© ' + new Date().getFullYear() + ' சுபம் அஸ்து</span><span class="pdf-pn"></span></div></div>';
+        '<span>© ' + new Date().getFullYear() + ' சங்கல்பம்</span><span class="pdf-pn"></span></div></div>';
     return page;
   }
 
@@ -584,7 +584,7 @@
             doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 210, 297);
           });
         });
-        return chain.then(function () { doc.save('subham-astu-' + p.slug + '.pdf'); });
+        return chain.then(function () { doc.save('sankalpam-' + p.slug + '.pdf'); });
       });
     }).then(function () {
       out.innerHTML = '';
@@ -632,7 +632,7 @@
           '<div class="action-row"><a class="btn btn-wide" href="#login">' + bi('உள்நுழை / பதிவு செய்', 'Log in / Register') + '</a></div>';
         return;
       }
-      var html = '<p class="soon">' + bi('சுபம் அஸ்து உங்களிடம் ஒருபோதும் பணம் கேட்காது. பொருட்கள் வீட்டு வாசலில் வந்த பின் மட்டுமே பணம் செலுத்தவும்.', 'Subham Asthu never asks you for money. Pay only after the goods reach your doorstep.') + '</p>' +
+      var html = '<p class="soon">' + bi('சங்கல்பம் உங்களிடம் ஒருபோதும் பணம் கேட்காது. பொருட்கள் வீட்டு வாசலில் வந்த பின் மட்டுமே பணம் செலுத்தவும்.', 'Sankalpam never asks you for money. Pay only after the goods reach your doorstep.') + '</p>' +
         '<div id="my-orders"></div><p>' + bi('எந்த பூஜைக்குச் சாமான்கள் வேண்டும்? பூஜையைத் தேர்ந்தெடுங்கள்; அடுத்த பக்கத்தில் பட்டியலை மாற்றலாம்.',
         'Which pooja do you need samagri for? Choose it; you can edit the list on the next page.') + '</p>' +
         '<input type="search" id="od-pick-q" class="od-pick-search" placeholder="' + (document.documentElement.getAttribute('data-lang') === 'en' ? 'Search pooja…' : 'பூஜையைத் தேடுக…') + '">';

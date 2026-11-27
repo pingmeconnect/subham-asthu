@@ -1,4 +1,4 @@
-/* Subham Astu — text-size buttons (A  A  A) for easy reading. Remembers the choice on this phone. */
+/* Sankalpam — text-size buttons (A  A  A) for easy reading. Remembers the choice on this phone. */
 (function () {
   'use strict';
   var KEY = 'subham-asthu-size', root = document.documentElement;

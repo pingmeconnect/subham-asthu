@@ -1,4 +1,4 @@
-/* Subham Astu — birth chart engine (runs on the phone, no database).
+/* Sankalpam — birth chart engine (runs on the phone, no database).
    Sun and Moon use the same Meeus series as the panchang (js/panchang-core.js). The five planets use the standard
    low-precision orbital elements (about 1-2 arc-minutes), mean Rahu/Ketu, Lahiri ayanamsa, whole-sign houses,
    Vimshottari dasa. Meant to give the astrologer a first chart and let the customer check lagna / rasi / star.

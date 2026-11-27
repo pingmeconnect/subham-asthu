@@ -1,4 +1,4 @@
-/* Subham Astu — online samagri order page: edit items -> review -> submit. No prices; payment is settled directly. */
+/* Sankalpam — online samagri order page: edit items -> review -> submit. No prices; payment is settled directly. */
 (function () {
   'use strict';
 
@@ -33,8 +33,8 @@
 
   function noticeHtml() {
     return '<ul class="od-notes">' +
-      '<li>' + bi('பொருட்கள் உங்கள் வீட்டு வாசலில் டெலிவரி ஆன பிறகு மட்டும் பணம் செலுத்தவும் (ரொக்கமாக அல்லது ஆன்லைனில்). சுபம் அஸ்து எந்தப் பணமும் வசூலிப்பதில்லை.',
-        'Please pay only after the goods are delivered at your doorstep, in cash or online. Subham Asthu does not collect any payment.') + '</li>' +
+      '<li>' + bi('பொருட்கள் உங்கள் வீட்டு வாசலில் டெலிவரி ஆன பிறகு மட்டும் பணம் செலுத்தவும் (ரொக்கமாக அல்லது ஆன்லைனில்). சங்கல்பம் எந்தப் பணமும் வசூலிப்பதில்லை.',
+        'Please pay only after the goods are delivered at your doorstep, in cash or online. Sankalpam does not collect any payment.') + '</li>' +
       '<li>' + bi('குறைந்தபட்ச ஆர்டர் மதிப்பு ₹1000. டெலிவரி கட்டணம் இருந்தால் அது கடையின் விதிப்படி; டெலிவரியின் போது கடையிடம் சரிபார்த்துக் கொள்ளவும்.',
         'Minimum order value is ₹1000. Any delivery charge is as per the shop; please confirm it with the shop at the time of delivery.') + '</li>' +
       '<li>' + bi('கடை உறுதி செய்த பின், டெலிவரிக்கு முன் உங்களை அழைப்பார்கள்.', 'The shop will call you once before delivering, after it confirms.') + '</li>' +

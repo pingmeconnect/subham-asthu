@@ -1,4 +1,4 @@
-/* Subham Astu — plain-meaning brackets for hard words.
+/* Sankalpam — plain-meaning brackets for hard words.
    Example: "Samagri" becomes "Samagri (pooja items)". Edit the two lists below to add or change words.
    English words are matched inside English text, Tamil words inside Tamil text. Each word is explained
    once per line of text, and never twice. */

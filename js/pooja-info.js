@@ -1,4 +1,4 @@
-/* Subham Astu — "About this pooja": story, why, who, when to start, what to avoid, what to give, temples, tips.
+/* Sankalpam — "About this pooja": story, why, who, when to start, what to avoid, what to give, temples, tips.
    [Tamil, English] pairs. Statements about benefits are traditional beliefs, written gently (no fear, no promises). */
 (function () {
   'use strict';

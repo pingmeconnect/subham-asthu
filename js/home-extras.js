@@ -1,4 +1,4 @@
-/* Subham Astu — home page extras: next-festival banner, coming-festivals cards, install-app bar.
+/* Sankalpam — home page extras: next-festival banner, coming-festivals cards, install-app bar.
    Uses the same pooja calendar the Poojas page uses (sa_pooja_dates) and the visible-pooja list.
    If the database cannot be reached, these blocks simply stay hidden. */
 (function () {
@@ -102,7 +102,7 @@
     var bar = document.createElement('div');
     bar.id = 'install-bar';
     bar.className = 'install-bar';
-    bar.innerHTML = '<span class="ib-text">' + bi('சுபம் அஸ்து ஆப்பை உங்கள் போனில் சேர்க்கவும்', 'Add the Subham Astu app to your phone') + '</span>' +
+    bar.innerHTML = '<span class="ib-text">' + bi('சங்கல்பம் ஆப்பை உங்கள் போனில் சேர்க்கவும்', 'Add the Sankalpam app to your phone') + '</span>' +
       '<button type="button" class="btn" data-ib-install>' + bi('ஆப் பெறுக', 'Get App') + '</button>' +
       '<button type="button" class="ib-close" data-ib-close aria-label="Close">×</button>';
     document.body.appendChild(bar);

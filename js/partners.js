@@ -1,4 +1,4 @@
-/* Subham Astu — priest/cook directory, booking request, My bookings (Phase 4/6).
+/* Sankalpam — priest/cook directory, booking request, My bookings (Phase 4/6).
    Public: directory. Login: request a booking. Phone numbers are never listed; the server
    returns them only on a booking the partner has accepted. */
 (function () {
@@ -140,14 +140,14 @@
               '<label class="field"><span class="ta">உணவு வகை</span><span class="en">Meal type</span><select name="meal">' +
               Object.keys(PD.MEAL).map(function (k) { return '<option value="' + k + '">' + esc(PD.MEAL[k][0] + ' · ' + PD.MEAL[k][1]) + '</option>'; }).join('') + '</select></label>' +
               '<label class="check-row"><input type="checkbox" name="kitchen" checked> ' + bi('இடத்தில் சமையலறை வசதி உள்ளது', 'A kitchen is available at the venue') + '</label>' +
-              '<p class="soon">' + bi('அனைத்து சமையல்காரர்களும் சுத்த சைவ உணவு மட்டுமே சமைப்பார்கள்.', 'All cooks on Subham Asthu cook pure vegetarian food only.') + '</p>') +
+              '<p class="soon">' + bi('அனைத்து சமையல்காரர்களும் சுத்த சைவ உணவு மட்டுமே சமைப்பார்கள்.', 'All cooks on Sankalpam cook pure vegetarian food only.') + '</p>') +
           (p.role === 'priest'
             ? '<label class="check-row"><input type="checkbox" name="cook_addon"> ' +
               bi('சமையல்காரரும் தேவை (கூடுதல்)', 'Also need a cook (add-on)') + '</label>'
             : '') +
           '<p class="od-notes-box soon">' + bi('முடிவு செய்ய, இந்த வாத்தியார் / சமையல்காரர் உங்கள் பகுதி, தேதி மற்றும் தேவைகளை மட்டுமே பார்ப்பார். முழு முகவரி மற்றும் தொலைபேசி எண் அவர் ஏற்ற பின் மட்டுமே பகிரப்படும்.', 'To decide, this priest / cook will see only your area, date and requirements. Your full address and phone number are shared only after they accept.') + '</p>' +
-          '<p class="od-notes-box soon">' + bi('முன்பணம் தேவைப்பட்டால், உங்கள் முன்பதிவு ஏற்கப்பட்ட பின், சரிபார்க்கப்பட்ட நபருக்கு மட்டும் கொடுக்கவும். சுபம் அஸ்து உங்களிடம் ஒருபோதும் பணம் கேட்காது.',
-            'If an advance is asked for, pay it only after your booking is accepted, and only to a verified person. Subham Asthu never asks you for money.') + '</p>' +
+          '<p class="od-notes-box soon">' + bi('முன்பணம் தேவைப்பட்டால், உங்கள் முன்பதிவு ஏற்கப்பட்ட பின், சரிபார்க்கப்பட்ட நபருக்கு மட்டும் கொடுக்கவும். சங்கல்பம் உங்களிடம் ஒருபோதும் பணம் கேட்காது.',
+            'If an advance is asked for, pay it only after your booking is accepted, and only to a verified person. Sankalpam never asks you for money.') + '</p>' +
           '<button type="submit" class="btn">' + bi('கோரிக்கை அனுப்பு', 'Send request') + '</button>' +
           '<p class="form-msg" role="status" aria-live="polite"></p>' +
         '</form>';

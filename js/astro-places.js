@@ -1,4 +1,4 @@
-/* Subham Astu — birth-place list for the astrology form: [Tamil, English, latitude, longitude, time zone, group].
+/* Sankalpam — birth-place list for the astrology form: [Tamil, English, latitude, longitude, time zone, group].
  Groups: TN = Tamil Nadu, PY = Puducherry, IN = other India, INT = abroad. Any place not listed here can be found by typing
  in the place box (live search), and its latitude / longitude / time zone are filled in automatically. */
 (function () {

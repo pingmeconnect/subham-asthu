@@ -1,4 +1,4 @@
-/* Subham Astu — small shared helpers: Tamil Nadu / Puducherry pincode check, photo resize, Excel reading. */
+/* Sankalpam — small shared helpers: Tamil Nadu / Puducherry pincode check, photo resize, Excel reading. */
 (function () {
   'use strict';
 

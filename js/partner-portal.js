@@ -1,4 +1,4 @@
-/* Subham Astu — Partner Portal (Phase 4/6): own profile, booking requests with Accept, and the
+/* Sankalpam — Partner Portal (Phase 4/6): own profile, booking requests with Accept, and the
    subscription tracker. Subscription rules are shown ONLY here, never on customer pages.
    Fees are recorded as paid by the admin; partners cannot mark their own months paid. */
 (function () {

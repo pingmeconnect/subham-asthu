@@ -1,4 +1,4 @@
-/* Subham Astu — language toggle + hash-based pages */
+/* Sankalpam — language toggle + hash-based pages */
 (function () {
   'use strict';
 

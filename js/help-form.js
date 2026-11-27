@@ -1,4 +1,4 @@
-/* Subham Astu — Help Centre (#help). Only logged-in customers can send a request. Requests go to
+/* Sankalpam — Help Centre (#help). Only logged-in customers can send a request. Requests go to
    sa_submit_help_request; the admin answers them in Admin > உதவி மையம். Replies show here as a
    notification (a badge on the Account tab, and a "new reply" banner). */
 (function () {

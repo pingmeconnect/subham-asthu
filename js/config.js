@@ -1,4 +1,4 @@
-/* Subham Astu — app-wide switches and the live Supabase connection.
+/* Sankalpam — app-wide switches and the live Supabase connection.
    DEMO_CONTROLS: false for production. true shows the "Admin / Demo Controls" blocks and
    the demo date/partner switches; the database keeps placeholder partners hidden regardless. */
 (function () {

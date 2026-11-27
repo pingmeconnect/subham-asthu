@@ -1,4 +1,4 @@
-/* Subham Astu — slow running-text bar under the header.
+/* Sankalpam — slow running-text bar under the header.
    Shows today's panchang points, the next festival and announcements. Tap or hover to pause; there is also a pause button.
    Edit the NOTES list below to add your own announcements. */
 (function () {

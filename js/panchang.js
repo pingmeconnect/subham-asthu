@@ -1,4 +1,4 @@
-/* Subham Astu — Panchang page + home card + rasi boxes. Uses js/panchang-core.js. */
+/* Sankalpam — Panchang page + home card + rasi boxes. Uses js/panchang-core.js. */
 (function () {
   'use strict';
   var C = window.SAPanchangCore;

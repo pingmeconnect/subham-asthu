@@ -1,4 +1,4 @@
-/* Subham Astu — "coming soon" message for services that are not open yet:
+/* Sankalpam — "coming soon" message for services that are not open yet:
    priests, cooks, pooja-material orders, astrology. Pooja guides + Downloads stay fully working.
    To open a service later, delete its word from SOON_PAGES (and the data-soon attribute of its tile). */
 (function () {

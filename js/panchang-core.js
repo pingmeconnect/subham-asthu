@@ -1,4 +1,4 @@
-/* Subham Astu — panchang calculator (runs on the phone, no database).
+/* Sankalpam — panchang calculator (runs on the phone, no database).
    Sun and Moon positions use the standard Meeus series, Lahiri ayanamsa, sunrise by the NOAA method.
    Accuracy: tithi / nakshatra / yoga times within a few minutes. For temple or ritual timings, confirm with
    your family's printed panchangam. */

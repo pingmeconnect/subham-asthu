@@ -1,4 +1,4 @@
-/* Subham Astu — content for poojas a family can do at home (is_self_pooja).
+/* Sankalpam — content for poojas a family can do at home (is_self_pooja).
    Small line icons for checklist items, a library of traditional mantras in Tamil script, and
    pooja-specific samagri, steps and mantras for all 20 self-done poojas.
    Priest-led poojas (homas, samskaras) never use mantras (project rule 7).
