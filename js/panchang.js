@@ -64,6 +64,17 @@
     return bi('ராசி குறிப்பு சந்திரன் இருக்கும் இடத்தை (சந்திர பலம்) மட்டும் கொண்ட பாரம்பரிய வழிகாட்டி; தனிப்பட்ட ஜாதகப் பலன் அல்ல. நேரங்கள் ' + CITIES[city][0] + ' நகருக்கானவை. கோயில்/சடங்கு நேரங்களுக்கு உங்கள் குடும்பப் பஞ்சாங்கத்தையும் பாருங்கள்; சில பஞ்சாங்கங்களில் தமிழ்த் தேதி ஒரு நாள் மாறுபடலாம். ஜோதிடர் ஆலோசனை விரைவில் வரும்.',
       'Times are for ' + CITIES[city][1] + '. The rasi guide uses only the moon\'s position (Chandra Bala), a traditional guide and not a personal horoscope. For temple or ritual timings please also check your family panchangam; the Tamil date can differ by a day in some almanacs. Astrologer consultation is coming soon.');
   }
+  // Homepage rasi cards: today's result for each rasi, from the same calculation as the Rasi page.
+  function fillHomeRasi() {
+    if (!cur) return;
+    var cards = document.querySelectorAll('.v2-rcard');
+    cards.forEach(function (card, i) {
+      var p = card.querySelector('.pv'); if (!p || i > 11) return;
+      var w = word[C.chandraBala(i, cur.moonRasi.i).word];
+      p.innerHTML = '<span class="ta">இன்று: ' + w[0] + '</span><span class="en">Today: ' + w[1] + '</span>';
+    });
+  }
+
   function rasiPage() {
     var box = document.getElementById('pg-rasi'); if (!box || !cur) return;
     var r = cur, h = toolsHtml() + '<div class="pg-title"><strong>' + two(r.tamil.month) + ' ' + r.tamil.day + '</strong> · ' + two(r.tamil.day_name) + '</div>' +
@@ -75,6 +86,7 @@
     }
     h += '</div><p class="pg-foot">' + footTxt() + '</p>';
     box.innerHTML = h;
+    fillHomeRasi();
   }
   function page() {
     var box = document.getElementById('pg-page'); if (!box) return;
@@ -170,6 +182,6 @@
   window.SAPanchangShared = { compute: compute, bi: bi, two: two, clock: clock, range: range, tillTxt: tillTxt, todayIST: todayIST,
     setDate: function (d) { date = d; page(); } };
   homeCard(); wire();
-  function onHash() { if (/^#(panchang|rasi)/.test(location.hash || '')) { date = date || todayIST(); page(); } }
+  function onHash() { var h = location.hash || ''; if (h === '' || h === '#home' || /^#(panchang|rasi)/.test(h)) { date = date || todayIST(); page(); } }
   window.addEventListener('hashchange', onHash); onHash();
 })();
