@@ -180,6 +180,93 @@
 </script>
     </section>
 
+    <!-- POOJA LIST (public) -->
+    <section class="page" data-page="poojas" hidden>
+      <div class="card">
+        <h1><span class="ta">பூஜைகள்</span><span class="en">Poojas</span></h1>
+        <p class="ta">பூஜை விவரங்கள் மற்றும் சாமான் பட்டியலை உள்நுழையாமலேயே பார்க்கலாம். மந்திர PDF பதிவு செய்தவர்களுக்கு மட்டும்.</p>
+        <p class="en">View pooja details and samagri lists without logging in. The mantra PDF is for registered users.</p>
+        <div id="pooja-list"></div>
+      </div>
+    </section>
+
+    <!-- ORDER SAMAGRI: login first, then choose the pooja -->
+    <section class="page" data-page="order" hidden>
+      <div class="card">
+        <h1><span class="ta">பூஜை சாமான்கள் ஆர்டர்</span><span class="en">Order Pooja Samagri</span></h1>
+        <div id="order-pick"></div>
+      </div>
+    </section>
+
+    <!-- POOJA DETAIL (public; order requires login) -->
+    <section class="page" data-page="pooja" hidden>
+      <div class="card" id="pooja-detail"></div>
+    </section>
+
+    <!-- BOOKINGS: partner directory (public), booking request (login), My bookings (login) -->
+    <section class="page" data-page="bookings" hidden>
+      <div class="card">
+        <h1><span class="ta">வாத்தியார் &amp; சமையல்காரர்</span><span class="en">Priests &amp; Cooks</span></h1>
+        <p class="ta">உங்கள் பகுதியில் உள்ள வாத்தியார்களையும் சமையல்காரர்களையும் தேடி முன்பதிவு கோரிக்கை அனுப்புங்கள்.</p>
+        <p class="en">Search priests and cooks near you and send a booking request.</p>
+        <div class="filters">
+          <label class="field"><span class="ta">வகை</span><span class="en">Role</span>
+            <select id="f-role">
+              <option value="" data-ta="அனைத்தும்" data-en="All">அனைத்தும்</option>
+              <option value="priest" data-ta="வாத்தியார்" data-en="Priest">வாத்தியார்</option>
+              <option value="cook" data-ta="சமையல்காரர்" data-en="Cook">சமையல்காரர்</option>
+            </select></label>
+          <label class="field"><span class="ta">மொழி / சம்பிரதாயம்</span><span class="en">Language / Sampradayam</span>
+            <select id="f-lang">
+              <option value="">All</option>
+              <option value="Tamil" data-ta="தமிழ்" data-en="Tamil">தமிழ்</option>
+              <option value="Sanskrit" data-ta="சமஸ்கிருதம்" data-en="Sanskrit">சமஸ்கிருதம்</option>
+              <option value="Telugu" data-ta="தெலுங்கு" data-en="Telugu">தெலுங்கு</option>
+              <option value="Malayalam" data-ta="மலையாளம்" data-en="Malayalam">மலையாளம்</option>
+              <option value="English" data-ta="ஆங்கிலம்" data-en="English">ஆங்கிலம்</option>
+              <option value="Vadagalai" data-ta="வடகலை" data-en="Vadagalai">வடகலை</option>
+              <option value="Thenkalai" data-ta="தென்கலை" data-en="Thenkalai">தென்கலை</option>
+              <option value="Smartha" data-ta="ஸ்மார்த்தம்" data-en="Smartha">ஸ்மார்த்தம்</option>
+            </select></label>
+          <label class="field"><span class="ta">குடும்ப மரபு / சமையல் வகை (விருப்பம்)</span><span class="en">Family tradition / cooking style (optional)</span>
+            <select id="f-trad">
+              <option value="" data-ta="எதுவும்" data-en="Any">எதுவும்</option>
+              <optgroup label="வாத்தியார் · Priest">
+                <option value="Smartha" data-ta="ஸ்மார்த்தம்" data-en="Smartha">ஸ்மார்த்தம்</option>
+                <option value="Vadagalai" data-ta="வடகலை" data-en="Vadagalai">வடகலை</option>
+                <option value="Thenkalai" data-ta="தென்கலை" data-en="Thenkalai">தென்கலை</option>
+                <option value="Madhva" data-ta="மாத்வ" data-en="Madhva">மாத்வ</option>
+                <option value="Saiva" data-ta="சைவம்" data-en="Saiva">சைவம்</option>
+                <option value="Amman" data-ta="அம்மன் / கிராம தெய்வம்" data-en="Amman / village deity">அம்மன் / கிராம தெய்வம்</option>
+                <option value="TamilArchanai" data-ta="தமிழ் அர்ச்சனை" data-en="Tamil archanai">தமிழ் அர்ச்சனை</option>
+              </optgroup>
+              <optgroup label="சமையல்காரர் · Cook (pure vegetarian)">
+                <option value="iyer_veg" data-ta="ஐயர் பாணி" data-en="Iyer style">ஐயர் பாணி</option>
+                <option value="iyengar_veg" data-ta="ஐயங்கார் பாணி" data-en="Iyengar style">ஐயங்கார் பாணி</option>
+                <option value="general_veg" data-ta="பொது" data-en="General">பொது</option>
+                <option value="chettinad_veg" data-ta="செட்டிநாடு" data-en="Chettinad">செட்டிநாடு</option>
+                <option value="kongu_veg" data-ta="கொங்கு" data-en="Kongu">கொங்கு</option>
+                <option value="festival_sweets" data-ta="பண்டிகை இனிப்புகள்" data-en="Festival sweets">பண்டிகை இனிப்புகள்</option>
+              </optgroup>
+            </select></label>
+          <label class="field"><span class="ta">PIN குறியீடு</span><span class="en">PIN code</span>
+            <input id="f-pin" type="text" inputmode="numeric" maxlength="6" placeholder="600126"></label>
+        </div>
+        <p class="soon"><span class="ta">சங்கல்பம் உங்களிடம் ஒருபோதும் பணம் கேட்காது. அனைத்து சமையல்காரர்களும் சுத்த சைவ உணவு மட்டுமே சமைப்பார்கள்.</span><span class="en">Sankalpam never asks you for money. All cooks cook pure vegetarian food only.</span></p>
+        <div id="partner-list" class="pooja-grid"></div>
+        <p id="partner-empty" class="form-msg" role="status" hidden></p>
+      </div>
+      <div class="card" id="booking-box" hidden></div>
+      <div class="card" id="my-bookings" hidden></div>
+    </section>
+
+    <!-- PARTNER PORTAL (login; subscription rules shown here only) -->
+    <section class="page" data-page="partner" hidden>
+      <div class="card" id="portal-box"></div>
+    </section>
+
+    
+
     <!-- ABOUT US -->
     <section class="page" data-page="about" hidden>
       <div class="card">
