@@ -24,6 +24,9 @@
       btn.classList.toggle('is-active', on);
       btn.setAttribute('aria-pressed', String(on));
     });
+    document.querySelectorAll('option[data-en]').forEach(function (o) {
+      o.textContent = lang === 'en' ? o.getAttribute('data-en') : o.getAttribute('data-ta');
+    });
     writeStored(LANG_KEY, lang);
   }
 
