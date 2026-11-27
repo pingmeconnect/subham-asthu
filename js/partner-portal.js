@@ -212,7 +212,10 @@
             box.innerHTML = '<h1>' + bi('வாத்தியார் / சமையல்காரராக இணையுங்கள்', 'Join as Priest / Cook') + '</h1>' +
               '<p>' + bi(MSG.partner_only[0], MSG.partner_only[1]) + '</p>' +
               '<p>' + bi('நீங்கள் வாடிக்கையாளராக உள்நுழைந்துள்ளீர்கள். வெளியேறி, வாத்தியார் அல்லது சமையல்காரராகப் பதிவு செய்யுங்கள்.', 'You are logged in as a customer. Log out, then sign up as a Priest or Cook.') + '</p>' +
-              '<p class="join-actions"><a class="btn" href="#login"><span class="ta">உள்நுழைவுப் பக்கம்</span><span class="en">Go to Log in / Sign up</span></a></p>';
+              '<p class="join-actions"><button type="button" class="btn" id="join-logout"><span class="ta">வெளியேறி வாத்தியார் / சமையல்காரராகப் பதிவு</span><span class="en">Log out and sign up as Priest / Cook</span></button></p>';
+            box.querySelector('#join-logout').addEventListener('click', function () {
+              A.logout().then(function () { render(); });
+            });
             return;
           }
           // A partner login with no profile yet: create one from the form.
