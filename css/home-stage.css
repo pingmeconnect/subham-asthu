@@ -23,7 +23,7 @@
   body:has(.page[data-page="home"]:not([hidden])) .sa-ticker,
   body:has(.page[data-page="home"]:not([hidden])) .site-footer{display:none!important}
   body:has(.page[data-page="home"]:not([hidden])) main.wrap{width:100%!important;max-width:none!important;padding:0!important;margin:0!important}
-  .page[data-page="home"] > :not(#sa-hn):not(#sa-mob){display:none!important}
+  .page[data-page="home"] > :not(#sa-hn):not(#sa-mob):not(#sa-v2){display:none!important}
 }
 
 /* ---- Astrologer Consultation highlight ---- */
