@@ -102,3 +102,16 @@
 #sa-v2 .ti{display:block;object-fit:contain;margin:0 auto}
 #sa-v2 .v2-qcard .ti{width:64px;height:64px}
 #sa-v2 .v2-scard .ti{width:96px;height:96px}
+
+/* Mobile: shorter hero so the tiles show higher; coming-soon tiles below the working ones */
+#sa-v2 .v2-soon-h{margin:14px 0 6px;font-size:15px;font-weight:600;color:#7a0a10}
+#sa-v2 .v2-quick-soon{opacity:.85}
+@media (max-width:559px){
+  #sa-v2 .v2-hero{padding:16px 14px}
+  #sa-v2 .v2-hero h1{font-size:21px;margin-bottom:6px}
+  #sa-v2 .v2-hero p{font-size:14px;margin-bottom:10px}
+  #sa-v2 .v2-hero img.art{aspect-ratio:auto;height:130px;object-fit:cover;margin-bottom:0}
+  #sa-v2 .v2-sec{padding:14px 0}
+  #sa-v2 .v2-quick{gap:8px}
+  #sa-v2 .v2-qcard{min-height:0;padding:12px 8px}
+}
