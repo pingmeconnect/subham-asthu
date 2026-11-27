@@ -1,5 +1,5 @@
 /* Sankalpam — mobile + PIN auth on Supabase (Phase 6).
-   The database checks PINs (bcrypt), lockouts and reset codes. The browser keeps only the
+   The database checks PINs (bcrypt), lockouts and reset links. The browser keeps only the
    session token. No SMS/WhatsApp OTP: email is the only PIN-reset channel. */
 (function () {
   'use strict';
@@ -40,9 +40,10 @@
     });
   }
 
-  // Always answers the same way, so the form cannot reveal which mobile/email pairs exist.
-  function requestPinReset(mobile, email) {
-    return DB.rpc('sa_request_pin_reset', { p_mobile: mobile, p_email: email }).then(function (r) {
+  // Emails a single-use reset link (valid 30 minutes). Always answers the same way, so the form
+  // cannot reveal which mobile/email pairs exist.
+  function requestResetLink(mobile, email) {
+    return DB.rpc('sa_request_reset_link', { p_mobile: mobile, p_email: email }).then(function (r) {
       kickEmail();
       return r;
     });
@@ -77,8 +78,8 @@
     });
   }
 
-  function confirmPinReset(mobile, code, pin, pin2) {
-    return DB.rpc('sa_confirm_pin_reset', { p_mobile: mobile, p_code: code, p_pin: pin, p_pin2: pin2 });
+  function confirmResetLink(token, pin, pin2) {
+    return DB.rpc('sa_confirm_reset_link', { p_token: token, p_pin: pin, p_pin2: pin2 });
   }
 
   window.SAAuth = {
@@ -86,8 +87,8 @@
     login: login,
     logout: logout,
     currentUser: currentUser,
-    requestPinReset: requestPinReset,
-    confirmPinReset: confirmPinReset,
+    requestResetLink: requestResetLink,
+    confirmResetLink: confirmResetLink,
     changePin: changePin,
     setMarketing: setMarketing,
     deleteAccount: deleteAccount,

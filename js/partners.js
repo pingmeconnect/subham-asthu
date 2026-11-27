@@ -15,15 +15,15 @@
 
   // [Tamil, English]
   var MSG = {
-    req_ok: ['கோரிக்கை அனுப்பப்பட்டது. வாத்தியார் / சமையல்காரர் ஏற்ற பின் தொலைபேசி எண் காட்டப்படும்.', 'Request sent. The phone number appears once the partner accepts.'],
+    req_ok: ['கோரிக்கை அனுப்பப்பட்டது. வாத்தியார் / சமையலர் ஏற்ற பின் தொலைபேசி எண் காட்டப்படும்.', 'Request sent. The phone number appears once the partner accepts.'],
     login_first: ['முன்பதிவு செய்ய முதலில் உள்நுழையவும்.', 'Please log in first to request a booking.'],
     date_bad: ['இன்றோ அதற்குப் பின்னரோ உள்ள தேதியைத் தேர்ந்தெடுக்கவும்.', 'Choose a date today or later.'],
     pin_bad: ['தமிழ்நாடு / புதுச்சேரியின் சரியான 6 இலக்க PIN குறியீட்டை உள்ளிடவும்.', 'Enter a valid 6-digit Tamil Nadu / Puducherry PIN code.'],
     pooja_bad: ['பூஜை / நிகழ்ச்சியைத் தேர்ந்தெடுக்கவும்.', 'Choose a pooja or event.'],
     unavailable: ['இந்தச் சேவை வழங்குநர் இப்போது கிடைக்கவில்லை.', 'This partner is not available right now.'],
     fail: ['முன்பதிவு அனுப்ப முடியவில்லை. மீண்டும் முயற்சிக்கவும்.', 'Could not send the request. Please try again.'],
-    none: ['பொருந்தும் வாத்தியார் / சமையல்காரர் இல்லை.', 'No priests or cooks match these filters.'],
-    waiting: ['வாத்தியார் / சமையல்காரர் ஏற்ற பின் தொலைபேசி எண் காட்டப்படும்.', 'The phone number appears after the partner accepts.'],
+    none: ['பொருந்தும் வாத்தியார் / சமையலர் இல்லை.', 'No priests or cooks match these filters.'],
+    waiting: ['வாத்தியார் / சமையலர் ஏற்ற பின் தொலைபேசி எண் காட்டப்படும்.', 'The phone number appears after the partner accepts.'],
     call: ['நேரடியாக அழைத்துத் தட்சிணையை முடிவு செய்யவும்.', 'Call to agree the dakshina directly.'],
     time_bad: ['நிகழ்ச்சி நேரத்தைத் தேர்ந்தெடுக்கவும்.', 'Choose the event time.'],
     area_bad: ['பகுதி / நகர் பெயரை உள்ளிடவும்.', 'Please enter the area / nagar name.'],
@@ -77,7 +77,7 @@
       '</div>' +
       '<p class="partner-pin">' + bi('சேவை வழங்கும் பகுதிகள்', 'Areas served') + ':</p><div class="badges">' + areas + '</div>' +
       '<button type="button" class="btn btn-wide" data-request="' + esc(p.id) + '">' +
-        bi('முன்பதிவு கோரிக்கை', 'Request booking') + '</button>' +
+        bi('முன்பதிவுக் கோரிக்கை', 'Request booking') + '</button>' +
       '</article>';
   }
 
@@ -113,7 +113,7 @@
       var opts = visiblePoojas.map(function (q) {
         return '<option value="' + esc(q.slug) + '">' + esc(q.name_en) + ' · ' + esc(q.name_ta) + '</option>';
       }).join('');
-      box.innerHTML = '<h2>' + bi('முன்பதிவு கோரிக்கை', 'Request booking') + '</h2>' +
+      box.innerHTML = '<h2>' + bi('முன்பதிவுக் கோரிக்கை', 'Request booking') + '</h2>' +
         '<p>' + bi('வாத்தியார்:', 'Partner:') + ' <strong>' + nameOf(p) + '</strong> · ' +
           bi(PD.ROLE[p.role][0], PD.ROLE[p.role][1]) + '</p>' +
         '<form id="booking-form" data-partner="' + esc(p.id) + '" novalidate>' +
@@ -127,7 +127,7 @@
             '<input name="pin" type="text" inputmode="numeric" maxlength="6" value="' + esc(p.pin_code) + '" required></label>' +
           '<label class="field"><span class="ta">பகுதி / நகர் பெயர் (ஏற்கும் முன் காட்டப்படும்)</span><span class="en">Area / nagar name (shown before they accept)</span>' +
             '<input name="area" type="text" maxlength="80" placeholder="' + (document.documentElement.getAttribute('data-lang') === 'en' ? 'e.g. Anna Nagar, Chennai' : 'எ.கா. அண்ணா நகர், சென்னை') + '" required></label>' +
-          '<label class="field"><span class="ta">முழு முகவரி (கதவு எண், அடுக்குமாடி பெயர் — ஏற்ற பின் மட்டும் காட்டப்படும்)</span><span class="en">Full address (door no., flat name — shown only after they accept)</span>' +
+          '<label class="field"><span class="ta">முழு முகவரி (கதவு எண், அடுக்குமாடி பெயர்)</span><span class="en">Full address (door no., flat name)</span>' +
             '<textarea name="venue" rows="3" maxlength="300" required></textarea></label>' +
           '<label class="field"><span class="ta">குறிப்பு (விருப்பம்)</span><span class="en">Notes (optional)</span>' +
             '<textarea name="notes" rows="2" maxlength="300"></textarea></label>' +
@@ -140,12 +140,14 @@
               '<label class="field"><span class="ta">உணவு வகை</span><span class="en">Meal type</span><select name="meal">' +
               Object.keys(PD.MEAL).map(function (k) { return '<option value="' + k + '">' + esc(PD.MEAL[k][0] + ' · ' + PD.MEAL[k][1]) + '</option>'; }).join('') + '</select></label>' +
               '<label class="check-row"><input type="checkbox" name="kitchen" checked> ' + bi('இடத்தில் சமையலறை வசதி உள்ளது', 'A kitchen is available at the venue') + '</label>' +
-              '<p class="soon">' + bi('அனைத்து சமையல்காரர்களும் சுத்த சைவ உணவு மட்டுமே சமைப்பார்கள்.', 'All cooks on Sankalpam cook pure vegetarian food only.') + '</p>') +
+              '<p class="soon">' + bi('அனைத்து சமையலர்களும் சுத்த சைவ உணவு மட்டுமே சமைப்பார்கள்.', 'All cooks on Sankalpam cook pure vegetarian food only.') + '</p>') +
           (p.role === 'priest'
             ? '<label class="check-row"><input type="checkbox" name="cook_addon"> ' +
-              bi('சமையல்காரரும் தேவை (கூடுதல்)', 'Also need a cook (add-on)') + '</label>'
+              bi('சமையலரும் தேவை (கூடுதல்)', 'Also need a cook (add-on)') + '</label>'
             : '') +
-          '<p class="od-notes-box soon">' + bi('முடிவு செய்ய, இந்த வாத்தியார் / சமையல்காரர் உங்கள் பகுதி, தேதி மற்றும் தேவைகளை மட்டுமே பார்ப்பார். முழு முகவரி மற்றும் தொலைபேசி எண் அவர் ஏற்ற பின் மட்டுமே பகிரப்படும்.', 'To decide, this priest / cook will see only your area, date and requirements. Your full address and phone number are shared only after they accept.') + '</p>' +
+          '<label class="check-row"><input type="checkbox" name="share"> ' +
+            bi('வாத்தியார் / சமையலர் ஏற்ற பின், என் முழு பெயர், முழு முகவரி மற்றும் தொலைபேசி எண்ணை பகிரவும்', 'After they accept, share my full name, full address and phone number with them') + '</label>' +
+          '<p class="od-notes-box soon">' + bi('முடிவு செய்ய, இந்த வாத்தியார் / சமையலர் உங்கள் பகுதி, தேதி மற்றும் தேவைகளை மட்டுமே பார்ப்பார். நீங்கள் டிக் செய்திருந்தால் மட்டுமே முழு முகவரி ஏற்ற பின் பகிரப்படும். தொலைபேசி எண் ஏற்ற பின் பகிரப்படும்.', 'To decide, this priest / cook will see only your area, date and requirements. Your full address is shared only if you tick the box above, and only after they accept. Your phone number is shared after they accept.') + '</p>' +
           '<p class="od-notes-box soon">' + bi('முன்பணம் தேவைப்பட்டால், உங்கள் முன்பதிவு ஏற்கப்பட்ட பின், சரிபார்க்கப்பட்ட நபருக்கு மட்டும் கொடுக்கவும். சங்கல்பம் உங்களிடம் ஒருபோதும் பணம் கேட்காது.',
             'If an advance is asked for, pay it only after your booking is accepted, and only to a verified person. Sankalpam never asks you for money.') + '</p>' +
           '<button type="submit" class="btn">' + bi('கோரிக்கை அனுப்பு', 'Send request') + '</button>' +
@@ -178,7 +180,7 @@
     return DB.rpc('sa_create_booking_v2', {
       p_token: DB.token(), p_partner: pid, p_pooja_slug: slug, p_event_date: date,
       p_pin: pin, p_cook_addon: d.get('cook_addon') === 'on',
-      p_time: time, p_venue: venue, p_notes: notes, p_prefs: prefs
+      p_time: time, p_venue: venue, p_notes: notes, p_prefs: prefs, p_share: d.get('share') === 'on'
     }).then(function (r) {
       if (!r.ok) return setMsg(out, r.error, true);
       form.reset();
@@ -194,6 +196,16 @@
     if (pf.guests) out.push(bi('நபர்கள்: ', 'Guests: ') + esc(pf.guests));
     if (pf.meal && PD.MEAL[pf.meal]) out.push(bi(PD.MEAL[pf.meal][0], PD.MEAL[pf.meal][1]));
     return out.join(' · ');
+  }
+
+  // After the provider marks a booking Completed, the customer acknowledges it or reports a problem.
+  function closeBlock(b) {
+    if (b.status !== 'completed') return '';
+    if (b.customer_ack_at) return '<p class="soon">' + bi('நன்றி! உறுதிப்படுத்தப்பட்டது.', 'Thank you. Confirmed.') + '</p>';
+    if (b.problem_reason) return '<p class="soon">' + bi('பிரச்சனை பதிவு செய்யப்பட்டது:', 'Problem reported:') + ' ' + esc(b.problem_reason) + '</p>';
+    return '<div class="confirm-box"><p><strong>' + bi('நிகழ்ச்சி சிறப்பாக நடந்ததா?', 'Did the service go smoothly?') + '</strong></p>' +
+      '<button type="button" class="btn" data-close="ack" data-id="' + esc(b.id) + '">' + bi('ஆம்', 'Yes') + '</button> ' +
+      '<button type="button" class="btn btn-outline" data-close="problem" data-id="' + esc(b.id) + '">' + bi('இல்லை, பிரச்சனை', 'No, there was a problem') + '</button></div>';
   }
 
   function renderMine() {
@@ -214,16 +226,16 @@
             '<div class="badges">' +
               '<span class="badge">' + bi(PD.ROLE[b.service_type][0], PD.ROLE[b.service_type][1]) + '</span>' +
               '<span class="badge">' + bi(st[0], st[1]) + '</span>' +
-              (b.cook_addon ? '<span class="badge">' + bi('சமையல்காரர் கூடுதல்', 'Cook add-on') + '</span>' : '') +
+              (b.cook_addon ? '<span class="badge">' + bi('சமையலர் கூடுதல்', 'Cook add-on') + '</span>' : '') +
             '</div>' +
             '<p>' + esc(b.event_date) + (b.event_time ? ' · ' + esc(b.event_time) : '') + ' · ' + esc(b.pooja_en || '') + '</p>' +
             (b.venue_address ? '<p class="soon">📍 ' + esc(b.venue_address) + '</p>' : '') +
             contact +
             (b.prefs ? '<p>' + prefsLine(b.prefs) + '</p>' : '') +
             (b.status === 'cancelled' && b.cancel_reason ? '<p class="soon">' + bi('ரத்துக்கான காரணம்:', 'Reason:') + ' ' + esc(b.cancel_reason) + '</p>' : '') +
-            (b.can_confirm ? '<div class="confirm-box"><p><strong>' + bi('நிகழ்ச்சி சிறப்பாக நடந்ததா?', 'Did the service go smoothly?') + '</strong></p>' +
-              '<button type="button" class="btn" data-confirm="yes" data-id="' + esc(b.id) + '">' + bi('ஆம்', 'Yes') + '</button> ' +
-              '<button type="button" class="btn btn-outline" data-confirm="no" data-id="' + esc(b.id) + '">' + bi('இல்லை', 'No') + '</button></div>' : '') +
+            closeBlock(b) +
+            ((b.status === 'requested' || b.status === 'accepted')
+              ? '<div class="action-row"><button type="button" class="btn btn-outline" data-cancel="' + esc(b.id) + '">' + bi('முன்பதிவை ரத்து செய்', 'Cancel booking') + '</button></div>' : '') +
             window.SAExtras.feedbackHtml('booking', b.id, (b.status === 'accepted' || b.status === 'completed') && b.event_date <= SUB.today(), b.feedback) +
             '</article>';
         }).join('');
@@ -234,9 +246,23 @@
         if (!box.dataset.confirmBound) {
           box.dataset.confirmBound = '1';
           box.addEventListener('click', function (e) {
-            var btn = e.target.closest('[data-confirm]');
-            if (!btn) return;
-            DB.rpc('sa_confirm_completion', { p_token: DB.token(), p_booking: btn.getAttribute('data-id'), p_done: btn.getAttribute('data-confirm') === 'yes' })
+            var cancelBtn = e.target.closest('[data-cancel]');
+            if (cancelBtn) {
+              var why = window.prompt('ரத்துக்கான காரணம் (குறைந்தது 3 எழுத்துகள்) / Reason for cancelling (at least 3 characters):');
+              if (!why || why.trim().length < 3) return;
+              DB.rpc('sa_customer_cancel_booking', { p_token: DB.token(), p_booking: cancelBtn.getAttribute('data-cancel'), p_reason: why.trim() })
+                .then(function () { return renderMine(); });
+              return;
+            }
+            var closeBtn = e.target.closest('[data-close]');
+            if (!closeBtn) return;
+            var problem = null;
+            if (closeBtn.getAttribute('data-close') === 'problem') {
+              problem = window.prompt('பிரச்சனை என்ன? (குறைந்தது 3 எழுத்துகள்) / What went wrong? (at least 3 characters):');
+              if (!problem || problem.trim().length < 3) return;
+              problem = problem.trim();
+            }
+            DB.rpc('sa_customer_close_booking', { p_token: DB.token(), p_booking: closeBtn.getAttribute('data-id'), p_problem: problem })
               .then(function () { return renderMine(); });
           });
         }

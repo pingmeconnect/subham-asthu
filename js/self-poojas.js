@@ -586,15 +586,6 @@
         ['விளக்கேற்றி, விநாயகரை வணங்கவும்.', 'Light the lamp and pray to Ganesha.', 1], ['கிருஷ்ண மந்திரங்களைக் கூறவும்.', 'Chant the Krishna mantras.', 2],
         ['சீடை, முறுக்கு, வெண்ணெய், பால், தயிர், அவல் நைவேத்தியம் படைக்கவும்.', 'Offer seedai, murukku, butter, milk, curd and aval.'], ['நள்ளிரவு பிறப்பு நேரத்தில் ஆரத்தி காட்டவும்.', 'Show aarti at the midnight birth time.', 3], 'prasadam'],
       m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['krishna1', 'அர்ச்சனையின் போது', 'During offerings', '3'], ['krishna2', 'ஆரத்தியின் போது', 'During aarti', '1']]
-    },
-    'rama-navami-hanuman-jayanthi': {
-      time: ['சுமார் 45 நிமிடம்', 'About 45 minutes'],
-      sam: ['picture', 'lamp', 'oil', 'tulsi', 'flowers', 'garland', 'sandal', 'banana', 'fruits', 'sweets', 'betel', 'camphor', 'incense'],
-      steps: ['bathe', 'clean', ['ராமர் / அனுமன் படத்தை அலங்கரித்து, துளசி, மலர் மாலை சாத்தவும்.', 'Decorate the Rama / Hanuman picture with tulsi and a flower garland.'],
-        ['விளக்கேற்றி, விநாயகரை வணங்கவும்.', 'Light the lamp and pray to Ganesha.', 1], ['ராம துதி, ராம நாமம் கூறவும்.', 'Recite the Rama prayer and Rama name.', 2],
-        ['அனுமன் துதி கூறி வணங்கவும் (அனுமன் ஜெயந்தி அன்று வடை மாலை சாத்துவது வழக்கம்).', 'Recite the Hanuman prayer (offering a vada garland is customary on Hanuman Jayanthi).', 4],
-        ['பானகம், நீர்மோர், பழம் நைவேத்தியம் படைத்து ஆரத்தி காட்டவும்.', 'Offer panakam, buttermilk and fruit; show aarti.'], 'prasadam'],
-      m: [['ganesha_dhyana', 'ஆரம்பத்தில்', 'At the start', '1'], ['rama_dhyana', 'ராமருக்கு', 'For Rama', '1'], ['rama_nama', 'நாமம் சொல்லும்போது', 'While chanting the name', '3'], ['hanuman', 'அனுமனுக்கு', 'For Hanuman', '1']]
     }
   };
 
@@ -615,8 +606,7 @@
     'vinayagar-chaturthi': [['sankata_stotra', 'அர்ச்சனைக்குப் பின்', 'After the offerings', '1']],
     'pradosham': SHIVA, 'maha-shivaratri': SHIVA,
     'varalakshmi-vratam': LAKSHMI.concat(AMBAL), 'weekly-home-pooja': LAKSHMI, 'aadi-velli-pooram-perukku': LAKSHMI.concat(AMBAL),
-    'navaratri-golu-ayudha-pooja': LAKSHMI.concat(AMBAL), 'thiruvilakku-pooja': AMBAL, 'kedara-gauri-vratam': AMBAL,
-    'rama-navami-hanuman-jayanthi': [['kamban', 'நிறைவில்', 'At the end', '1']]
+    'navaratri-golu-ayudha-pooja': LAKSHMI.concat(AMBAL), 'thiruvilakku-pooja': AMBAL, 'kedara-gauri-vratam': AMBAL
   };
 
   // ---------- when to do it: [Tamil, English] ----------
@@ -655,8 +645,7 @@
     'aadi-velli-pooram-perukku': ['ஆடி மாதம் வெள்ளிக்கிழமைகள், ஆடிப் பூரம், ஆடிப் பெருக்கு (ஆடி 18).', 'Fridays of Aadi, Aadi Pooram and Aadi Perukku (Aadi 18).'],
     'kedara-gauri-vratam': ['ஐப்பசி மாதம்; தீபாவளி அமாவாசை அன்று நிறைவு.', 'In Aippasi; concludes on Deepavali Amavasya.'],
     'skanda-sashti': ['ஐப்பசி வளர்பிறை பிரதமை முதல் சஷ்டி வரை 6 நாள்.', 'Six days from Pratipada to Sashti in Aippasi waxing moon.'],
-    'krishna-jayanthi': ['ஆவணி தேய்பிறை அஷ்டமி (கோகுலாஷ்டமி); மாலை முதல் நள்ளிரவு வரை.', 'Aavani waning-moon Ashtami (Gokulashtami); evening to midnight.'],
-    'rama-navami-hanuman-jayanthi': ['ராம நவமி - பங்குனி / சித்திரை வளர்பிறை நவமி; அனுமன் ஜெயந்தி - மார்கழி அமாவாசை.', 'Rama Navami - waxing-moon Navami in Panguni/Chithirai; Hanuman Jayanthi - Margazhi Amavasya.']
+    'krishna-jayanthi': ['ஆவணி தேய்பிறை அஷ்டமி (கோகுலாஷ்டமி); மாலை முதல் நள்ளிரவு வரை.', 'Aavani waning-moon Ashtami (Gokulashtami); evening to midnight.']
   };
 
   function get(slug) {

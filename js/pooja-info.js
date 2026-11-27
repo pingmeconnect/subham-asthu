@@ -341,7 +341,7 @@
       give: r('சுமங்கலிகளுக்குத் தாம்பூலம், வளையல், ரவிக்கைத் துணி அளிக்கலாம்.', 'Give thaamboolam, bangles and a blouse piece to married women.'),
       temples: r('சென்னை அஷ்டலட்சுமி கோயில் (பெசன்ட் நகர்); காஞ்சி காமாட்சி; ஸ்ரீரங்கம் ரங்கநாயகி தாயார்.', 'Ashtalakshmi Temple Chennai; Kanchi Kamakshi; Srirangam Ranganayaki Thayar.'),
       tips: [r('நோன்புச் சரடில் 9 முடிச்சு போட்டு வலக்கையில் கட்டுவது வழக்கம்.', 'Tying the nombu thread with 9 knots on the right wrist is customary.'),
-        r('முதல் நாளே சாமான்களை எடுத்து வைத்தால் பூஜை நிதானமாக நடக்கும்.', 'Arrange everything the day before for a relaxed pooja.')]
+        r('முதல் நாளே பொருட்களை எடுத்து வைத்தால் பூஜை நிதானமாக நடக்கும்.', 'Arrange everything the day before for a relaxed pooja.')]
     },
     'vinayagar-chaturthi': {
       deity: r('விநாயகர்', 'Lord Vinayaka'),
@@ -559,11 +559,11 @@
     start: r('நல்ல நேரம் (முகூர்த்தம்) உங்கள் வாத்தியாருடன் பேசி முடிவு செய்யவும்.', 'Fix the auspicious time with your priest.'),
     who: r('குடும்பத்தினர் கலந்து கொள்ள, வாத்தியார் நடத்துவார்.', 'The family takes part; the priest conducts it.'),
     avoid: r('பஞ்சாங்கப்படி நாள், நேரம் தேர்ந்தெடுக்கவும்; ராகு காலம், எமகண்டத்தில் தொடங்க வேண்டாம். வீட்டில் தீட்டு இருந்தால் வாத்தியாரிடம் கேட்கவும்.', 'Choose the day and time by the panchangam; do not start in Rahu Kalam or Yamagandam. If the house has ritual impurity, ask your priest.'),
-    give: r('தட்சிணை, சமையல் ஏற்பாடு போன்றவற்றை வாத்தியாரிடம் / சமையல்காரரிடம் நேரடியாகத் தொலைபேசியில் பேசி முடிவு செய்யுங்கள்.', 'Settle dakshina and food arrangements directly with the priest or cook by phone.'),
+    give: r('தட்சிணை, சமையல் ஏற்பாடு போன்றவற்றை வாத்தியாரிடம் / சமையலரிடம் நேரடியாகத் தொலைபேசியில் பேசி முடிவு செய்யுங்கள்.', 'Settle dakshina and food arrangements directly with the priest or cook by phone.'),
     tips: [r('பூஜைக்கு 2–3 நாள் முன்பே வாத்தியாரை முன்பதிவு செய்யவும்.', 'Book the priest 2–3 days ahead.'),
-      r('சாமான் பட்டியலை வாத்தியாரிடம் காட்டி உறுதி செய்யவும்.', 'Show the samagri list to the priest and confirm it.')]
+      r('பொருட்கள் பட்டியலை வாத்தியாரிடம் காட்டி உறுதி செய்யவும்.', 'Show the samagri list to the priest and confirm it.')]
   };
-  var PRIEST_NOTE = r('இது பொதுவான பட்டியல். உங்கள் வாத்தியாரின் அறிவுறுத்தலின்படியும், உங்கள் குடும்ப வழக்கப்படியும் சில சாமான்கள் மாறலாம். எனவே முன்பே வாத்தியாரிடம் கேட்டு உறுதி செய்து கொள்ளவும்.',
+  var PRIEST_NOTE = r('இது பொதுவான பட்டியல். உங்கள் வாத்தியாரின் அறிவுறுத்தலின்படியும், உங்கள் குடும்ப வழக்கப்படியும் சில பொருட்கள் மாறலாம். எனவே முன்பே வாத்தியாரிடம் கேட்டு உறுதி செய்து கொள்ளவும்.',
     'This is a general list. Some items may change as your priest advises and as your family custom requires, so please confirm with your priest beforehand.');
 
   window.SAInfo = {

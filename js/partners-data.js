@@ -33,10 +33,10 @@
     2: ['வீடியோ மூலம் சரிபார்க்கப்பட்டது', 'Video verified'],
     3: ['பரிந்துரை சரிபார்க்கப்பட்டது', 'Reference verified']
   };
-  var ROLE = { priest: ['வாத்தியார்', 'Priest'], cook: ['சமையல்காரர்', 'Cook'] };
+  var ROLE = { priest: ['வாத்தியார்', 'Priest'], cook: ['சமையலர்', 'Cook'] };
   var STATUS = {
     requested: ['கோரிக்கை அனுப்பப்பட்டது', 'Request sent'],
-    accepted: ['ஏற்கப்பட்டது', 'Accepted'],
+    accepted: ['உறுதி செய்யப்பட்டது', 'Confirmed'],
     declined: ['நிராகரிக்கப்பட்டது', 'Declined'],
     completed: ['முடிந்தது', 'Completed'],
     not_completed: ['முழுமையாக நடக்கவில்லை', 'Not completed'],

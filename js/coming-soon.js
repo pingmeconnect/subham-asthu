@@ -6,7 +6,7 @@
   var SOON_PAGES = /^#(bookings|order)(\/|$)/;
   var TEXT = {
     priest:   ['வாத்தியார் புக்கிங்', 'Priest booking'],
-    cook:     ['சமையல்காரர் புக்கிங்', 'Cook booking'],
+    cook:     ['சமையலர் புக்கிங்', 'Cook booking'],
     order:    ['பூஜைப் பொருட்கள் ஆன்லைன் ஆர்டர்', 'Online pooja-items order'],
     astrology:['ஜோதிடர் ஆலோசனை', 'Astrologer consultation'],
     matching: ['திருமணப் பொருத்தம் (ஜாதகம்)', 'Marriage horoscope matching'],
